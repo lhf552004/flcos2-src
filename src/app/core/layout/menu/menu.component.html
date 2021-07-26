@@ -1,0 +1,60 @@
+<nav class="navbar navbar-xs fixed-top navbar-expand-lg navbar-dark bg-primary">
+  <!-- Toggler -->
+  <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Brand, using abbreviation on smaller devices-->
+  <a class="navbar-brand d-none d-sm-block" [routerLink]="['home']">Electronic MES</a>
+  <a class="navbar-brand d-sm-none" [routerLink]="['home']">emes</a>
+  <!-- Navigation links -->
+  <div class="collapse navbar-collapse" [ngbCollapse]=isCollapsed>
+    <!-- Spacer -->
+    <ul class="navbar-nav mr-auto" *ngIf="!isAuthenticated"></ul>
+    <!-- Top Menu links -->
+    <ul class="navbar-nav mr-auto" *ngIf="isAuthenticated">
+      <li *ngFor="let menuItem of menu" class="nav-item">
+        <a class="nav-link" [routerLink]="[menuItem.url]" [routerLinkActive]="'active'">{{menuItem.name}}</a>
+      </li>
+    </ul>
+
+    <!-- Search -->
+    <input class="form-control form-control-sm border-0 w-auto" type="search" placeholder="Search" (search)="triggerSearch($event.target.value)">
+
+    <!-- LoggedIn -->
+    <ul class="navbar-nav">
+      <!-- User -->
+      <li ngbDropdown placement="bottom-right" class="nav-item" *ngIf="isAuthenticated">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle pointer">
+          {{authenticatedUser?.name}}
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu">
+          <!-- <a class="dropdown-item">
+              <i class="fa fa-fw fa-user"></i> Profile
+          </a>-->
+          <a class="dropdown-item pointer" (click)="openPreferences()">
+            <fa-icon [icon]="faUser" [fixedWidth]="true"></fa-icon> Preferences <!--{{'MENU.PREFERENCES'|translate}}-->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item pointer" (click)="logout()">
+            <fa-icon [icon]="faPowerOff" [fixedWidth]="true"></fa-icon> Logout <!--{{'MENU.LOGOUT'|translate}}-->
+          </a>
+        </div>
+      </li>
+      <!-- Languages -->
+      <!--<li ngbDropdown placement="bottom-right" class="nav-item">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle cursor-pointer">
+          <img [class]="'mb-1 flag flag-' + selectedLanguage" />
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu">
+          <a class="dropdown-item cursor-pointer" (click)="setLanguage(lang)" *ngFor="let lang of languages">
+            <img [class]="'flag flag-' + lang" /> {{lang}}
+          </a>
+        </div>
+      </li>-->
+      <!-- Chatbot -->
+      <!--<li class="nav-item">
+        <a class="nav-link cursor-pointer" placement="bottom-right" [ngbTooltip]="'MENU.CHATBOT'|translate" (click)="showChatBot()"><i class="fa fa-fw fa-android"></i></a>
+      </li>-->
+    </ul>
+  </div>
+</nav>

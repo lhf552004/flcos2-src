@@ -1,0 +1,21 @@
+<h3>Jobs</h3>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Line</th>
+        <th scope="col">Weight</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let job of jobs; let i = index">
+        <th scope="row">{{i}}</th>
+        <td><a [routerLink]="[job.id]">{{job.id}}</a></td>
+        <td>{{job.name}}</td>
+        <td>{{job.lineName}}</td>
+        <td>{{job.targetWeight}}</td>
+      </tr>
+    </tbody>
+  </table>

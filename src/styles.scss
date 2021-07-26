@@ -1,0 +1,142 @@
+/* You can add global styles to this file, and also import other style files */
+@import "custom-theme";
+
+// Height of the top menu bar
+$top-menu-height: 56px;
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding-top: $top-menu-height;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Shortcut for cursor pointer
+.pointer {
+  cursor: pointer;
+}
+
+// Modal form styles
+.modal-xxl .modal-dialog {
+    max-width: 80%;
+}
+
+.modal-xxxl .modal-dialog {
+  max-width: 90%;
+}
+
+.modal-full-width .modal-dialog {
+  max-width: 100%;
+}
+
+
+// Handsontable full screen
+.full-screen-hot-container {
+  overflow: hidden;
+  height: 100%;
+}
+
+
+// Create color classes for text and background
+@mixin define-custom-property($name, $value) {
+  #{custom-property-name($name)}: $value;
+}
+
+@each $name,$color in $colors{
+  .#{$name}-text {
+    color: $color !important;
+  }
+
+  .#{$name}-background {
+    background-color: $color !important;
+  }
+}
+
+.rotate-text {
+  transform: rotate(90deg);
+}
+
+.rotate-flip-text {
+  transform: rotate(-90deg);
+}
+
+@each $value in $IndentLefts {
+  .indent-#{$value}{
+    text-indent: $value;
+  }
+}
+
+blockquote {
+  border-left: 5px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  p {
+    background-color: lightgrey;
+  }
+}
+
+@each $name,$color in $colors{
+  @if $name == white {
+    .#{$name}-fill {
+      path {
+          fill: $color;
+      }
+    }
+  }@else{
+    .#{$name}-fill {
+      path {
+          fill: $color;
+          stroke: black;
+          stroke-width: 5px;
+      }
+    }
+  } 
+}
+
+@each $name,$degree in $rotateDegrees{
+  .rotate-icon-#{$name} {
+    svg {
+        transform: rotate($degree);
+    }  
+  }
+}
+
+@each $name, $value in $extendedSizes{
+  .w-#{$name} {
+    width: $value!important;
+  }
+
+  .h-#{$name} {
+    width: $value!important;
+  }
+}
+
+ul ul ul ul {
+  list-style-type: disc;
+}
+ul ul ul ul ul {
+  list-style-type: circle;
+}
+
+ul ul ul ul ul ul{
+  list-style-type: square;
+}
+
+ul ul ul ul ul ul ul{
+  list-style-type: disc;
+}
+
+ol ol { list-style-type: lower-alpha; }
+
+ol ol ol { list-style-type: lower-roman; }
+
+ol ol ol ol { list-style-type: decimal; }
+
+ol ol ol ol ol { list-style-type: lower-alpha; }
+
+ol ol ol ol ol ol { list-style-type: lower-roman; }
+
+ol ol ol ol ol ol ol { list-style-type: decimal; }

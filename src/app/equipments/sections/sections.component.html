@@ -1,0 +1,18 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Equipments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let section of sections; let i = index">
+        <th scope="row">{{i}}</th>
+        <td><a [routerLink]="['..', section.id]">{{section.id}}</a></td>
+        <td>{{section.name}}</td>
+        <td>{{section.equipments.length}}</td>
+      </tr>
+    </tbody>
+</table>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="37a76988-a76c-43aa-bf08-7002ffd10746" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/Bom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/Ingredient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/Job.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/CspsApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/MesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/api/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/api/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/api/DocumentsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/api/DocumentsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/api/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/api/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/api/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/api/UsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/config/SecurityConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/config/SecurityConfigurer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/config/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/filters/JwtRequestFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/filters/JwtRequestFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/models/AuthenticationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/AuthenticationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/models/AuthenticationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/AuthenticationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/models/CspsDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/CspsDocument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/models/MyUserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/MyUserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/repository/DocumentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/repository/DocumentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/services/MyUserDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/services/MyUserDetailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/main/java/com/jci/csps/util/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/main/java/com/jci/emes/util/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../src/test/java/com/jci/csps/CspsApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../src/test/java/com/jci/emes/MesApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.1\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1iAixRJe2UjLtASPqp8qGViKk3g" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37a76988-a76c-43aa-bf08-7002ffd10746" name="Default Changelist" comment="" />
+      <created>1601357043969</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601357043969</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

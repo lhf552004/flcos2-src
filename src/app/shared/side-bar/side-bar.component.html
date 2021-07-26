@@ -1,0 +1,61 @@
+<div class="sidebar d-flex flex-column">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link">
+          <span class="text-capitalize font-weight-bold">{{header}}</span>
+        </a>
+      </li>
+      <li class="dropdown-divider"></li>
+  
+      <li class="nav-item" *ngFor="let menuItem of menuItems">
+        <ng-template #submenus>
+          <ul class="nav flex-column">
+            <li class="font-weight-bold">{{menuItem.label}}</li>
+            <li class="nav-item" *ngFor="let subMenu of menuItem.children">
+              <a class="nav-link" [ngClass]="{active: subMenu.active}" [routerLink]="subMenu.route">
+                <fa-icon [icon]="subMenu.icon" [fixedWidth]="true"></fa-icon>
+                {{subMenu.label}}
+              </a>
+            </li>
+          </ul>
+        </ng-template>
+        <a class="nav-link" [routerLink]="menuItem.route" (click)="activateMenuItem(menuItem)" *ngIf="collapsed" [ngbPopover]="submenus" [openDelay]="300" triggers="mouseenter:mouseleave" placement="right" container="body">
+          <fa-icon [icon]="menuItem.icon" [fixedWidth]="true"></fa-icon>
+          <span *ngIf="!collapsed"> {{menuItem.label}}</span>
+        </a>
+  
+        <a class="nav-link" [routerLink]="menuItem.route" (click)="activateMenuItem(menuItem)" *ngIf="!collapsed">
+          <fa-icon [icon]="menuItem.icon" [fixedWidth]="true"></fa-icon>
+          <span *ngIf="!collapsed"> {{menuItem.label}}</span>
+        </a>
+        <ul class="nav flex-column ml-4" *ngIf="menuItem.active && !collapsed">
+          <li class="nav-item" *ngFor="let subMenu of menuItem.children">
+            <a class="nav-link" [ngClass]="{active: subMenu.active}" [routerLink]="subMenu.route">
+              <fa-icon [icon]="subMenu.icon" [fixedWidth]="true"></fa-icon>
+              {{subMenu.label}}
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  
+    <ul class="nav flex-column mb-2 mt-auto">
+      <li class="dropdown-divider"></li>
+      <li class="nav-item d-flex justify-content-between">
+        <a class="nav-link" [routerLink]="['settings']">
+          <fa-icon [icon]="faCog" [fixedWidth]="true"></fa-icon>
+          <span *ngIf="!collapsed"> Settings</span>
+        </a>
+        <a class="nav-link pointer" (click)="toggleSideBar()" *ngIf="!collapsed">
+          <fa-icon [icon]="faChevronLeft" [fixedWidth]="true"></fa-icon>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="collapsed">
+        <a class="nav-link pointer" (click)="toggleSideBar()">
+          <fa-icon [icon]="faChevronRight" [fixedWidth]="true"></fa-icon>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  

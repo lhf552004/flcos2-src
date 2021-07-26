@@ -1,0 +1,75 @@
+@import "../../../../styles.scss";
+
+.spacer {
+  flex: 1 0 auto;
+}
+
+.menu-button {
+  margin: 0 10px;
+  @extend .pointer !optional;
+
+  &.active {
+    filter: brightness(120%);
+  }
+}
+
+.menu-icon {
+  margin: 0 10px;
+  @extend .pointer !optional;
+}
+
+active {
+  filter: brightness(120%);
+}
+
+/*.navbar-xs {
+  min-height: 28px;
+  height: 28px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+  & > a > img {
+    height: 26px;
+  }
+
+  & .navbar-brand {
+    padding: 0px 12px 0px 10px;
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  & .navbar-toggler {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+    line-height: 25px;
+    height: 25px;
+    margin-right: 10px;
+
+    & .navbar-toggler span {
+      line-height: 25px;
+      height: 25px;
+      margin-top: -10px;
+    }
+  }
+
+  & .navbar-nav > li > a {
+    padding-bottom: 0px;
+    line-height: 28px;
+  }
+
+  & form > input {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 20px;
+    margin-top: 7px;
+  }
+
+  & form > button {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 20px;
+    margin-top: 7px;
+  }
+}*/
