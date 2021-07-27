@@ -15,7 +15,7 @@ declare var mxHierarchicalLayout: any;
 export class WorkFlowComponent implements OnInit, AfterViewInit {
   @ViewChild('graphContainer') graphContainer: ElementRef | undefined;
 
-  @Input() settings: WorkflowSettings;
+  @Input() workflowSettings: WorkflowSettings;
 
   constructor() {
   }
@@ -31,20 +31,22 @@ export class WorkFlowComponent implements OnInit, AfterViewInit {
     const model = new mxGraphModel(root);
     // @ts-ignore
     const graph = new mxGraph(this.graphContainer.nativeElement, model);
+    graph.setConnectable(true);
     const parent = graph.getDefaultParent();
     try {
       model.beginUpdate();
       const vertexes = new Map();
-      this.settings.vertexes.forEach(vertexData => {
+      this.workflowSettings.workflow.vertexes.forEach(vertexData => {
         const vertex = graph.insertVertex(parent, vertexData.id, vertexData.name,
           vertexData.x, vertexData.y, vertexData.width, vertexData.height);
         vertexes.set(vertexData.id, vertex);
       });
-      this.settings.edges.forEach(edgeData => {
+      this.workflowSettings.workflow.edges.forEach(edgeData => {
         const source = vertexes.has(edgeData.source) ? vertexes.get(edgeData.source) : null;
         const target = vertexes.has(edgeData.target) ? vertexes.get(edgeData.target) : null;
         graph.insertEdge(parent, edgeData.id, edgeData.name, source, target);
       });
+
     } finally {
       model.endUpdate();
       new mxHierarchicalLayout(graph).execute(graph.getDefaultParent());

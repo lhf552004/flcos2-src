@@ -15,10 +15,10 @@ import { Product } from '../shared/models/product.model';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[];
-  
-  // Used for cleaning subscription 
+
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
-  
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -31,7 +31,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
         children: []
       }));
     });
-    
   }
 
   ngOnDestroy() {

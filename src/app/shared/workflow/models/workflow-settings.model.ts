@@ -1,8 +1,6 @@
-import {Edge} from './edge.model';
-import {Vertex} from './vertex.model';
+import { Workflow } from './workflow.model';
 
 export class WorkflowSettings {
-  edges: Edge[];
-  vertexes: Vertex[];
+  workflow: Workflow;
   isEdited: boolean;
 }

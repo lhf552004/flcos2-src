@@ -18,8 +18,9 @@ export class MenuService {
       { id: 2, name: 'Products', url: 'products' },
       { id: 3, name: 'Lines', url: 'lines' },
       { id: 4, name: 'Bins', url: 'bins' },
-      { id: 5, name: 'Equipments', url: 'equipments' },
-      { id: 6, name: 'Admin', url: 'admin' }
+      { id: 5, name: 'Workflows', url: 'workflow' },
+      { id: 6, name: 'Equipments', url: 'equipments' },
+      { id: 7, name: 'Admin', url: 'admin' }
     ]
 
     return of(mockedMenus);
