@@ -15,6 +15,11 @@ export class EquipmentService {
         { id: '1c2fbab8-80de-40a6-beba-418484eb2ef3', name: 'Discharger1', type: 'discharger' }]
     },
     { id: 'f5c17700-75ac-4a21-a4a9-d1aa4b347b40', name: 'INT2-Section1', equipments: [{ id: 'd763bcbe-39d7-44d4-81c3-390dfe899a81', name: 'Discharger2', type: 'discharger' }] },
+    {
+      id: 'a61860c1-44a8-4cb3-b623-60dc2cf3a123',
+      name: 'MIX1-DISCHARGING',
+      equipments: []
+    },
     { id: 'a61860c1-44a8-4cb3-b623-60dc2cf3a0bf', name: 'MIX1-MIXING', equipments: [{ id: '8e8e45cb-9dc3-493b-a729-73a23808df3e', name: 'Mixer1', type: 'mixer' }] },
     { id: 'e15fa296-cae4-4c03-808d-68f9bdf53148', name: 'MIX1-PACKING', equipments: [{ id: '6c713110-9748-45e5-b096-81530e292915', name: 'Packer2', type: 'packer' }] }
   ];

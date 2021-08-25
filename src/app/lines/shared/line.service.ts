@@ -28,6 +28,10 @@ export class LineService {
       id: '844660ac-7ec5-4819-887d-00dae25676e6',
       name: 'MIX1',
       sections: [{
+        id: 'a61860c1-44a8-4cb3-b623-60dc2cf3a123',
+        name: 'MIX1-DISCHARGING'
+      },
+        {
         id: 'a61860c1-44a8-4cb3-b623-60dc2cf3a0bf',
         name: 'MIX1-MIXING'
       }, {
