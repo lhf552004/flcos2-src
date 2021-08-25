@@ -4,6 +4,7 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Section Name</th>
+    <th scope="col">Status</th>
     <th scope="col">JobName</th>
   </tr>
   </thead>
@@ -11,7 +12,18 @@
   <tr *ngFor="let section of sections; let i = index">
     <th scope="row">{{i}}</th>
     <td>{{section.name}}</td>
-    <td [ngClass]="{'green-background':section.isActive}">{{section.jobName}}</td>
+    <ng-container *ngIf="section.status === 'Running'">
+      <td class="green-background">{{section.status}}</td>
+      <td class="green-background">{{section.jobName}}</td>
+    </ng-container>
+    <ng-container *ngIf="section.status === 'Suspend'">
+      <td class="yellow-background">{{section.status}}</td>
+      <td class="yellow-background">{{section.jobName}}</td>
+    </ng-container>
+    <ng-container *ngIf="section.status === 'Error'">
+      <td class="red-background">{{section.status}}</td>
+      <td class="red-background">{{section.jobName}}</td>
+    </ng-container>
   </tr>
   </tbody>
 </table>

@@ -38,7 +38,7 @@ export class LineDefaultComponent implements OnInit, OnDestroy {
         return {
           id: section.id,
           name: section.name,
-          isActive: true,
+          status: this.getStatus(),
           jobName: this.line.name + ':00000' + (index + 1)
         };
       });
@@ -73,6 +73,17 @@ export class LineDefaultComponent implements OnInit, OnDestroy {
       // this.svg = 'assets/svgs/' + this.line.name + '.svg';
       console.log(this.line);
     });
+  }
+
+  getStatus(): string {
+    const statusNum = Math.floor(Math.random() * 3);
+    if (statusNum === 0) {
+      return 'Running';
+    } else if (statusNum === 1) {
+      return 'Suspend';
+    } else {
+      return 'Error';
+    }
   }
 
   ngOnDestroy() {
