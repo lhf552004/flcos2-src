@@ -18,6 +18,7 @@ export class MenuService {
       {id: 1, name: 'Warehouses', url: 'warehouses'},
       {id: 2, name: 'Products', url: 'products'},
       {id: 3, name: 'Lines', url: 'lines'},
+      {id: 4, name: 'Orders', url: 'orders'},
       {id: 4, name: 'Bins', url: 'bins'},
       // {id: 5, name: 'Workflows', url: 'workflow' },
       {id: 6, name: 'Process', url: 'equipments'},
