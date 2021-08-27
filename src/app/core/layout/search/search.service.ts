@@ -12,7 +12,7 @@ export class SearchService {
   searchResult$: Subject<SearchResult[]> = new BehaviorSubject<SearchResult[]>([]);
 
   // The url to the lunr index file
-  private lunrUrl = environment.baseUrl + 'lunr';
+  private lunrUrl = environment.apiBaseUrl + 'lunr';
 
   // The url to the documentation
   private documentClientBaseUrl = 'documentation';
@@ -27,9 +27,9 @@ export class SearchService {
 
   init() {
     const localLunrIndex = this.getLocalLunrIndex();
-    
-   
-    
+
+
+
   }
 
   search(searchText: string, searchField: string = '', searchTarget: string = ''): void {

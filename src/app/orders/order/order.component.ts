@@ -16,6 +16,8 @@ export class OrderComponent implements OnInit {
   isOwner = true;
   // Icon
   faEllipsisV: IconDefinition = faEllipsisV;
+  selectedType: string;
+  types: string[] = [];
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 

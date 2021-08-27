@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4203",
+    "start": "ng serve --port 4203 --proxy-config proxfy.conf.json",
     "build": "ng build --base-href=/emes/",
     "test": "ng test",
     "lint": "ng lint",

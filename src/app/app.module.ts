@@ -20,13 +20,10 @@ import { fakeBackendProvider } from './core/user/fake-backend';
     ProductsModule,
     AppRoutingModule
   ],
-  // providers: [
-  //   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-  //   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-  //   // provider used to create fake backend
-  //   fakeBackendProvider
-  // ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
