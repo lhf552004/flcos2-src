@@ -40,6 +40,9 @@
           </a>
         </div>
       </li>
+      <li ngbDropdown placement="bottom-right" (click)="login()" class="nav-item" *ngIf="!isAuthenticated">
+        <a class="nav-link pointer"><fa-icon [icon]="faSignInAlt" [fixedWidth]="true"></fa-icon></a>
+      </li>
       <!-- Languages -->
       <!--<li ngbDropdown placement="bottom-right" class="nav-item">
         <a ngbDropdownToggle class="nav-link dropdown-toggle cursor-pointer">

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 import {User} from './models/user.model';
 import {environment} from 'src/environments/environment';
@@ -38,5 +38,9 @@ export class AuthenticationService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+  }
+
+  updateUser(updatedUser: User) {
+    this.currentUserSubject.next(updatedUser);
   }
 }

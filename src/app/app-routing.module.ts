@@ -7,6 +7,7 @@ const routes: Routes = [
   // Redirect to home URL if route is not specified.
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule)},
+  {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)},
   // { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
   {path: 'products', canActivate: [AuthGuardService], loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)},
   {path: 'lines', canActivate: [AuthGuardService], loadChildren: () => import('./lines/lines.module').then(m => m.LinesModule)},
