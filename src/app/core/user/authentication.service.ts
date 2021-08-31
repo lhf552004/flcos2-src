@@ -5,22 +5,23 @@ import {map, tap} from 'rxjs/operators';
 
 import {User} from './models/user.model';
 import {environment} from 'src/environments/environment';
+import {AuthenticationUser} from './models/authentication-user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<AuthenticationUser>;
+  public currentUser: Observable<AuthenticationUser>;
   private authenticateUrl = environment.baseUrl + 'authenticate';
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<AuthenticationUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): AuthenticationUser {
     return this.currentUserSubject.value;
   }
 
@@ -40,7 +41,7 @@ export class AuthenticationService {
     this.currentUserSubject.next(null);
   }
 
-  updateUser(updatedUser: User) {
+  updateUser(updatedUser: AuthenticationUser) {
     this.currentUserSubject.next(updatedUser);
   }
 }

@@ -5,11 +5,13 @@ import {ProfileRoutingModule} from './profile-routing.module';
 import {DemoMaterialModule} from '../demo-material-module';
 import { MatInputModule } from '@angular/material/input';
 import {SharedModule} from '../shared/shared.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [ProfileComponent],
   imports: [
+    ReactiveFormsModule,
     SharedModule,
     MatInputModule,
     DemoMaterialModule,

@@ -4,10 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AuthenticationService } from './authentication.service';
+import {NotificatorService} from '../notificator/notificator.service';
+import {Notification} from '../notificator/notification.model';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) { }
+    constructor(private authenticationService: AuthenticationService, private notificatorService: NotificatorService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
@@ -18,7 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
 
             const error = err.error.message || err.statusText;
+            this.notificatorService.sendNotification(new Notification(error, 'danger'));
             return throwError(error);
-        }))
+        }));
     }
 }

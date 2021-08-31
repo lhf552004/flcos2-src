@@ -16,7 +16,7 @@ import { WorkFlowComponent } from './workflow/work-flow/work-flow.component';
     FontAwesomeModule,
     NgbPopoverModule
   ],
-  exports:[
+  exports: [
     SideBarComponent,
     WorkFlowComponent,
     CommonModule,

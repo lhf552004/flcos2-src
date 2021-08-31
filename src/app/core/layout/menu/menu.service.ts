@@ -15,6 +15,7 @@ export class MenuService {
   // Get the list of menu items
   getMenu(): Observable<MenuItem[]> {
     var mockedMenus: MenuItem[] = [
+      {id: 1, name: 'Dashboard', url: 'dashboard'},
       {id: 1, name: 'Warehouses', url: 'warehouses'},
       {id: 2, name: 'Products', url: 'products'},
       {id: 3, name: 'Lines', url: 'lines'},

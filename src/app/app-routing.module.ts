@@ -5,10 +5,10 @@ import {AuthGuardService} from './core/user/auth-guard.service';
 
 const routes: Routes = [
   // Redirect to home URL if route is not specified.
-  {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule)},
-  {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)},
-  // { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
+  {path: 'profile', canActivate: [AuthGuardService], loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)},
+  {path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
   {path: 'products', canActivate: [AuthGuardService], loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)},
   {path: 'lines', canActivate: [AuthGuardService], loadChildren: () => import('./lines/lines.module').then(m => m.LinesModule)},
   {path: 'orders', canActivate: [AuthGuardService], loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)},
@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'admin', canActivate: [AuthGuardService], loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
   {path: 'workflow', canActivate: [AuthGuardService], loadChildren: () => import('./workflow/workflow.module').then(m => m.WorkflowModule)},
   {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
-  {path: '**', redirectTo: 'dashboard'}
+  {path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({
