@@ -28,7 +28,7 @@
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <button *ngIf="isAuthor" ngbDropdownItem (click)="save(true)">Save</button>
                         <button *ngIf="isAuthor" ngbDropdownItem (click)="close()">Save & Close</button>
-                        <button *ngIf="isOwner" ngbDropdownItem (click)="copy()">Copy</button>   
+                        <button *ngIf="isOwner" ngbDropdownItem (click)="copy()">Copy</button>
                         <button *ngIf="isOwner" ngbDropdownItem (click)="delete()">Delete</button>
                     </div>
                 </div>
@@ -49,24 +49,36 @@
       </div>
     </div>
     <div class="form-row">
-      
+
     </div>
 </form>
 
 <h4>Sections</h4>
 <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let section of line.sections; let i = index">
-            <th scope="row">{{i}}</th>
-            <td>{{section.id}}</td>
-            <td>{{section.name}}</td>
-        </tr>
-    </tbody>
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Section Name</th>
+    <th scope="col">Status</th>
+    <th scope="col">JobName</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let section of sections; let i = index">
+    <th scope="row">{{i}}</th>
+    <td>{{section.name}}</td>
+    <ng-container *ngIf="section.status === 'Running'">
+      <td class="green-background">{{section.status}}</td>
+      <td class="green-background">{{section.jobName}}</td>
+    </ng-container>
+    <ng-container *ngIf="section.status === 'Suspend'">
+      <td class="yellow-background">{{section.status}}</td>
+      <td class="yellow-background">{{section.jobName}}</td>
+    </ng-container>
+    <ng-container *ngIf="section.status === 'Error'">
+      <td class="red-background">{{section.status}}</td>
+      <td class="red-background">{{section.jobName}}</td>
+    </ng-container>
+  </tr>
+  </tbody>
 </table>

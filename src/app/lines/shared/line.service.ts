@@ -49,6 +49,6 @@ export class LineService {
   }
 
   getLine(id: string): Observable<Line> {
-    return of(this.lines.find(l => l.id === id))
+    return of(this.lines.find(l => l.id === id));
   }
 }

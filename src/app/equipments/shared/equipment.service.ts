@@ -38,12 +38,20 @@ export class EquipmentService {
     return of(this.equipments);
   }
 
+  getEquipmentsByIds(ids: string[]): Observable<Equipment[]> {
+    return of(this.equipments.filter(eq => ids.includes(eq.id)));
+  }
+
   getEquipment(id: string): Observable<Equipment> {
     return of(this.equipments.find(e => e.id === id));
   }
 
   getSections(): Observable<Section[]> {
     return of(this.sections);
+  }
+
+  getSectionsByIds(ids: string[]): Observable<Section[]> {
+    return of(this.sections.filter(s => ids.includes(s.id)));
   }
 
   getSection(id: string): Observable<Section> {

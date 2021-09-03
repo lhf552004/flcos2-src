@@ -7,14 +7,17 @@ import { LinesRoutingModule } from './lines-routing.module';
 import { LineDefaultComponent } from './line-default/line-default.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { LineDetailsComponent } from './line-details/line-details.component';
+import {AngularSvgIconModule} from 'angular-svg-icon';
+import { StorageComponent } from './storage/storage.component';
 
 
 @NgModule({
-  declarations: [LinesComponent, LineComponent, LineDefaultComponent, LineDetailsComponent],
+  declarations: [LinesComponent, LineComponent, LineDefaultComponent, LineDetailsComponent, StorageComponent],
   imports: [
     SharedModule,
     LinesRoutingModule,
-    InlineSVGModule.forRoot(),
+    // InlineSVGModule.forRoot(),
+    AngularSvgIconModule.forRoot(),
     NgbDropdownModule
   ]
 })

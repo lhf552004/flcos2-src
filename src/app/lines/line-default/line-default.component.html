@@ -1,29 +1,11 @@
+<!--<div class="container-fluid d-flex flex-column flex-fill min-height-0">-->
+<!--  <div class="row d-flex">-->
+<!--    <div class="col flex-shrink-1">-->
+<!--      <object [data] = "'assets/svgs/' + line.name + '.svg' | safe"></object>-->
+<!--    </div>-->
+<!--  </div>-->
 
-<table class="table">
-  <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col">Section Name</th>
-    <th scope="col">Status</th>
-    <th scope="col">JobName</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let section of sections; let i = index">
-    <th scope="row">{{i}}</th>
-    <td>{{section.name}}</td>
-    <ng-container *ngIf="section.status === 'Running'">
-      <td class="green-background">{{section.status}}</td>
-      <td class="green-background">{{section.jobName}}</td>
-    </ng-container>
-    <ng-container *ngIf="section.status === 'Suspend'">
-      <td class="yellow-background">{{section.status}}</td>
-      <td class="yellow-background">{{section.jobName}}</td>
-    </ng-container>
-    <ng-container *ngIf="section.status === 'Error'">
-      <td class="red-background">{{section.status}}</td>
-      <td class="red-background">{{section.jobName}}</td>
-    </ng-container>
-  </tr>
-  </tbody>
-</table>
+<!--</div>-->
+
+<svg-icon #container [src]="'assets/svgs/'+ line.name + '.svg'" (click)="svgClicked($event)" [stretch]="true" [viewBox]="'auto'"></svg-icon>
+<!--<div class="my-icon w-100 h-100" aria-label="My icon" [inlineSVG]="svg"></div>-->
