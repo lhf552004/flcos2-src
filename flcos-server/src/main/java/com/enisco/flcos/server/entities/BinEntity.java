@@ -4,18 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Setter
 @Getter
-@Entity(name = "f_privilege")
-public class PrivilegeEntity extends EntityBase {
+@Entity(name="bin")
+public class BinEntity extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProductEntity product;
 
-    @ManyToMany(mappedBy = "privileges")
-    private Collection<RoleEntity> roles;
+    @Column(name = "is_using")
+    private boolean isUsing;
 }

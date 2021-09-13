@@ -10,7 +10,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity(name = "f_role")
-public class RoleEntity {
+public class RoleEntity extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

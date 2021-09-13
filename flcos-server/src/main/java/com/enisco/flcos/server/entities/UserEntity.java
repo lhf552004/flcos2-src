@@ -9,7 +9,7 @@ import java.util.Collection;
 @Setter
 @Getter
 @Entity(name="f_user")
-public class UserEntity {
+public class UserEntity extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
