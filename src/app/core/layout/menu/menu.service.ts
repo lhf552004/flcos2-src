@@ -43,10 +43,15 @@ export class MenuService {
   getMenusByRoles(): Observable<MenuItem[]> {
     const url = `${this.menuUrl}/by-role`;
     return this.http.get<any>(url).pipe(tap((menuItems: MenuItem[]) => {
-      const index = menuItems.findIndex(m => m.name === 'Admin');
+      let index = menuItems.findIndex(m => m.name === 'Admin');
       let adminMenu = null;
+      let dashboardMenu = null;
       if (index > -1) {
         adminMenu = menuItems.splice(index, 1);
+      }
+      index = menuItems.findIndex(m => m.name === 'Dashboard');
+      if (index > -1) {
+        dashboardMenu = menuItems.splice(index, 1);
       }
       menuItems.sort((a, b) => {
         if (a.name < b.name) {
@@ -60,6 +65,10 @@ export class MenuService {
       if (adminMenu && adminMenu.length > 0) {
         menuItems.push(...adminMenu);
       }
+      if (dashboardMenu && dashboardMenu.length > 0) {
+        menuItems = dashboardMenu.concat(menuItems);
+      }
+      console.log(menuItems);
       this.menus$.next(menuItems);
     }));
   }
