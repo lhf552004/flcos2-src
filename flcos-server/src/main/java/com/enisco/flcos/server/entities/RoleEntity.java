@@ -28,6 +28,4 @@ public class RoleEntity extends EntityBase {
                     name = "privilege_id", referencedColumnName = "id"))
     private Collection<PrivilegeEntity> privileges;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
-    private Set<MenuEntity> menus;
 }
