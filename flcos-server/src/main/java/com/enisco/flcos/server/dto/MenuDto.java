@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class MenuDto {
     private Long id;
+    private String name;
     private String url;
 }

@@ -28,8 +28,8 @@ public class IntakeJobManagementBean implements IJobManagement {
     @Autowired
     JobRepository jobRepository;
 
-    @Autowired
-    LogisticUnitRepository logisticUnitRepository;
+//    @Autowired
+//    LogisticUnitRepository logisticUnitRepository;
 
     @Override
     public List<String> checkJob(JobEntity job) {
@@ -54,48 +54,7 @@ public class IntakeJobManagementBean implements IJobManagement {
 
     @Override
     public String startJob(JobEntity job, Object... parameters) {
-        var errors = new ArrayList<String>();
-        var existed = logisticUnitRepository.findByBatchNumber(parameters[0].toString());
-        if (existed.isEmpty()) {
-            return String.format("LogisticUnit is not found by batch number.", parameters[0]);
-        }else {
-            var availableLogisticUnits = logisticUnitRepository.findByProduct(job.getRecipe().getProduct())
-                    .stream().filter(logisticUnitEntity -> logisticUnitEntity.getActualWeight() > job.getTargetWeight()).collect(Collectors.toList());
-            if(availableLogisticUnits.isEmpty()){
-                return String.format("LogisticUnit is not found by batch number.", parameters[0]);
-            }
-        }
-        var firstSectionQuery = job.getLine().getSections().stream().findFirst();
-        if (firstSectionQuery.isPresent()) {
-            var firstSection = firstSectionQuery.get();
-            var jobIdNodeId = "";
-            try {
-                opcuaClient.setItemValue(jobIdNodeId, job.getId().toString());
-                firstSection.setJob(job);
-                sectionRepository.save(firstSection);
 
-                var bulkStorages = binRepository.findByProduct(job.getRecipe().getProduct());
-                if (!bulkStorages.isEmpty()) {
-                    var theFirstBulk = bulkStorages.get(0);
-                    theFirstBulk.setUsing(true);
-                    binRepository.save(theFirstBulk);
-                }
-
-                job.setStatus(JobStatus.Running);
-                jobRepository.save(job);
-                // Consume the logistic unit
-                var logisticUnit = existed.get();
-                var remained = logisticUnit.getActualWeight() * logisticUnit.getUnit() - job.getTargetWeight();
-                logisticUnit.setActualWeight(remained);
-                logisticUnitRepository.save(logisticUnit);
-
-            } catch (Exception ex) {
-                logger.error(ex.getMessage());
-                job.setStatus(JobStatus.Error);
-                jobRepository.save(job);
-                return ex.getMessage();
-            }
-        }
         return "";
     }
 }

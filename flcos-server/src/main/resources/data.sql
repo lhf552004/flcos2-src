@@ -9,3 +9,7 @@ SELECT 1, 'flcos', '$2a$10$FyV5bi5a5l1yjWvBG7b8ceZFEm0QHcUkiKuESMKikANuJwCKFVYrm
 INSERT into users_roles (user_id, role_id)
 SELECT 1, 1
  WHERE NOT EXISTS (SELECT * FROM users_roles WHERE user_id=1 and role_id=1);
+
+INSERT into menu (id, name, url, role_id)
+SELECT 1, 'Admin', 'admin', 1
+    WHERE NOT EXISTS (SELECT * FROM menu WHERE id=1 and name='Admin');

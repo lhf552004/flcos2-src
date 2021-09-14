@@ -1,6 +1,7 @@
 package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.NewUserDTO;
+import com.enisco.flcos.server.entities.RoleEntity;
 import com.enisco.flcos.server.entities.UserEntity;
 import com.enisco.flcos.server.repository.postgresql.UserRepository;
 import com.enisco.flcos.server.dto.NewUserDTO;
@@ -32,11 +33,12 @@ public class UsersController {
     private ModelMapper modelMapper = new ModelMapper();
 
     @PostMapping
-    public void createUser(@RequestBody NewUserDTO userDto) {
+    public long createUser(@RequestBody NewUserDTO userDto) {
         var userEntity = modelMapper.map(userDto, UserEntity.class);
         userEntity.setEnabled(true);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
+        return userEntity.getId();
     }
 
     @GetMapping

@@ -30,6 +30,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.headers().httpStrictTransportSecurity()
+                .maxAgeInSeconds(0)
+                .includeSubDomains(true);
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/authenticate",
                 		"/api/v1/files/**",
@@ -39,6 +42,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**").permitAll().
+                antMatchers(HttpMethod.GET, "api/v1/menus/**").permitAll().
                 antMatchers(HttpMethod.POST,"/api/v1/users/**",
                         "/api/v1/roles/**",
                         "/api/v1/menus/**").hasRole("ADMIN").
@@ -46,7 +50,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                         "/api/v1/roles/**",
                         "/api/v1/menus/**").hasRole("ADMIN").
                 antMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole("USER", "ADMIN").
-                antMatchers(HttpMethod.PUT, "/api/v1/users/{id}").hasAnyRole("USER", "ADMIN").
+                antMatchers(HttpMethod.PUT, "/api/v1/users/**").hasAnyRole("USER", "ADMIN").
                 antMatchers("/api/v1/jobs/**").hasAnyRole("JOB", "ADMIN").
                 antMatchers("/api/v1/orders/**").hasAnyRole("ORDER", "ADMIN").
                 antMatchers("/api/v1/products/**").hasAnyRole("PRODUCT", "ADMIN").
