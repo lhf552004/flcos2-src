@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MenuViewerComponent } from './menu-viewer.component';
+import { ItemsSelectorComponent } from './items-selector.component';
 
-describe('MenuViewerComponent', () => {
-  let component: MenuViewerComponent;
-  let fixture: ComponentFixture<MenuViewerComponent>;
+describe('ItemsSelectorComponent', () => {
+  let component: ItemsSelectorComponent;
+  let fixture: ComponentFixture<ItemsSelectorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MenuViewerComponent ]
+      declarations: [ ItemsSelectorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MenuViewerComponent);
+    fixture = TestBed.createComponent(ItemsSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

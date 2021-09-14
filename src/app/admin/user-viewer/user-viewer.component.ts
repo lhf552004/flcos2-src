@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {DynamicFormService, ModalConfig} from 'dynamic-form';
 import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} from 'data-table';
@@ -15,7 +15,7 @@ import {RoleService} from '../../core/user/role.service';
   templateUrl: './user-viewer.component.html',
   styleUrls: ['./user-viewer.component.scss']
 })
-export class UserViewerComponent implements OnInit, OnChanges {
+export class UserViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() config: {
     user: User
@@ -53,6 +53,11 @@ export class UserViewerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.buildTableSettings();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 
@@ -102,7 +107,7 @@ export class UserViewerComponent implements OnInit, OnChanges {
     this.dismissed.emit(method);
   }
 
-  // Add a new member to the group
+  // Add a role to the user
   addRole(): void {
     this.roleService.getRoles().pipe(takeUntil(this.unsubscribe)).subscribe(roles => {
       const selectedRoleIds = this.roles.map(r => r.id);
@@ -117,26 +122,22 @@ export class UserViewerComponent implements OnInit, OnChanges {
   }
 
   doAddRole(roles: Role[]): void {
-    // Role was added if they are not in the list of removedRoles, otherwise they are un-removed
-    const map = roles.map(r => ({
-      idx: this.removedRoles.findIndex(x => x.id === r.id),
-      role: r
-    }));
-    map.forEach(keyPair => {
-      if (keyPair.idx > 0) {
-        this.removedRoles.splice(keyPair.idx, 1);
-      } else {
-        this.addedRoles.push(keyPair.role);
-      }
-    });
-    this.config.user.roles.push(roles);
+    this.config.user.roles.push(...roles);
     this.userService.updateUser(this.config.user.id, this.config.user, false).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
-      this.roles.push(...roles);
-      this.buildTableSettings();
-    });
+        this.roles.push(...roles);
+        this.buildTableSettings();
+      },
+      error => {
+        const indexs = roles.map(r => this.removedRoles.findIndex(x => x.id === r.id));
+        indexs.forEach(idx => {
+          if (idx > 0) {
+            this.roles.splice(idx, 1);
+          }
+        });
+      });
   }
 
-  // Remove members from the group
+  // Remove role from the user
   removeRole(row: any): void {
     this.removeRoles([{data: row}]);
   }

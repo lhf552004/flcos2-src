@@ -8,9 +8,10 @@ import {FormsModule} from '@angular/forms';
 import {WorkFlowComponent} from './workflow/work-flow/work-flow.component';
 import {DynamicFormModule} from 'dynamic-form';
 import { DataTableModule } from 'data-table';
+import { ItemsSelectorComponent } from './items-selector/items-selector.component';
 
 @NgModule({
-  declarations: [SideBarComponent, WorkFlowComponent],
+  declarations: [SideBarComponent, WorkFlowComponent, ItemsSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,

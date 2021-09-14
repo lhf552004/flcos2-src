@@ -45,14 +45,14 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchService.init();
-    this.menuService.getMenus().pipe(take(1)).subscribe(menu => this.menu = menu);
+    this.menuService.getMenusByRoles().pipe(take(1)).subscribe(menu => this.menu = menu);
     this.userService.currentUser.pipe(
       takeUntil(this.unsubscribe),
       tap(authenticatedUser => {
         if (authenticatedUser !== null)
           // Subscribe to the menu service to retrieve the list of menus
         {
-          this.menuService.getMenus().pipe(take(1)).subscribe(menu => this.menu = menu);
+          this.menuService.getMenusByRoles().pipe(take(1)).subscribe(menu => this.menu = menu);
         } else {
           this.menu = [];
         }

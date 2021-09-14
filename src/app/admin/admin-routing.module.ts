@@ -13,7 +13,7 @@ const routes: Routes = [{
   path: '', component: AdminComponent, children: [
     {path: 'users', component: UsersComponent, resolve: {users: UsersResolverService}},
     {path: 'roles', component: RolesComponent, resolve: {roles: RolesResolverService}},
-    {path: 'menus', component: MenusComponent, resolve: {menus: MenusResolverService}}
+    {path: 'menus', component: MenusComponent, resolve: {menus: MenusResolverService, roles: RolesResolverService}}
   ]
 }];
 
