@@ -55,6 +55,7 @@ export class MenuComponent implements OnInit, OnDestroy {
           this.menuService.getMenusByRoles().pipe(take(1)).subscribe(menu => this.menu = menu);
         } else {
           this.menu = [];
+          this.router.navigate(['/login']);
         }
       }))
       .subscribe(authenticatedUser => {

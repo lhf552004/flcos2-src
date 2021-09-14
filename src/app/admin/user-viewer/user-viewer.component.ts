@@ -124,7 +124,7 @@ export class UserViewerComponent implements OnInit, OnChanges, OnDestroy {
   doAddRole(roles: Role[]): void {
     this.config.user.roles.push(...roles);
     this.userService.updateUser(this.config.user.id, this.config.user, false).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
-        this.roles.push(...roles);
+
         this.buildTableSettings();
       },
       error => {
