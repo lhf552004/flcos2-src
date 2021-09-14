@@ -17,7 +17,6 @@ import { fakeBackendProvider } from './core/user/fake-backend';
   imports: [
     BrowserModule,
     CoreModule,
-    ProductsModule,
     AppRoutingModule
   ],
   providers: [

@@ -10,6 +10,7 @@ import {AuthenticatedUser} from '../../user/authenticated-user';
 import {SearchService} from '../search/search.service';
 import {AuthenticationService} from '../../user/authentication.service';
 import {Router, RouterStateSnapshot} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'emes-menu',
@@ -21,13 +22,19 @@ export class MenuComponent implements OnInit, OnDestroy {
   public menu: MenuItem[] = [];
 
   // Indicates if the nav bar is collapsed
-  isCollapsed: boolean = true;
+  isCollapsed = true;
 
   // Indicates whether the user is authenticated
   public isAuthenticated: boolean = true;
 
   // The authenticated user
   public authenticatedUser: AuthenticatedUser | null = null;
+
+  // The selected language
+  public selectedLanguage: string;
+
+  // The list of available languages
+  public languages: string[] = [];
 
   // Font Awesone icons
   faUser: IconDefinition = faUser;
@@ -40,10 +47,15 @@ export class MenuComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private menuService: MenuService,
               private userService: AuthenticationService,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
+    this.selectedLanguage = this.translateService.currentLang;
+    // Retrieve languages from the translateService
+    this.languages = this.translateService.getLangs();
+
     this.searchService.init();
     this.menuService.menus$.pipe(takeUntil(this.unsubscribe)).subscribe(menu => this.menu = menu);
     this.userService.currentUser.pipe(
@@ -85,5 +97,11 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   login(): void {
     this.router.navigate(['/login']);
+  }
+
+  public setLanguage(language: string) {
+    this.translateService.use(language).subscribe(
+      x => this.selectedLanguage = this.translateService.currentLang
+    );
   }
 }

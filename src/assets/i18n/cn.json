@@ -1,0 +1,10 @@
+{
+  "ALARM": {
+    "START": "开始"
+  },
+  "ADMIN": {
+    "USERS": "用户",
+    "ROLES": "角色",
+    "MENUS": "菜单"
+  }
+}

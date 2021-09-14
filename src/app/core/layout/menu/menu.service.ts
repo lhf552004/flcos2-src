@@ -12,6 +12,7 @@ import {Role} from '../../user/models/role.model';
 export class MenuService {
   private menuUrl = environment.baseUrl + 'api/v1/menus';  // URL to web api
   menus$: BehaviorSubject<MenuItem[]> = new BehaviorSubject<MenuItem[]>([]);
+  allMenus$: BehaviorSubject<MenuItem[]> = new BehaviorSubject<MenuItem[]>([]);
 
   constructor(private http: HttpClient) {
   }
@@ -20,7 +21,7 @@ export class MenuService {
   getMenus(): Observable<MenuItem[]> {
     const url = `${this.menuUrl}`;
     return this.http.get<any>(url).pipe(tap(m => {
-      this.menus$.next(m);
+      this.allMenus$.next(m);
     }));
     // var mockedMenus: MenuItem[] = [
     //   {id: 1, name: 'Dashboard', url: 'dashboard'},

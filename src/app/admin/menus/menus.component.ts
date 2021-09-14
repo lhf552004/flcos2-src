@@ -51,7 +51,7 @@ export class MenusComponent implements OnInit, OnDestroy {
         click: this.deleteMenu.bind(this)
       },
     ];
-    this.menuService.menus$.pipe(takeUntil(this.unsubscribe)).subscribe(users => {
+    this.menuService.allMenus$.pipe(takeUntil(this.unsubscribe)).subscribe(users => {
       this.settings = {
         selectableRows: false,
         columnDefinitions: columnDefinition,

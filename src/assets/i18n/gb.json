@@ -1,0 +1,10 @@
+{
+  "ALARM": {
+    "START": "Start gb"
+  },
+  "ADMIN": {
+    "USERS": "Users",
+    "ROLES": "Roles",
+    "MENUS": "Menus"
+  }
+}
