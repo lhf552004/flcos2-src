@@ -7,6 +7,7 @@ import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {WorkFlowComponent} from './workflow/work-flow/work-flow.component';
 import {DynamicFormModule} from 'dynamic-form';
+import { DataTableModule } from 'data-table';
 
 @NgModule({
   declarations: [SideBarComponent, WorkFlowComponent],
@@ -16,7 +17,8 @@ import {DynamicFormModule} from 'dynamic-form';
     RouterModule,
     FontAwesomeModule,
     NgbPopoverModule,
-    DynamicFormModule
+    DynamicFormModule,
+    DataTableModule
   ],
   exports: [
     SideBarComponent,
@@ -26,7 +28,8 @@ import {DynamicFormModule} from 'dynamic-form';
     RouterModule,
     FontAwesomeModule,
     NgbPopoverModule,
-    DynamicFormModule
+    DynamicFormModule,
+    DataTableModule
   ]
 })
 export class SharedModule {

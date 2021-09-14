@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import { AuthenticatedUser } from './authenticated-user';
+import {AuthenticatedUser} from './authenticated-user';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from './authentication.service';
@@ -14,13 +14,31 @@ import {AuthenticationUser} from './models/authentication-user.model';
 export class UserService {
   // Behaviour subject authenticatedUser
   private userUrl = environment.baseUrl + 'api/v1/users';
+  users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
 
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) {
   }
 
-  getUser(id: string): Observable<any>  {
+  getUser(id: string): Observable<any> {
     const url = `${this.userUrl}/${id}`;
     return this.http.get<any>(url);
+  }
+
+  getUsers(): Observable<User[]> {
+    const url = `${this.userUrl}`;
+    return this.http.get<any>(url).pipe(tap(u => {
+      this.users$.next(u);
+    }));
+  }
+
+  createUser(newUser: { userName: string, firstName: string, lastName: string, password: string }) {
+    const url = this.userUrl;
+    return this.http.post<any>(url, newUser)
+      .pipe(tap(x => {
+          const users = this.users$.getValue();
+          users.push({...newUser, id: x, roles: [], enabled: true});
+          this.users$.next(users);
+      }));
   }
 
   updateUser(id: string, updatedUser: User, updateNeeded: boolean): Observable<any> {
@@ -33,5 +51,9 @@ export class UserService {
           this.authenticationService.updateUser(this.authenticationService.currentUserValue);
         }
       }));
+  }
+
+  deleteUser() {
+
   }
 }

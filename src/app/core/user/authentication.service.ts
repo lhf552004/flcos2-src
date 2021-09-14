@@ -6,6 +6,7 @@ import {map, tap} from 'rxjs/operators';
 import {User} from './models/user.model';
 import {environment} from 'src/environments/environment';
 import {AuthenticationUser} from './models/authentication-user.model';
+import {MenuService} from '../layout/menu/menu.service';
 
 @Injectable({
   providedIn: 'root'
