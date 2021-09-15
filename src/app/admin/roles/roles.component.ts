@@ -4,8 +4,11 @@ import {DataTableColumnDefinition, DataTableSettings, DataTableToolbarControl} f
 import {takeUntil} from 'rxjs/operators';
 import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {RoleService} from '../../core/user/role.service';
-import {ModalConfig, CustomValidators, DynamicFormService} from 'dynamic-form';
+
 import {Role} from '../../core/user/models/role.model';
+import {DynamicFormService} from '../../dynamic-form/services/dynamic-form.service';
+import {ModalConfig} from '../../dynamic-form/models/modal-config.interface';
+import {CustomValidators} from '../../dynamic-form/validators/custom-validators';
 
 @Component({
   selector: 'emes-roles',

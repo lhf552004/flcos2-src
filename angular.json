@@ -29,7 +29,6 @@
             ],
             "styles": [
               "src/assets/styles/flags.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/chartist/dist/chartist.css",
               "src/assets/styles/style.scss",
               "src/styles.scss"

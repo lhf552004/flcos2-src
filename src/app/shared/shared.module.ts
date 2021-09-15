@@ -6,7 +6,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {WorkFlowComponent} from './workflow/work-flow/work-flow.component';
-import {DynamicFormModule} from 'dynamic-form';
+import {DynamicFormModule} from '../dynamic-form/dynamic-form.module';
 import { DataTableModule } from 'data-table';
 import { ItemsSelectorComponent } from './items-selector/items-selector.component';
 import {TranslateModule} from '@ngx-translate/core';
