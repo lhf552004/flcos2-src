@@ -49,7 +49,7 @@
           <img [class]="'mb-1 flag flag-' + selectedLanguage" />
         </a>
         <div ngbDropdownMenu class="dropdown-menu">
-          <a class="dropdown-item cursor-pointer" (click)="setLanguage(lang)" *ngFor="let lang of languages">
+          <a class="dropdown-item cursor-pointer pl-2" (click)="setLanguage(lang)" *ngFor="let lang of languages">
             <img [class]="'flag flag-' + lang" /> {{lang}}
           </a>
         </div>
