@@ -1,5 +1,10 @@
 {
   "ALARM": {
-    "START": "Start en"
+    "START": "Start"
+  },
+  "ADMIN": {
+    "USERS": "Users",
+    "ROLES": "Roles",
+    "MENUS": "Menus"
   }
 }

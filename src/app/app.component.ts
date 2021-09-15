@@ -18,8 +18,8 @@ export class AppComponent {
   // Initialize the app language based on browser language
   InitLanguage() {
     // Initialize list of languages
-    this.translateService.addLangs(['gb', 'us', 'fr', 'es', 'cn']);
-    this.translateService.setDefaultLang('gb');
+    this.translateService.addLangs(['en', 'fr', 'de', 'cn']);
+    this.translateService.setDefaultLang('en');
 
     // Retrieve preferences langauge
     const preferences = this.getPreferences();
@@ -30,7 +30,7 @@ export class AppComponent {
 
     // Set language to use
     // Priority to preferences, then browser, then default language
-    const languageToUse = preferenceLang.match(/gb|us|fr|es|cn/) ? preferenceLang : (browserLang.match(/gb|us|fr|es|cn/) ? browserLang : 'gb');
+    const languageToUse = preferenceLang.match(/gb|us|fr|es|cn/) ? preferenceLang : (browserLang.match(/gb|us|fr|es|cn/) ? browserLang : 'en');
 
     this.translateService.use(languageToUse);
   }

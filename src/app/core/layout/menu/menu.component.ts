@@ -30,6 +30,9 @@ export class MenuComponent implements OnInit, OnDestroy {
   // The authenticated user
   public authenticatedUser: AuthenticatedUser | null = null;
 
+  // Preferences
+  LOCAL_STORAGE_PREFERENCES = 'PREFERENCES';
+
   // The selected language
   public selectedLanguage: string;
 
@@ -100,8 +103,13 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   public setLanguage(language: string) {
-    this.translateService.use(language).subscribe(
-      x => this.selectedLanguage = this.translateService.currentLang
+    this.translateService.use(language).subscribe(x => {
+        this.selectedLanguage = this.translateService.currentLang;
+        const preferences = {
+          language: this.selectedLanguage
+        };
+        localStorage.setItem(this.LOCAL_STORAGE_PREFERENCES, JSON.stringify(preferences));
+      }
     );
   }
 }
