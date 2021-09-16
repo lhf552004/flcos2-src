@@ -8,12 +8,14 @@ import { MenusComponent } from './menus/menus.component';
 import { AdminComponent } from './admin/admin.component';
 import { UserViewerComponent } from './user-viewer/user-viewer.component';
 import { RolesSelectorComponent } from './roles-selector/roles-selector.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalContentComponent } from './ngb-modal-content/ngb-modal-content.component';
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, MenusComponent, AdminComponent, UserViewerComponent, RolesSelectorComponent],
+  declarations: [UsersComponent, RolesComponent, MenusComponent, AdminComponent, UserViewerComponent, RolesSelectorComponent, NgbModalContentComponent],
   imports: [
     SharedModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    NgbModule
   ]
 })
 export class AdminModule { }

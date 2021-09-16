@@ -7,7 +7,6 @@ import {WorkflowSettings} from '../../shared/workflow/models/workflow-settings.m
 import {Vertex} from '../../shared/workflow/models/vertex.model';
 import {Workflow} from '../../shared/workflow/models/workflow.model';
 import {Section} from '../shared/models/section.model';
-import {DynamicFormService, NotificationConfig} from 'dynamic-form';
 import {StorageComponent} from '../storage/storage.component';
 import {SvgIconComponent} from 'angular-svg-icon';
 import {icon} from '@fortawesome/fontawesome-svg-core';
@@ -16,6 +15,7 @@ import {EquipmentService} from '../../equipments/shared/equipment.service';
 import {SectionService} from '../../equipments/shared/section.service';
 import {Bin} from '../../bins/shared/models/bin.model';
 import {Equipment} from '../../equipments/shared/models/equipment.model';
+import {DynamicFormService} from '../../admin/shared/dynamic-form.service';
 
 @Component({
   selector: 'emes-line-default',

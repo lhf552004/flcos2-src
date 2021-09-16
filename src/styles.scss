@@ -16,21 +16,21 @@ body {
 
 // Shortcut for cursor pointer
 .pointer {
+  // Modal form styles
+  .modal-xxl .modal-dialog {
+    max-width: 80%;
+  }
+
+  .modal-xxxl .modal-dialog {
+    max-width: 90%;
+  }
+
+  .modal-full-width .modal-dialog {
+    max-width: 100%;
+  }
   cursor: pointer;
 }
 
-// Modal form styles
-.modal-xxl .modal-dialog {
-    max-width: 80%;
-}
-
-.modal-xxxl .modal-dialog {
-  max-width: 90%;
-}
-
-.modal-full-width .modal-dialog {
-  max-width: 100%;
-}
 
 
 // Handsontable full screen
@@ -93,14 +93,14 @@ blockquote {
           stroke-width: 5px;
       }
     }
-  } 
+  }
 }
 
 @each $name,$degree in $rotateDegrees{
   .rotate-icon-#{$name} {
     svg {
         transform: rotate($degree);
-    }  
+    }
   }
 }
 

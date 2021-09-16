@@ -63,13 +63,14 @@ export class MenuService {
         }
         return 0;
       });
+      menuItems.push({id: '4', name: 'Orders', url: 'orders'});
       if (adminMenu && adminMenu.length > 0) {
         menuItems.push(...adminMenu);
       }
       if (dashboardMenu && dashboardMenu.length > 0) {
         menuItems = dashboardMenu.concat(menuItems);
       }
-      console.log(menuItems);
+
       this.menus$.next(menuItems);
     }));
   }

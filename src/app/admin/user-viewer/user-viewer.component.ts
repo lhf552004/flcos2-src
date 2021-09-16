@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {DynamicFormService, ModalConfig} from 'dynamic-form';
 import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} from 'data-table';
 import {User} from '../../core/user/models/user.model';
 import {Role} from '../../core/user/models/role.model';
@@ -9,6 +8,7 @@ import {takeUntil} from 'rxjs/operators';
 import {UserService} from '../../core/user/user.service';
 import {RolesSelectorComponent} from '../roles-selector/roles-selector.component';
 import {RoleService} from '../../core/user/role.service';
+import {DynamicFormService} from '../shared/dynamic-form.service';
 
 @Component({
   selector: 'emes-user-viewer',

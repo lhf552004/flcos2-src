@@ -3,13 +3,16 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {DataTableColumnDefinition, DataTableSettings, DataTableToolbarControl} from 'data-table';
-import {DynamicFormService} from '../../dynamic-form/services/dynamic-form.service';
+import {DynamicFormService} from '../shared/dynamic-form.service';
 import {ModalConfig} from '../../dynamic-form/models/modal-config.interface';
 import {CustomValidators} from '../../dynamic-form/validators/custom-validators';
 import {MenuService} from '../../core/layout/menu/menu.service';
 import {RoleService} from '../../core/user/role.service';
 import {MenuItem} from '../../core/layout/menu/menu-item';
 import {Role} from '../../core/user/models/role.model';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalContentComponent} from '../ngb-modal-content/ngb-modal-content.component';
+import {UserViewerComponent} from '../user-viewer/user-viewer.component';
 
 @Component({
   selector: 'emes-menus',
@@ -20,10 +23,14 @@ export class MenusComponent implements OnInit, OnDestroy {
   settings: DataTableSettings;
   // Indicator whether current user is admin
   isAdmin = true;
+  closeResult = '';
   // Used for cleaning subscription
   private unsubscribe: Subject<void> = new Subject();
 
-  constructor(private roleService: RoleService, private menuService: MenuService, private dynamicFormService: DynamicFormService) {
+  constructor(private modalService: NgbModal,
+              private roleService: RoleService,
+              private menuService: MenuService,
+              private dynamicFormService: DynamicFormService) {
   }
 
   ngOnInit(): void {
@@ -77,6 +84,31 @@ export class MenusComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+
+  open(content) {
+    const modalRef = this.modalService.open(UserViewerComponent);
+    modalRef.componentInstance.config = {
+      user: {
+        id: '',
+        userName: 'lia',
+        firstName: 'Allen',
+        lastName: 'Li',
+        roles: [],
+        enabled: true
+      }
+    };
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
   createMenu() {
@@ -174,13 +206,15 @@ export class MenusComponent implements OnInit, OnDestroy {
       submitText: 'Ok',
       closeText: 'Cancel',
       onSubmit: () => this.doDelete(menu),
-      onDismiss: () => { },
+      onDismiss: () => {
+      },
       notifications: [`Are you Sure you want to delete menu '${menu.name}'?`]
     };
     this.dynamicFormService.popNotification(config);
   }
 
   doDelete(menu: MenuItem) {
-    this.menuService.delete(menu.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {});
+    this.menuService.delete(menu.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+    });
   }
 }

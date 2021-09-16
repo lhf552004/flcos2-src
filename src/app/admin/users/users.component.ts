@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {DataTableColumnDefinition, DataTableSettings, DataTableToolbarControl} from 'data-table';
-import {DynamicFormService} from '../../dynamic-form/services/dynamic-form.service';
+import {DynamicFormService} from '../shared/dynamic-form.service';
 import {ModalConfig} from '../../dynamic-form/models/modal-config.interface';
 import {CustomValidators} from '../../dynamic-form/validators/custom-validators';
 import {UserService} from '../../core/user/user.service';
