@@ -1,7 +1,6 @@
 package com.enisco.flcos.server.beans;
 
-import com.enisco.flcos.server.entities.JobEntity;
-import com.enisco.flcos.server.entities.enums.JobStatus;
+import com.enisco.flcos.server.entities.job.JobEntity;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import com.enisco.flcos.server.opc.OPCUAClient;
 import com.enisco.flcos.server.repository.postgresql.*;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class IntakeJobManagementBean implements IJobManagement {
     Logger logger = LoggerFactory.getLogger(IntakeJobManagementBean.class);

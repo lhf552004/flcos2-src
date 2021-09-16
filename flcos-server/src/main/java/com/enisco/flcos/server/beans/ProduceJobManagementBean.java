@@ -1,7 +1,6 @@
 package com.enisco.flcos.server.beans;
 
-import com.enisco.flcos.server.entities.JobAttributeEntity;
-import com.enisco.flcos.server.entities.JobEntity;
+import com.enisco.flcos.server.entities.job.JobEntity;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import org.springframework.stereotype.Component;
 

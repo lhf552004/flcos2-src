@@ -1,0 +1,177 @@
+package com.enisco.flcos.server.entities;
+
+public final class Consts
+{
+    public static final int LENGTH_ASSET = 255;
+    public static final int LENGTH_ATTRIBUTE_NAME = 512;
+    public static final int LENGTH_LABEL = 100;
+    public static final int LENGTH_NODE_KEY = 512;
+    public static final int LENGTH_NODE_NAME = 100;
+    public static final int LENGTH_SCHEME = 100;
+    public static final int LENGTH_TRIGGER = 100;
+    public static final int LENGTH_MAT_CLASS_NAME = 100;
+    public static final int LENGTH_MAT_CLASS_UPLOAD_NAME = 100;
+    public static final int LENGTH_MATERIAL_NAME = 100;
+    public static final int LENGTH_MATERIAL_UPLOAD_NAME = 100;
+    public static final int LENGTH_COMPONENT_NAME = 100;
+    public static final int LENGTH_COMPONENT_UPLOAD_NAME = 100;
+    public static final int LENGTH_PROCESS_STEP_NAME = 100;
+    public static final int LENGTH_PROCESS_STEP_UPLOAD_NAME = 100;
+    public static final int LENGTH_CAPABILITY = 100;
+    public static final int LENGTH_ATTRIBUTE_VALUE = 512;
+    public static final int LENGTH_REPORTED_BY = 100;
+    public static final int LENGTH_TEMPLATE_GROUP = 256;
+    public static final int LENGTH_TEMPLATE_NAME = 256;
+    public static final int LENGTH_TEMPLATE_UPLOAD_NAME = 100;
+    public static final int LENGTH_TEMPLATE_COMMENT = 512;
+    public static final int LENGTH_WORKFLOW = 512;
+    public static final int LENGTH_CONNECTION_POINT_NAME = 512;
+    public static final int LENGTH_GRAPH_ID = 100;
+    public static final String WILDCARD_SYMBOL = "*";
+    public static final String SCOPE_JMM = "JMM";
+    public static final String ORDER_ANCHOR = "O:";
+    public static final String JOB_ANCHOR = "J:";
+    public static final int LENGTH_ATTRIBUTE_PATH = 512;
+    public static final int LENGTH_UNIT = 512;
+    public static final int LENGTH_COLUMN_NAME = 512;
+    public static final String PROPERTY_IDENTIFIER = "identifier";
+    public static final String PROPERTY_TRANSLATION = "translation";
+    public static final String PROPERTY_NAME = "name";
+    public static final String PROPERTY_GROUP = "group";
+    public static final String PROPERTY_ATTRIBUTES = "attributes";
+    public static final String NODE_VALID = "valid";
+    public static final int LENGTH_STEPS_GROUP = 512;
+    public static final String PROPERTY_MATERIAL = "material";
+    public static final String PROPERTY_MATERIAL_TRANSLATION = "materialTranslation";
+    public static final String PROPERTY_LABEL = "label";
+    public static final String PROPERTY_LABEL_TRANSLATION = "labelTranslation";
+    public static final String PROPERTY_DIRECTION = "direction";
+    public static final String PROPERTY_COMPONENT = "component";
+    public static final String ADDON_PCS = "addon-pcs";
+    public static final int LENGTH_IDENTIFIER = 256;
+    public static final int LENGTH_GRAPH_PATH = 256;
+    public static final String PROPERTY_MATERIAL_CLASS = "materialClass";
+    public static final String PROPERTY_MATERIAL_CLASS_TRANSLATION = "materialClassTranslation";
+    public static final String PROPERTY_SOURCE = "source";
+    public static final String PROPERTY_TARGET = "target";
+    public static final String PROPERTY_TRUE_PATH = "truePath";
+    public static final String PROPERTY_CONDITION = "condition";
+    public static final String PROPERTY_TYPE = "type";
+    public static final String PROPERTY_MATERIALS = "materials";
+    public static final int LENGTH_EXECUTION_ID = 256;
+    public static final String PROPERTY_AVAILABLE = "available";
+    public static final String PROPERTY_GRAPHICS = "graphics";
+    public static final String PROPERTY_STATUS = "status";
+    public static final String PROPERTY_ERRORSTATE = "errorState";
+    public static final String PROPERTY_ISCURRENTALTERNATIVE = "currentAlternative";
+    public static final String PROPERTY_SOURCE_POINT_NAME = "sourcePointName";
+    public static final String PROPERTY_SOURCE_POINT_LABEL = "sourcePointLabel";
+    public static final String PROPERTY_TARGET_POINT_NAME = "targetPointName";
+    public static final String PROPERTY_TARGET_POINT_LABEL = "targetPointLabel";
+    public static final String PROPERTY_TEMPLATE_GROUP = "group";
+    public static final String PROPERTY_TEMPLATE_GROUP_TRANSLATION = "groupTranslation";
+    public static final String PROPERTY_TEMPLATE_NAME = "name";
+    public static final String PROPERTY_TEMPLATE_NAME_TRANSLATION = "nameTranslation";
+    public static final String PROPERTY_MIN = "min";
+    public static final String PROPERTY_MAX = "max";
+    public static final String PROPERTY_OPTIMAL = "optimal";
+    public static final String PROPERTY_MODE_START = "mode-start";
+    public static final String PROPERTY_MODE_END = "mode-end";
+    public static final String PROPERTY_DATA_SOURCE = "dataSource";
+    public static final String PROPERTY_COLUMN = "column";
+    public static final String PROPERTY_KEYS = "keys";
+    public static final String PROPERTY_VALUE = "value";
+    public static final int LENGTH_LOOKUP_TABLE = 255;
+    public static final int LENGTH_ERROR_MESSAGE = 255;
+    public static final int LENGTH_ERROR_PARAMETER = 255;
+    public static final int LENGTH_ERROR_KEY = 100;
+    public static final String PROPERTY_DURATION = "duration";
+    public static final int DURATION_MODE_START = 0;
+    public static final int DURATION_MODE_END = 1;
+    public static final int LENGTH_TASK_ID = 255;
+//    public static final AttributePathElement PREVIOUS_STEP_PATH =
+//        AttributePathParser.parse("(#)<--(P)").getPath().getNext();
+//    public static final AttributePathElement NEXT_STEP_PATH =
+//        AttributePathParser.parse("(#)-->(P)").getPath().getNext();
+//    public static final AttributePathElement NEXT_COMPONENT_PATH =
+//            AttributePathParser.parse("(#)-->(C)").getPath().getNext();
+//    public static final AttributePathElement PREVIOUS_DECISION_PATH =
+//        AttributePathParser.parse("(#)<--(?)").getPath().getNext();
+    public static final int LENGTH_CARRIER_TYPE = 20;
+    public static final int LENGTH_CARRIER_TYPE_DESCRIPTION = 255;
+    public static final int LENGTH_RULE_PARAMETER = 1024;
+    public static final int LENGTH_CARRIER_ID = 100;
+    public static final int LENGTH_ENTITY = 255;
+    public static final int LENGTH_TRANSLATION = 255;
+
+    public static final String PROPERTY_SOURCE_TYPE = "sourceType";
+    public static final String PROPERTY_UNIT = "unit";
+    public static final String PROPERTY_REQUIRED_AMOUNT = "requiredAmount";
+    public static final String PROPERTY_CONSUMED_AMOUNT = "consumedAmount";
+    public static final String PROPERTY_REQUIREMENTS = "requirements";
+    public static final String PROPERTY_KEY = "key";
+    public static final String PROPERTY_PARENT = "parent";
+    public static final String PROPERTY_JOB_ID = "jobId";
+    public static final String PROPERTY_ERROR_STATE = "errorState";
+    public static final String PROPERTY_START_TIME = "startTime";
+    public static final String PROPERTY_ORDER = "order";
+    public static final String PROPERTY_ERRORS = "errors";
+    public static final String COLLECTION_OVERVIEW = "pcs_job_overview";
+    public static final String COLLECTION_DETAIL = "pcs_job_detail";
+    public static final String COLLECTION_NODE = "pcs_job_node";
+    public static final String PROPERTY_OBJECT_ID = "_id";
+    public static final String PARAMETER_EXPIRATION_DAYS = "EXPIRATION-DAYS";
+    public static final String PROPERTY_FINISHED_TIME = "finishedTime";
+    public static final String PROPERTY_MODEL = "model";
+    public static final String PROPERTY_PROPERTIES = "properties";
+    public static final String PROPERTY_GRAPH_ID = "graphId";
+    public static final String PROPERTY_LINK_TYPE = "linkType";
+    public static final String PROPERTY_DEPENDENCY_TYPE = "dependencyType";
+    public static final String PROPERTY_RESULT = "result";
+    public static final String PROPERTY_ID = "id";
+    public static final String PROPERTY_OPERATOR = "operator";
+    public static final String PROPERTY_SUCCESS = "success";
+    public static final String PROPERTY_NAME1 = "name1";
+    public static final String PROPERTY_NAME2 = "name2";
+    public static final String PROPERTY_VALUE1 = "value1";
+    public static final String PROPERTY_VALUE2 = "value2";
+    public static final String PROPERTY_INTERNAL = "internal";
+    public static final String PROPERTY_END_TIME = "endTime";
+    public static final String PROPERTY_ASSET = "asset";
+    public static final String PROPERTY_TS_BEGIN = "tsBegin";
+    public static final String PROPERTY_TS_END = "tsEnd";
+    public static final String PROPERTY_SEVERITY = "severity";
+    public static final String PROPERTY_MESSAGE = "message";
+    public static final String PROPERTY_ACTIVE = "active";
+    public static final String PROPERTY_CAN_INSERT = "canInsert";
+    public static final String QUALITY_OK = "qualityOk";
+    public static final String CONSTANT = "constant";
+    public static final String PROPERTY_BLOCKING = "blocking";
+    public static final String PROPERTY_CAPABILITY = "capability";
+    public static final String PROPERTY_NAME_TRANSLATION = "nameTranslation";
+    public static final String PROPERTY_COMPONENT_TRANSLATION = "componentTranslation";
+    public static final String PROPERTY_MANDATORY = "mandatory";
+
+    public static final String PROPERTY_REPORTED_BY = "reported_by";
+    public static final String PROPERTY_NEW_VALUE = "new_value";
+    public static final String PROPERTY_OLD_VALUE = "old_value";
+    public static final String PROPERTY_TIMESTAMP = "ts";
+    public static final String PROPERTY_NODE_ID = "node_id";
+    public static final String PROPERTY_CHANGELOGS = "changelogs";
+    public static final String PROPERTY_NODE_KEY = "node_key";
+
+    public static final String GETTER_TRANSLATION = "@translation";
+    public static final String GETTER_IDENTIFIER = "@identifier";
+    public static final String GETTER_TRANSLATION_KEY = "@translationKey";
+    public static final String GETTER_TEMPLATE_NAME = "@templateName";
+    public static final String GETTER_TEMPLATE_NAME_TRANSLATION = "@templateNameTranslation";
+    public static final String GETTER_TEMPLATE_NAME_TRANSLATION_KEY = "@templateNameTranslationKey";
+    public static final String GETTER_TEMPLATE_GROUP = "@templateGroup";
+    public static final String GETTER_TEMPLATE_GROUP_TRANSLATION = "@templateGroupTranslation";
+    public static final String GETTER_TEMPLATE_GROUP_TRANSLATION_KEY = "@templateGroupTranslationKey";
+
+    private Consts()
+    {
+
+    }
+}

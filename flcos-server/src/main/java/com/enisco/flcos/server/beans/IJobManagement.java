@@ -1,6 +1,6 @@
 package com.enisco.flcos.server.beans;
 
-import com.enisco.flcos.server.entities.JobEntity;
+import com.enisco.flcos.server.entities.job.JobEntity;
 
 import java.util.List;
 

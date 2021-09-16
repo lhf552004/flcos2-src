@@ -8,4 +8,5 @@ import lombok.Setter;
 public class NewMenuDto {
     private String name;
     private String url;
+    private RoleDto role;
 }

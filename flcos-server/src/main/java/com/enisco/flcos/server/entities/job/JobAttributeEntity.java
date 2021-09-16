@@ -1,5 +1,6 @@
-package com.enisco.flcos.server.entities;
+package com.enisco.flcos.server.entities.job;
 
+import com.enisco.flcos.server.entities.Attribute;
 import lombok.Getter;
 import lombok.Setter;
 

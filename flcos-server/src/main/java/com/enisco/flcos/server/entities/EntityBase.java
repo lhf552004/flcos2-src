@@ -3,12 +3,17 @@ package com.enisco.flcos.server.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
 @Setter
+@MappedSuperclass
 public class EntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
+
     @Column(name = "modified_by")
     private String modifiedBy;
 

@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,22 +27,7 @@ public class ControllerBase {
         return PageRequest.of(page, size, sort);
     }
 
-    protected static String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            return currentUserName;
-        }else
-           return "Anonymous";
-    }
 
-    public static void assignCreator(@NotNull EntityBase entity) {
-        entity.setCreatedBy(getCurrentUser());
-        entity.setLastModifiedDate(new Date());
-    }
 
-    public static void assignModifiedBy(@NotNull EntityBase entity) {
-        entity.setModifiedBy(getCurrentUser());
-        entity.setLastModifiedDate(new Date());
-    }
+
 }

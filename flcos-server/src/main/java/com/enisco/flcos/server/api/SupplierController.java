@@ -7,6 +7,7 @@ import com.enisco.flcos.server.dto.SupplierDto;
 import com.enisco.flcos.server.entities.ReceiptEntity;
 import com.enisco.flcos.server.entities.SupplierEntity;
 import com.enisco.flcos.server.repository.postgresql.SupplierRepository;
+import com.enisco.flcos.server.util.RepositoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +40,7 @@ public class SupplierController extends ControllerBase {
     @PostMapping
     public void createSupplier(@RequestBody NewSupplierDto newSupplierDto) {
         var supplierEntity = modelMapper.map(newSupplierDto, SupplierEntity.class);
-        assignCreator(supplierEntity);
-        supplierRepository.save(supplierEntity);
+        RepositoryUtil.create(supplierRepository, supplierEntity);
     }
 
     @PutMapping(path = "id")
@@ -48,8 +48,7 @@ public class SupplierController extends ControllerBase {
         var existed = supplierRepository.findById(id);
         if(existed.isPresent()) {
             var supplierEntity = modelMapper.map(supplierDto, SupplierEntity.class);
-            assignModifiedBy(supplierEntity);
-            supplierRepository.save(supplierEntity);
+            RepositoryUtil.update(supplierRepository, supplierEntity);
         }
     }
 }
