@@ -1,5 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: '',
-  baseUrl2: "https://localhost:8080/"
+  baseUrl: 'http://localhost:81/flcos-server/'
 };

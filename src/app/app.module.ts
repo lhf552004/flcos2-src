@@ -9,6 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { JwtInterceptor } from './core/user/jwt.interceptor';
 import { ErrorInterceptor } from './core/user/error.interceptor';
 import { fakeBackendProvider } from './core/user/fake-backend';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -17,11 +18,13 @@ import { fakeBackendProvider } from './core/user/fake-backend';
   imports: [
     BrowserModule,
     CoreModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port 4203 --proxy-config proxfy.conf.json",
     "build": "ng build --base-href=/emes/",
+    "build-prod": "ng build --prod --base-href=/flcos/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -36,7 +37,6 @@
     "bootstrap": "^4.5.2",
     "chartist": "^0.11.4",
     "data-table": "file:dist/data-table",
-    "dynamic-form": "file:dist/dynamic-form",
     "mxgraph": "^4.2.2",
     "ng-chartist": "^4.1.0",
     "ng-inline-svg": "^11.0.0",
