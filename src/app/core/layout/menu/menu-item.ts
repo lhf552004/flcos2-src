@@ -5,4 +5,6 @@ export interface MenuItem {
   name: string;
   url: string;
   role?: Role;
+  iconName: string;
+  children: MenuItem[];
 }

@@ -4,8 +4,8 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <!-- Brand, using abbreviation on smaller devices-->
-  <a class="navbar-brand d-none d-sm-block" [routerLink]="['home']">Electronic MES</a>
-  <a class="navbar-brand d-sm-none" [routerLink]="['home']">emes</a>
+  <a class="navbar-brand d-none d-sm-block" [routerLink]="['home']">FLCos</a>
+  <a class="navbar-brand d-sm-none" [routerLink]="['home']">FLCos</a>
   <!-- Navigation links -->
   <div class="collapse navbar-collapse" [ngbCollapse]=isCollapsed>
     <!-- Spacer -->
@@ -13,7 +13,20 @@
     <!-- Top Menu links -->
     <ul class="navbar-nav mr-auto" *ngIf="isAuthenticated">
       <li *ngFor="let menuItem of menu" class="nav-item">
-        <a class="nav-link" [routerLink]="[menuItem.url]" [routerLinkActive]="'active'">{{menuItem.name}}</a>
+        <a *ngIf="menuItem.children && menuItem.children.length > 0">
+          <button mat-raised-button color="primary" [matMenuTriggerFor]="menu.childMenu">
+            {{menuItem.name}}
+            <mat-icon>expand_more</mat-icon>
+          </button>
+          <emes-menu-item #menu [items]="menuItem.children"></emes-menu-item>
+        </a>
+        <!-- Leaf node buttons here -->
+        <span *ngIf="!menuItem.children || menuItem.children.length === 0">
+          <button mat-button class="nav-link" [routerLink]="menuItem.url">
+            {{menuItem.name}}
+          </button>
+        </span>
+<!--        <a class="nav-link" [routerLink]="[menuItem.url]" [routerLinkActive]="'active'">{{menuItem.name}}</a>-->
       </li>
     </ul>
 

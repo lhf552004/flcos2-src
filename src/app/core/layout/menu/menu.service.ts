@@ -63,7 +63,19 @@ export class MenuService {
         }
         return 0;
       });
-      menuItems.push({id: '4', name: 'Orders', url: 'orders'});
+      // Mock
+      menuItems.push({
+        children: [
+          {id: '4-1', iconName: 'person', name: '4-1', url: '', children: [
+            {id: '4-1-1', children: [], iconName: 'star-rate', url: '', name: '4-1-1'}
+            ]
+          }
+          ],
+        iconName: '',
+        id: '4',
+        name: 'Orders',
+        url: 'orders'
+      });
       if (adminMenu && adminMenu.length > 0) {
         menuItems.push(...adminMenu);
       }
@@ -79,7 +91,7 @@ export class MenuService {
     const url = `${this.menuUrl}`;
     return this.http.post<any>(url, newMenu).pipe(tap(x => {
       const menus = this.grantedMenus$.getValue();
-      menus.push({...newMenu, id: x});
+      menus.push({children: [], iconName: '', ...newMenu, id: x});
       this.grantedMenus$.next(menus);
     }));
   }
