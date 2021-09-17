@@ -28,7 +28,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     const columnDefinition: DataTableColumnDefinition[] = [
       {id: '1', name: 'id', label: 'Id', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {id: '2', name: 'name', label: 'Name', type: 'text', visible: true, searchable: false, filterMode: 'text'},
-      {id: '3', name: 'roles.length', label: 'Roles', type: 'text', visible: true, searchable: false, filterMode: 'text'},
+      {id: '3', name: 'roles.length', label: 'Roles', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {
         id: '4',
         name: 'view',

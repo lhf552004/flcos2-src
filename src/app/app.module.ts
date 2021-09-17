@@ -10,6 +10,8 @@ import { JwtInterceptor } from './core/user/jwt.interceptor';
 import { ErrorInterceptor } from './core/user/error.interceptor';
 import { fakeBackendProvider } from './core/user/fake-backend';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import { DynamicFormModule } from 'dynamic-form';
+import { DataTableModule } from 'data-table';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
   imports: [
     BrowserModule,
     CoreModule,
+    DynamicFormModule,
+    DataTableModule,
     HttpClientModule,
     AppRoutingModule
   ],

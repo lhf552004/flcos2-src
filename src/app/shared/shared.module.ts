@@ -32,6 +32,7 @@ import {TranslateModule} from '@ngx-translate/core';
     FontAwesomeModule,
     NgbPopoverModule,
     DataTableModule,
+    DynamicFormModule,
     TranslateModule
   ]
 })
