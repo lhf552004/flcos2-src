@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Setter
 @Getter
-@Entity(name = "order-attribute")
+@Entity(name = "order_attribute")
 public class OrderAttributeEntity extends SchemeAttributeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID", nullable = false)

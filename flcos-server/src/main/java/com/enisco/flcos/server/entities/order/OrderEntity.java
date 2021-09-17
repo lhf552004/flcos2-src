@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Setter
 @Getter
-@Entity(name = "order")
+@Entity(name = "order_order")
 public class OrderEntity extends EntityBase {
 
     @Column
