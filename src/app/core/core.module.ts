@@ -6,7 +6,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 import {MainLayoutComponent} from './layout/main-layout/main-layout.component';
-import {NgbCollapseModule, NgbProgressbarModule, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapseModule, NgbProgressbarModule, NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuComponent} from './layout/menu/menu.component';
 import {BreadcrumbsComponent} from './layout/breadcrumbs/breadcrumbs.component';
 import {LoaderComponent} from './layout/loader/loader.component';
@@ -53,7 +53,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useClass: CustomLoader,
         deps: [CustomTranslationService]
       }
-    })
+    }),
+    NgbModule
   ],
   exports: [MainLayoutComponent, TranslateModule]
 })
