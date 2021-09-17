@@ -71,7 +71,7 @@ export class MenuService {
         menuItems = dashboardMenu.concat(menuItems);
       }
 
-      this.menus$.next(menuItems);
+      this.grantedMenus$.next(menuItems);
     }));
   }
 
