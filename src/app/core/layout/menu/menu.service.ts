@@ -11,7 +11,7 @@ import {Role} from '../../user/models/role.model';
 })
 export class MenuService {
   private menuUrl = environment.baseUrl + 'api/v1/menus';  // URL to web api
-  menus$: BehaviorSubject<MenuItem[]> = new BehaviorSubject<MenuItem[]>([]);
+  grantedMenus$: BehaviorSubject<MenuItem[]> = new BehaviorSubject<MenuItem[]>([]);
   allMenus$: BehaviorSubject<MenuItem[]> = new BehaviorSubject<MenuItem[]>([]);
 
   constructor(private http: HttpClient) {
@@ -78,47 +78,47 @@ export class MenuService {
   createMenu(newMenu: { name: string, url: string, role: Role }): Observable<any> {
     const url = `${this.menuUrl}`;
     return this.http.post<any>(url, newMenu).pipe(tap(x => {
-      const menus = this.menus$.getValue();
+      const menus = this.grantedMenus$.getValue();
       menus.push({...newMenu, id: x});
-      this.menus$.next(menus);
+      this.grantedMenus$.next(menus);
     }));
   }
 
   update(id: string, updatedMenu: { name: string, url: string, role: Role }): Observable<any> {
     const url = `${this.menuUrl}/${id}`;
     return this.http.put<any>(url, updatedMenu).pipe(tap(x => {
-      const menus = this.menus$.getValue();
+      const menus = this.grantedMenus$.getValue();
       const menu = menus.find(m => m.id === id);
       if (menu) {
         menu.role = updatedMenu.role;
         menu.name = updatedMenu.name;
         menu.url = updatedMenu.url;
       }
-      this.menus$.next(menus);
+      this.grantedMenus$.next(menus);
     }));
   }
 
   assignRole(id: string, role: Role): Observable<any> {
     const url = `${this.menuUrl}/${id}/assign-role`;
     return this.http.post<any>(url, role).pipe(tap(x => {
-      const menus = this.menus$.getValue();
+      const menus = this.grantedMenus$.getValue();
       const menu = menus.find(m => m.id === id);
       if (menu) {
         menu.role = role;
       }
-      this.menus$.next(menus);
+      this.grantedMenus$.next(menus);
     }));
   }
 
   delete(id: string): Observable<any> {
     const url = `${this.menuUrl}/${id}`;
     return this.http.delete<any>(url).pipe(tap(x => {
-      const menus = this.menus$.getValue();
+      const menus = this.grantedMenus$.getValue();
       const index = menus.findIndex(m => m.id === id);
       if (index > 0) {
         menus.splice(index, 1);
       }
-      this.menus$.next(menus);
+      this.grantedMenus$.next(menus);
     }));
   }
 }

@@ -8,7 +8,7 @@ import {takeUntil} from 'rxjs/operators';
 import {UserService} from '../../core/user/user.service';
 import {RolesSelectorComponent} from '../roles-selector/roles-selector.component';
 import {RoleService} from '../../core/user/role.service';
-import {DynamicFormService} from '../shared/dynamic-form.service';
+import {DynamicFormService} from 'dynamic-form';
 
 @Component({
   selector: 'emes-user-viewer',

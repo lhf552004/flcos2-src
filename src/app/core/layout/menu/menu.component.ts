@@ -60,7 +60,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.languages = this.translateService.getLangs();
 
     this.searchService.init();
-    this.menuService.menus$.pipe(takeUntil(this.unsubscribe)).subscribe(menu => this.menu = menu);
+    this.menuService.grantedMenus$.pipe(takeUntil(this.unsubscribe)).subscribe(menu => this.menu = menu);
     this.userService.currentUser.pipe(
       takeUntil(this.unsubscribe),
       tap(authenticatedUser => {

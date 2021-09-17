@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AuthenticatedUser} from './authenticated-user';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
@@ -35,9 +35,9 @@ export class UserService {
     const url = this.userUrl;
     return this.http.post<any>(url, newUser)
       .pipe(tap(x => {
-          const users = this.users$.getValue();
-          users.push({...newUser, id: x, roles: [], enabled: true});
-          this.users$.next(users);
+        const users = this.users$.getValue();
+        users.push({...newUser, id: x, roles: [], enabled: true});
+        this.users$.next(users);
       }));
   }
 

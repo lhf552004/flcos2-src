@@ -15,7 +15,7 @@ import {EquipmentService} from '../../equipments/shared/equipment.service';
 import {SectionService} from '../../equipments/shared/section.service';
 import {Bin} from '../../bins/shared/models/bin.model';
 import {Equipment} from '../../equipments/shared/models/equipment.model';
-import {DynamicFormService} from '../../admin/shared/dynamic-form.service';
+import {DynamicFormService} from 'dynamic-form';
 
 @Component({
   selector: 'emes-line-default',
