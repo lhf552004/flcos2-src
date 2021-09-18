@@ -12,11 +12,13 @@ import com.enisco.flcos.server.util.RepositoryUtil;
 import com.enisco.flcos.server.util.SchemeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Component
 public class OrderManagementBean implements IOrderManagement {
     @Autowired
     OrderRepository orderRepository;
@@ -39,6 +41,7 @@ public class OrderManagementBean implements IOrderManagement {
         var orderEntity = new OrderEntity();
         orderEntity.setStatus(OrderStatus.NEW);
         orderEntity.setIsInternal(isInternal);
+        RepositoryUtil.create(orderRepository, orderEntity);
         var scheme = SchemeUtil.assertSchemeExists(schemeManager, this.schemeName);
         attributes.entrySet()
                 .forEach(entry -> scheme.getField(entry.getKey())
@@ -56,7 +59,7 @@ public class OrderManagementBean implements IOrderManagement {
         RepositoryUtil.create(orderAttributeRepository, orderAttribute);
         if (schemeType == SchemeType.STRUCT) {
             Map<String, Serializable> attributes = (Map<String, Serializable>) schemeType.convertTo(value);
-            attributes.entrySet()
+            ((Map<String, Serializable>)attributes.get("attributes")).entrySet()
                     .forEach(entry -> scheme.getField(entry.getKey())
                             .ifPresent(field -> {
                                 createOrderAttribute(scheme, orderAttribute, order, entry.getKey(), entry.getValue());

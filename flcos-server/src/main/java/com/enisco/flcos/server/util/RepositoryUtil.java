@@ -12,10 +12,10 @@ import java.util.Date;
 public class RepositoryUtil {
     protected static String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             return currentUserName;
-        }else
+        } else
             return "Anonymous";
     }
 

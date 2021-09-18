@@ -11,6 +11,5 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<MenuEntity, Long> {
     List<MenuEntity> findByRole(RoleEntity role);
 
-    @Query("select o from menu o where o.id in (:ids)")
-    List<MenuEntity> findByIds(@Param("ids") List<Long> ids);
+    List<MenuEntity> findByIdIn(List<Long> ids);
 }

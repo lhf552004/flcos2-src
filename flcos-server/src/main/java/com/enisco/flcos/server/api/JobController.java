@@ -4,14 +4,12 @@ import com.enisco.flcos.server.dto.JobDto;
 import com.enisco.flcos.server.repository.postgresql.JobRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 @RequestMapping("api/v1/jobs")
 public class JobController extends ControllerBase {
     private JobRepository jobRepository;
@@ -35,13 +33,8 @@ public class JobController extends ControllerBase {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/start/{id}")
+    @PutMapping(path = "/start/{id}")
     public void startJob() {
-
-    }
-
-    @GetMapping
-    public void checkJob() {
 
     }
 }

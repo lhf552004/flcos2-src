@@ -1,10 +1,13 @@
 package com.enisco.flcos.server.scheme;
 
+import org.springframework.stereotype.Component;
+
 import javax.ejb.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
+@Component
 public class SchemeListenerRegistrations
 {
     private Map<String, SchemeListener> listeners = new HashMap<>();

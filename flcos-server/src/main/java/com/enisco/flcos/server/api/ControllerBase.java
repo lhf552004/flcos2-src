@@ -18,7 +18,7 @@ public class ControllerBase {
 
     public Pageable getPageable(int page, int size, String direct, String sortProperty) {
         Sort sort;
-        if (direct == "") {
+        if ("".equals(direct)) {
             sort = Sort.by(sortProperty);
         } else {
             var direction = Enum.valueOf(Sort.Direction.class, direct);

@@ -8,6 +8,7 @@ import com.enisco.flcos.server.repository.postgresql.SchemeFieldAttributeReposit
 import com.enisco.flcos.server.repository.postgresql.SchemeFieldRepository;
 import com.enisco.flcos.server.repository.postgresql.SchemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -23,12 +24,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 public class SchemeManagerBean implements SchemeManager {
     private static final Logger LOGGER = Logger.getLogger(SchemeManagerBean.class.getName());
     private static final String PARAM = "param";
-
-    @PersistenceContext(unitName = "EMES")
-    EntityManager em;
 
     @Autowired
     SchemeRepository schemeRepository;
@@ -75,7 +74,7 @@ public class SchemeManagerBean implements SchemeManager {
         Scheme.Builder result = new Scheme.Builder().name(entity.getSchemeName())
                 .description(entity.getDescription())
                 .primitive(entity.isPrimitiv())
-                .lastChange(LocalDateTime.ofInstant(new Date(entity.getModifiedBy()).toInstant(),
+                .lastChange(LocalDateTime.ofInstant(entity.getLastModifiedDate().toInstant(),
                         ZoneId.systemDefault()));
 
         entity.getFields()
@@ -221,7 +220,8 @@ public class SchemeManagerBean implements SchemeManager {
     @Override
     public String[] getAllNames()
     {
-        return (String[]) schemeRepository.getAllNames(false).toArray();
+//        return (String[]) schemeRepository.getAllNames(false).toArray();
+        return null;
     }
 
     @Override
