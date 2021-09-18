@@ -4,15 +4,11 @@ import {OrdersComponent} from './orders/orders.component';
 import {OrdersResolverService} from './route-resolvers/orders-resolver.service';
 import {OrderResolverService} from './route-resolvers/order-resolver.service';
 import {OrderComponent} from './order/order.component';
-import {OrderDefaultComponent} from './order-default/order-default.component';
+import {OrderSchemeResolverService} from './route-resolvers/order-scheme-resolver.service';
 
 const routes: Routes = [
-  {
-    path: '', component: OrdersComponent, resolve: {orders: OrdersResolverService}, children: [
-      {path: ':orderId', resolve: {order: OrderResolverService}, component: OrderComponent},
-      {path: '', component: OrderDefaultComponent}
-    ]
-  }
+  {path: '', component: OrdersComponent, resolve: {orders: OrdersResolverService, scheme: OrderSchemeResolverService}},
+  {path: ':orderId', resolve: {order: OrderResolverService}, component: OrderComponent}
 ];
 
 @NgModule({

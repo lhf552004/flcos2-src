@@ -6,5 +6,8 @@
     "USERS": "Users",
     "ROLES": "Roles",
     "MENUS": "Menus"
+  },
+  "ORDER": {
+    "ORDERS": "Orders"
   }
 }

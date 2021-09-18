@@ -1,5 +1,5 @@
-import {Attribute} from './attribute.model';
-import {Template} from './template.model';
+import {OrderAttribute} from './order-attribute.model';
+import {Template} from '../../../shared/models/template.model';
 
 export interface Order {
   id: string;
@@ -7,8 +7,7 @@ export interface Order {
   lastChange: string;
   internalOrder: boolean;
   attributes: {
-    key: string,
-    attribute: Attribute
-  }[];
+    [key: string]: OrderAttribute
+  };
   template: Template;
 }

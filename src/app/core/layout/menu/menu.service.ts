@@ -66,15 +66,14 @@ export class MenuService {
       // Mock
       menuItems.push({
         children: [
-          {id: '4-1', iconName: 'person', name: '4-1', url: '', children: [
-            {id: '4-1-1', children: [], iconName: 'star-rate', url: '', name: '4-1-1'}
-            ]
-          }
+          {id: '4-1', iconName: 'person', name: 'Orders', url: 'orders', children: []},
+          {id: '4-2', iconName: 'person', name: 'Job', url: 'jobs', children: []},
+          {id: '4-3', iconName: 'person', name: 'Template', url: 'templates', children: []}
           ],
         iconName: '',
         id: '4',
-        name: 'Orders',
-        url: 'orders'
+        name: 'JMM',
+        url: ''
       });
       if (adminMenu && adminMenu.length > 0) {
         menuItems.push(...adminMenu);

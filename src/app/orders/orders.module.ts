@@ -5,9 +5,11 @@ import { OrderComponent } from './order/order.component';
 import { OrderDefaultComponent } from './order-default/order-default.component';
 import {SharedModule} from '../shared/shared.module';
 import {OrdersRoutingModule} from './orders-routing.module';
+import { CreateOrderComponent } from './create-order/create-order.component';
+import { OrderViewerComponent } from './order-viewer/order-viewer.component';
 
 @NgModule({
-  declarations: [OrdersComponent, OrderComponent, OrderDefaultComponent],
+  declarations: [OrdersComponent, OrderComponent, OrderDefaultComponent, CreateOrderComponent, OrderViewerComponent],
   imports: [
     SharedModule,
     OrdersRoutingModule
