@@ -110,8 +110,8 @@ export class OrdersComponent implements OnInit {
       } else {
         columnDefinitions.push({
           id: field.id,
-          name: field.fieldName,
-          label: field.fieldName,
+          name: field.name,
+          label: field.name,
           type: 'text',
           visible: true,
           searchable: false,
@@ -124,7 +124,7 @@ export class OrdersComponent implements OnInit {
   getValueForRecord(scheme: Scheme, order: Order): any {
     const final: any = {};
     scheme.fields.forEach(field => {
-      const attribute: OrderAttribute = order.attributes[field.fieldName];
+      const attribute: OrderAttribute = order.attributes[field.name];
       if (attribute) {
         this.setValueFromOrderAttribute(attribute, field, final);
       }
@@ -135,7 +135,7 @@ export class OrdersComponent implements OnInit {
   setValueFromOrderAttribute(orderAttribute: OrderAttribute, field: SchemeField, final: any): void {
     if (field.type === 'array') {
       field.fields.forEach(subField => {
-        const subAttribute = orderAttribute.attributes[subField.fieldName];
+        const subAttribute = orderAttribute.attributes[subField.name];
         if (subAttribute) {
           this.setValueFromOrderAttribute(subAttribute, subField, final);
         }
@@ -143,7 +143,7 @@ export class OrdersComponent implements OnInit {
     } else if (field.type === 'struct') {
 
     } else {
-      final[field.fieldName] = orderAttribute.value;
+      final[field.name] = orderAttribute.value;
     }
   }
 
@@ -172,9 +172,9 @@ export class OrdersComponent implements OnInit {
   getEmptyAttributesByField(fields: SchemeField[]): { [key: string]: OrderAttribute } {
     const attributes: { [key: string]: OrderAttribute } = {};
     fields.forEach(field => {
-      attributes[field.fieldName] = {
+      attributes[field.name] = {
         id: '',
-        name: field.fieldName,
+        name: field.name,
         type: field.type,
         value: '',
         suffix: '',
@@ -191,7 +191,7 @@ export class OrdersComponent implements OnInit {
   }
 
   setFieldsByOrderScheme(parentName: string, field: SchemeField, fieldConfigs: any[]) {
-    const theFieldName = parentName !== '' ? parentName + '.' + field.fieldName : field.fieldName;
+    const theFieldName = parentName !== '' ? parentName + '.' + field.name : field.name;
     if (field.type.toLowerCase() === 'array') {
       field.fields.forEach(subField => this.setFieldsByOrderScheme(theFieldName, subField, fieldConfigs));
     } else if (field.type.toLowerCase() === 'struct') {
@@ -199,11 +199,11 @@ export class OrdersComponent implements OnInit {
     } else {
       fieldConfigs.push({
         type: 'input',
-        label: field.fieldName,
+        label: field.name,
         name: theFieldName,
-        placeholder: 'Enter ' + field.fieldName,
+        placeholder: 'Enter ' + field.name,
         validation: [
-          CustomValidators.required(field.fieldName + ' required'),
+          CustomValidators.required(field.name + ' required'),
         ]
       });
     }
@@ -216,21 +216,21 @@ export class OrdersComponent implements OnInit {
   }
 
   setAttributes(parentName: string, field: SchemeField, results: any, attributes: { [key: string]: OrderAttribute }): void {
-    const theFieldName = parentName !== '' ? parentName + '.' + field.fieldName : field.fieldName;
-    attributes[field.fieldName] = {
+    const theFieldName = parentName !== '' ? parentName + '.' + field.name : field.name;
+    attributes[field.name] = {
       id: '',
-      name: field.fieldName,
+      name: field.name,
       type: field.type,
       value: '',
       suffix: '',
       attributes: {}
     };
     if (field.type.toLowerCase() === 'array') {
-      field.fields.forEach(subField => this.setAttributes(theFieldName, subField, results, attributes[field.fieldName].attributes));
+      field.fields.forEach(subField => this.setAttributes(theFieldName, subField, results, attributes[field.name].attributes));
     } else if (field.type.toLowerCase() === 'struct') {
 
     } else {
-      attributes[field.fieldName].value = results[theFieldName];
+      attributes[field.name].value = results[theFieldName];
     }
   }
 
