@@ -38,6 +38,14 @@ public class SchemeFieldEntity extends EntityBase {
     @OrderBy("id")
     private List<SchemeFieldAttribute> attributes = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "scheme_field_id")
+    private List<SchemeFieldEntity> fields = new ArrayList<>();
+
+    public boolean isArray()
+    {
+        return getArraySize() != null;
+    }
 //    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JoinColumn(name = "LOOKUP_ID")
 //    private SchemeLookupEntity lookupEntity;

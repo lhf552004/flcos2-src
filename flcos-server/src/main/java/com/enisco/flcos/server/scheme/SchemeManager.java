@@ -8,6 +8,8 @@ public interface SchemeManager {
 
     Scheme getScheme(String var1);
 
+    Scheme getScheme(Long Id);
+
     boolean exists(String var1);
 
     String[] getAllNames();

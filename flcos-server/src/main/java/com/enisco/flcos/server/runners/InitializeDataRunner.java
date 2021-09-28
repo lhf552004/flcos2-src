@@ -67,6 +67,15 @@ public class InitializeDataRunner implements CommandLineRunner {
             RepositoryUtil.create(schemeRepository, longScheme);
             longSchemeOptional = Optional.of(longScheme);
         }
+        var floatSchemeOptional = schemeRepository.findBySchemeName("float");
+        if(floatSchemeOptional.isEmpty()) {
+            var floatScheme = new SchemeEntity();
+            floatScheme.setSchemeName("float");
+            floatScheme.setBuiltin(true);
+            floatScheme.setPrimitiv(true);
+            RepositoryUtil.create(schemeRepository, floatScheme);
+            floatSchemeOptional = Optional.of(floatScheme);
+        }
         var doubleSchemeOptional = schemeRepository.findBySchemeName("double");
         if(doubleSchemeOptional.isEmpty()) {
             var doubleScheme = new SchemeEntity();
@@ -153,6 +162,8 @@ public class InitializeDataRunner implements CommandLineRunner {
             vinSchemeFieldEntity.setSchemeParent(erpBodyDataSchemeOptional.get());
             vinSchemeFieldEntity.setPosition(2);
             RepositoryUtil.create(schemeFieldRepository, vinSchemeFieldEntity);
+            erpBodyDataSchemeFieldOptional.get().getFields().add(vinSchemeFieldEntity);
+            RepositoryUtil.update(schemeFieldRepository, erpBodyDataSchemeFieldOptional.get());
             vinSchemeFieldOptional = Optional.of(vinSchemeFieldEntity);
         }
 
@@ -164,6 +175,8 @@ public class InitializeDataRunner implements CommandLineRunner {
             roofWSchemeFieldEntity.setSchemeParent(erpBodyDataSchemeOptional.get());
             roofWSchemeFieldEntity.setPosition(14);
             RepositoryUtil.create(schemeFieldRepository, roofWSchemeFieldEntity);
+            erpBodyDataSchemeFieldOptional.get().getFields().add(roofWSchemeFieldEntity);
+            RepositoryUtil.update(schemeFieldRepository, erpBodyDataSchemeFieldOptional.get());
             roofWSchemeFieldOptional = Optional.of(roofWSchemeFieldEntity);
         }
 
@@ -175,6 +188,8 @@ public class InitializeDataRunner implements CommandLineRunner {
             bodyTypeSchemeFieldEntity.setSchemeParent(erpBodyDataSchemeOptional.get());
             bodyTypeSchemeFieldEntity.setPosition(14);
             RepositoryUtil.create(schemeFieldRepository, bodyTypeSchemeFieldEntity);
+            erpBodyDataSchemeFieldOptional.get().getFields().add(bodyTypeSchemeFieldEntity);
+            RepositoryUtil.update(schemeFieldRepository, erpBodyDataSchemeFieldOptional.get());
             bodyTypeSchemeFieldOptional = Optional.of(bodyTypeSchemeFieldEntity);
         }
 

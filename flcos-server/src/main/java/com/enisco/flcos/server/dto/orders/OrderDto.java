@@ -4,6 +4,8 @@ import com.enisco.flcos.server.dto.templates.TemplateDto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -13,6 +15,6 @@ public class OrderDto {
     private String status;
     private String lastChange;
     private boolean isInternalOrder;
-    private Map<String, OrderAttributeDto> attributes;
+    private List<OrderAttributeDto> attributes = new ArrayList<>();
     private TemplateDto template;
 }

@@ -52,6 +52,16 @@ public enum SchemeFieldType
                 .orElse(NON_PRIMITIVE_SCHEME);
     }
 
+    public static SchemeFieldType getBySchemeType(String schemeTypeName)
+    {
+        return Arrays.stream(SchemeFieldType.values())
+                .filter(t -> t.getName() != null)
+                .filter(t -> t.getName()
+                        .equals(schemeTypeName))
+                .findFirst()
+                .orElse(NON_PRIMITIVE_SCHEME);
+    }
+
     public SchemeType toApi()
     {
         return apiType;
