@@ -13,6 +13,6 @@ export class OrdersResolverService {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Order[]> {
-    return this.orderService.getOrders(1, 50);
+    return this.orderService.getOrders(0, 50);
   }
 }

@@ -103,10 +103,8 @@ export class OrdersComponent implements OnInit {
 
   setDynamicColumns(fields: SchemeField[], columnDefinitions: DataTableColumnDefinition[]): void {
     fields.forEach(field => {
-      if (field.type === 'array') {
+      if (field.type.toLowerCase() === 'array' || field.type.toLowerCase() === 'struct') {
         this.setDynamicColumns(field.fields, columnDefinitions);
-      } else if (field.type === 'struct') {
-
       } else {
         columnDefinitions.push({
           id: field.id,

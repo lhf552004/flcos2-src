@@ -142,7 +142,9 @@ export class OrderService {
 
   getOrders(page: number, size: number): Observable<Order[]> {
     const url = `${this.orderUrl}/?page=${page}&size=${size}`;
-    return this.http.get<Order[]>(url);
+    return this.http.get<Order[]>(url).pipe(tap(x => {
+      this.orders$.next(x);
+    }));
   }
 
   create(attributes: { [key: string]: OrderAttribute }): Observable<any> {
