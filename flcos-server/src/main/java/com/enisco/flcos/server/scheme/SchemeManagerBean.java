@@ -76,7 +76,7 @@ public class SchemeManagerBean implements SchemeManager {
                         ZoneId.systemDefault()));
 
         entity.getFields()
-                .forEach(field -> result.field(createSubField(field, null, null)));
+                .forEach(field -> result.field(createField(field, null)));
 
         return result.build();
     }
@@ -101,14 +101,14 @@ public class SchemeManagerBean implements SchemeManager {
         if ( field.isArray() )
         {
             result.type(SchemeType.ARRAY);
-            IntStream.range(0, field.getArraySize())
-                    .forEach(i -> result.field(createArrayEntry(i, field, fullName)));
+//            IntStream.range(0, field.getArraySize())
+//                    .forEach(i -> result.field(createArrayEntry(i, field, fullName)));
         }
         else
         {
             processFieldType(field, fullName, result);
         }
-        field.getFields().stream().forEach(subField -> createSubField(subField, fullName, result));
+//        field.getFields().stream().forEach(subField -> createSubField(subField, fullName, result));
 
         var newField = result.build();
 
@@ -136,7 +136,7 @@ public class SchemeManagerBean implements SchemeManager {
                 .map(SchemeManagerBean::createAttribute)
                 .forEach(result::attribute);
 
-        field.getFields().stream().forEach(subField -> createSubField(subField, fullName, result));
+
 //        var lookupEntity = field.getLookupEntity();
 //        if ( lookupEntity != null )
 //        {
@@ -150,16 +150,16 @@ public class SchemeManagerBean implements SchemeManager {
 //            result.datasource(builder.build());
 //        }
 //
-//        if ( field.isArray() )
-//        {
-//            result.type(SchemeType.ARRAY);
-//            IntStream.range(0, field.getArraySize())
-//                    .forEach(i -> result.field(createArrayEntry(i, field, fullName)));
-//        }
-//        else
-//        {
-//            processFieldType(field, fullName, result);
-//        }
+        if ( field.isArray() )
+        {
+            result.type(SchemeType.ARRAY);
+            IntStream.range(0, field.getArraySize())
+                    .forEach(i -> result.field(createArrayEntry(i, field, fullName)));
+        }
+        else
+        {
+            processFieldType(field, fullName, result);
+        }
 
         return result.build();
     }
