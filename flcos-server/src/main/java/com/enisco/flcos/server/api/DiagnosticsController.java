@@ -4,7 +4,10 @@ import com.enisco.flcos.server.dto.DataDto;
 import com.enisco.flcos.server.opc.client.ClientExampleRunner;
 import com.enisco.flcos.server.opc.client.ReadExample;
 import com.enisco.flcos.server.repository.mongodb.LineRepository;
+import com.google.common.collect.ImmutableList;
+import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.ServerState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +27,16 @@ public class DiagnosticsController {
     ReadExample example;
     public DiagnosticsController() throws Exception {
         example = new ReadExample();
-        new ClientExampleRunner(example, true).run();
+
     }
     @GetMapping
-    public List<DataDto> read() throws ExecutionException, InterruptedException {
-        var results = example.readServerStateAndTime().get();
+    public List<DataDto> read() throws Exception {
+        List<NodeId> nodeIds = ImmutableList.of(
+                Identifiers.Server_ServerStatus_State,
+                Identifiers.Server_ServerStatus_CurrentTime);
+        new ClientExampleRunner(example, true).run();
+        var results = example.readServerStateAndTime(nodeIds).get();
+        example.finishFuture();
         return results.stream().map(dataValue -> DataDto.of(dataValue)).collect(Collectors.toList());
     }
 }

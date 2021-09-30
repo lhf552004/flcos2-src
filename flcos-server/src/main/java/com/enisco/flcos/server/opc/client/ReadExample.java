@@ -82,14 +82,16 @@ public class ReadExample implements ClientExample {
         return client.readValues(0.0, TimestampsToReturn.Both, nodeIds);
     }
 
-    public CompletableFuture<List<DataValue>> readServerStateAndTime() {
+    public CompletableFuture<List<DataValue>> readServerStateAndTime(List<NodeId> nodeIds) {
 //        List<NodeId> nodeIds = ImmutableList.of(
 //                Identifiers.Server_ServerStatus_State,
 //                Identifiers.Server_ServerStatus_CurrentTime);
 
-        return client.readValues(0.0, TimestampsToReturn.Both, nodeIds).whenComplete((x, ex) -> {
-            future.complete(client);
-        });
+        return client.readValues(0.0, TimestampsToReturn.Both, nodeIds);
+    }
+
+    public void finishFuture() {
+        future.complete(client);
     }
 
 }

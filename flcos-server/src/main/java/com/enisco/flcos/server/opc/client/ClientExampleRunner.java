@@ -58,8 +58,7 @@ public class ClientExampleRunner {
         this.serverRequired = serverRequired;
 
         if (serverRequired) {
-            exampleServer = new ExampleServer();
-            exampleServer.startup().get();
+            exampleServer = ExampleServer.getInstance();
         }
     }
 
@@ -151,7 +150,7 @@ public class ClientExampleRunner {
 
             try {
                 clientExample.run(client, future);
-                future.get(15, TimeUnit.SECONDS);
+//                future.get(60, TimeUnit.SECONDS);
             } catch (Throwable t) {
                 logger.error("Error running client example: {}", t.getMessage(), t);
                 future.completeExceptionally(t);
@@ -169,11 +168,11 @@ public class ClientExampleRunner {
             }
         }
 
-        try {
-            Thread.sleep(999_999_999);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(999_999_999);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }

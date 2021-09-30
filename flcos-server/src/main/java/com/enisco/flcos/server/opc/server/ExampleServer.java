@@ -35,6 +35,7 @@ import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
 import org.eclipse.milo.opcua.stack.server.security.DefaultServerCertificateValidator;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Singleton;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,6 +54,7 @@ import java.util.concurrent.TimeoutException;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.*;
 
+@Singleton
 public class ExampleServer {
 
     private static final int TCP_BIND_PORT = 12686;
@@ -94,7 +96,7 @@ public class ExampleServer {
     private final OpcUaServer server;
     private final ExampleNamespace exampleNamespace;
 
-    public ExampleServer() throws Exception {
+    protected ExampleServer() throws Exception {
         Path securityTempDir = Paths.get(System.getProperty("java.io.tmpdir"), "server", "security");
         Files.createDirectories(securityTempDir);
         if (!Files.exists(securityTempDir)) {
