@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Order(value = 1)
 @Component
 public class InitializeDataRunner implements CommandLineRunner {
     Logger logger = LoggerFactory.getLogger(InitializeDataRunner.class);
@@ -25,14 +27,14 @@ public class InitializeDataRunner implements CommandLineRunner {
     SchemeFieldRepository schemeFieldRepository;
 
     @Override
-    public void run(String ...args) {
+    public void run(String... args) {
         logger.info("Start to run initialize data runner...");
         createOrderScheme();
     }
 
     private void createOrderScheme() {
         var booleanSchemeOptional = schemeRepository.findBySchemeName("boolean");
-        if(booleanSchemeOptional.isEmpty()) {
+        if (booleanSchemeOptional.isEmpty()) {
             var booleanScheme = new SchemeEntity();
             booleanScheme.setSchemeName("boolean");
             booleanScheme.setBuiltin(true);
@@ -41,7 +43,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             booleanSchemeOptional = Optional.of(booleanScheme);
         }
         var byteSchemeOptional = schemeRepository.findBySchemeName("byte");
-        if(byteSchemeOptional.isEmpty()) {
+        if (byteSchemeOptional.isEmpty()) {
             var byteScheme = new SchemeEntity();
             byteScheme.setSchemeName("byte");
             byteScheme.setBuiltin(true);
@@ -50,7 +52,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             byteSchemeOptional = Optional.of(byteScheme);
         }
         var intSchemeOptional = schemeRepository.findBySchemeName("int");
-        if(intSchemeOptional.isEmpty()) {
+        if (intSchemeOptional.isEmpty()) {
             var intScheme = new SchemeEntity();
             intScheme.setSchemeName("int");
             intScheme.setBuiltin(true);
@@ -59,7 +61,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             intSchemeOptional = Optional.of(intScheme);
         }
         var longSchemeOptional = schemeRepository.findBySchemeName("long");
-        if(longSchemeOptional.isEmpty()) {
+        if (longSchemeOptional.isEmpty()) {
             var longScheme = new SchemeEntity();
             longScheme.setSchemeName("long");
             longScheme.setBuiltin(true);
@@ -68,7 +70,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             longSchemeOptional = Optional.of(longScheme);
         }
         var floatSchemeOptional = schemeRepository.findBySchemeName("float");
-        if(floatSchemeOptional.isEmpty()) {
+        if (floatSchemeOptional.isEmpty()) {
             var floatScheme = new SchemeEntity();
             floatScheme.setSchemeName("float");
             floatScheme.setBuiltin(true);
@@ -77,7 +79,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             floatSchemeOptional = Optional.of(floatScheme);
         }
         var doubleSchemeOptional = schemeRepository.findBySchemeName("double");
-        if(doubleSchemeOptional.isEmpty()) {
+        if (doubleSchemeOptional.isEmpty()) {
             var doubleScheme = new SchemeEntity();
             doubleScheme.setSchemeName("double");
             doubleScheme.setBuiltin(true);
@@ -86,7 +88,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             doubleSchemeOptional = Optional.of(doubleScheme);
         }
         var timeSchemeOptional = schemeRepository.findBySchemeName("time");
-        if(timeSchemeOptional.isEmpty()) {
+        if (timeSchemeOptional.isEmpty()) {
             var timeScheme = new SchemeEntity();
             timeScheme.setSchemeName("time");
             timeScheme.setBuiltin(true);
@@ -96,7 +98,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var stringSchemeOptional = schemeRepository.findBySchemeName("string");
-        if(stringSchemeOptional.isEmpty()) {
+        if (stringSchemeOptional.isEmpty()) {
             var stringScheme = new SchemeEntity();
             stringScheme.setSchemeName("string");
             stringScheme.setBuiltin(true);
@@ -106,7 +108,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var durationSchemeOptional = schemeRepository.findBySchemeName("duration");
-        if(durationSchemeOptional.isEmpty()) {
+        if (durationSchemeOptional.isEmpty()) {
             var durationEntity = new SchemeEntity();
             durationEntity.setSchemeName("duration");
             durationEntity.setBuiltin(true);
@@ -115,7 +117,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             durationSchemeOptional = Optional.of(durationEntity);
         }
         var emptySchemeOptional = schemeRepository.findBySchemeName("empty");
-        if(emptySchemeOptional.isEmpty()) {
+        if (emptySchemeOptional.isEmpty()) {
             var emptyEntity = new SchemeEntity();
             emptyEntity.setSchemeName("empty");
             emptyEntity.setBuiltin(true);
@@ -124,7 +126,7 @@ public class InitializeDataRunner implements CommandLineRunner {
             emptySchemeOptional = Optional.of(emptyEntity);
         }
         var orderSchemeOptional = schemeRepository.findBySchemeName("Order_Scheme");
-        if(orderSchemeOptional.isEmpty()) {
+        if (orderSchemeOptional.isEmpty()) {
             var orderSchemeEntity = new SchemeEntity();
             orderSchemeEntity.setSchemeName("Order_Scheme");
             orderSchemeEntity.setBuiltin(true);
@@ -134,7 +136,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var erpBodyDataSchemeOptional = schemeRepository.findBySchemeName("ERP_Body_Data");
-        if(erpBodyDataSchemeOptional.isEmpty()) {
+        if (erpBodyDataSchemeOptional.isEmpty()) {
             var erpBodyDataSchemeEntity = new SchemeEntity();
             erpBodyDataSchemeEntity.setSchemeName("ERP_Body_Data");
             erpBodyDataSchemeEntity.setBuiltin(true);
@@ -144,7 +146,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var erpBodyDataSchemeFieldOptional = schemeFieldRepository.findByFieldName("erp_body_data");
-        if(erpBodyDataSchemeFieldOptional.isEmpty()) {
+        if (erpBodyDataSchemeFieldOptional.isEmpty()) {
             var erpBodyDataSchemeFieldEntity = new SchemeFieldEntity();
             erpBodyDataSchemeFieldEntity.setSchemeType(erpBodyDataSchemeOptional.get());
             erpBodyDataSchemeFieldEntity.setFieldName("erp_body_data");
@@ -155,7 +157,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var vinSchemeFieldOptional = schemeFieldRepository.findByFieldName("VIN");
-        if(vinSchemeFieldOptional.isEmpty()) {
+        if (vinSchemeFieldOptional.isEmpty()) {
             var vinSchemeFieldEntity = new SchemeFieldEntity();
             vinSchemeFieldEntity.setSchemeType(stringSchemeOptional.get());
             vinSchemeFieldEntity.setFieldName("VIN");
@@ -168,7 +170,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var roofWSchemeFieldOptional = schemeFieldRepository.findByFieldName("RoofW");
-        if(roofWSchemeFieldOptional.isEmpty()) {
+        if (roofWSchemeFieldOptional.isEmpty()) {
             var roofWSchemeFieldEntity = new SchemeFieldEntity();
             roofWSchemeFieldEntity.setSchemeType(stringSchemeOptional.get());
             roofWSchemeFieldEntity.setFieldName("RoofW");
@@ -181,7 +183,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         }
 
         var bodyTypeSchemeFieldOptional = schemeFieldRepository.findByFieldName("BodyType");
-        if(bodyTypeSchemeFieldOptional.isEmpty()) {
+        if (bodyTypeSchemeFieldOptional.isEmpty()) {
             var bodyTypeSchemeFieldEntity = new SchemeFieldEntity();
             bodyTypeSchemeFieldEntity.setSchemeType(stringSchemeOptional.get());
             bodyTypeSchemeFieldEntity.setFieldName("BodyType");
