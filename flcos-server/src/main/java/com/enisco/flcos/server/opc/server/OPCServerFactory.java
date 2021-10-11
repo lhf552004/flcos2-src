@@ -38,6 +38,7 @@ public class OPCServerFactory {
     private void loadOPCServer(Path modFolderPath) throws Exception {
         var modules = loadModules(modFolderPath);
         FLCosOPCServer server = new FLCosOPCServer(modules);
+        server.startup().get();
         opcServers.add(server);
     }
 
