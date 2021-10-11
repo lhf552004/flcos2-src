@@ -10,7 +10,7 @@
 
 package com.enisco.flcos.server.opc.server.types;
 
-import com.enisco.flcos.server.opc.server.ExampleNamespace;
+import com.enisco.flcos.server.opc.server.FLCosNamespace;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
@@ -28,13 +28,13 @@ public class CustomStructType implements UaStructure {
 
     public static final ExpandedNodeId TYPE_ID = ExpandedNodeId.parse(String.format(
         "nsu=%s;s=%s",
-        ExampleNamespace.NAMESPACE_URI,
+        FLCosNamespace.NAMESPACE_URI,
         "DataType.CustomStructType"
     ));
 
     public static final ExpandedNodeId BINARY_ENCODING_ID = ExpandedNodeId.parse(String.format(
         "nsu=%s;s=%s",
-        ExampleNamespace.NAMESPACE_URI,
+        FLCosNamespace.NAMESPACE_URI,
         "DataType.CustomStructType.BinaryEncoding"
     ));
 

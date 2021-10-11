@@ -10,7 +10,7 @@
 
 package com.enisco.flcos.server.opc.client;
 
-import com.enisco.flcos.server.opc.server.ExampleServer;
+import com.enisco.flcos.server.opc.server.FLCosOPCServer;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.client.security.DefaultClientCertificateValidator;
@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 import java.security.Security;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 
@@ -42,7 +41,7 @@ public class ClientExampleRunner {
 
     private final CompletableFuture<OpcUaClient> future = new CompletableFuture<>();
 
-    private ExampleServer exampleServer;
+    private FLCosOPCServer exampleServer;
 
     private DefaultTrustListManager trustListManager;
 
@@ -58,7 +57,7 @@ public class ClientExampleRunner {
         this.serverRequired = serverRequired;
 
         if (serverRequired) {
-            exampleServer = ExampleServer.getInstance();
+//            exampleServer = ExampleServer.getInstance();
         }
     }
 

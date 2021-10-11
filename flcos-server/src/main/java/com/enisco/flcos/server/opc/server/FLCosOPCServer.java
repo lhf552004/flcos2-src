@@ -33,10 +33,12 @@ import org.eclipse.milo.opcua.stack.core.util.SelfSignedCertificateGenerator;
 import org.eclipse.milo.opcua.stack.core.util.SelfSignedHttpsCertificateBuilder;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
 import org.eclipse.milo.opcua.stack.server.security.DefaultServerCertificateValidator;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Singleton;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,8 +57,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.*;
 
 @Singleton
-public class ExampleServer {
-
+public class FLCosOPCServer {
+    Logger logger = LoggerFactory.getLogger(FLCosOPCServer.class);
     private static final int TCP_BIND_PORT = 12686;
     private static final int HTTPS_BIND_PORT = 8443;
 
@@ -72,19 +74,18 @@ public class ExampleServer {
         }
     }
 
-    public static ExampleServer getInstance() throws Exception {
-        if(exampleServer == null) {
-            exampleServer = new ExampleServer();
-        }
-        return exampleServer;
-    }
+//    public static ExampleServer getInstance() throws Exception {
+//        if(exampleServer == null) {
+//            exampleServer = new ExampleServer();
+//        }
+//        return exampleServer;
+//    }
+//
+//    private static ExampleServer exampleServer;
 
-    private static ExampleServer exampleServer;
-
-    public static void run() throws Exception {
-        ExampleServer server = getInstance();
-
-        server.startup().get();
+    public void run() throws Exception {
+        logger.debug("Startup example Server");
+        startup().get();
 
         final CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -94,13 +95,13 @@ public class ExampleServer {
     }
 
     private final OpcUaServer server;
-    private final ExampleNamespace exampleNamespace;
+    private final FLCosNamespace exampleNamespace;
 
-    protected ExampleServer() throws Exception {
+    public FLCosOPCServer(List<EmesModule> modules) throws Exception {
         Path securityTempDir = Paths.get(System.getProperty("java.io.tmpdir"), "server", "security");
         Files.createDirectories(securityTempDir);
         if (!Files.exists(securityTempDir)) {
-            throw new Exception("unable to create security temp dir: " + securityTempDir);
+            throw new FLCosOPCException("unable to create security temp dir: " + securityTempDir);
         }
 
         File pkiDir = securityTempDir.resolve("pki").toFile();
@@ -181,7 +182,7 @@ public class ExampleServer {
 
         server = new OpcUaServer(serverConfig);
 
-        exampleNamespace = new ExampleNamespace(server);
+        exampleNamespace = new FLCosNamespace(server, modules);
         exampleNamespace.startup();
     }
 

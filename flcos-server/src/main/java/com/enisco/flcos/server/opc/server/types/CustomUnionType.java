@@ -10,7 +10,7 @@
 
 package com.enisco.flcos.server.opc.server.types;
 
-import com.enisco.flcos.server.opc.server.ExampleNamespace;
+import com.enisco.flcos.server.opc.server.FLCosNamespace;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.SerializationContext;
@@ -28,13 +28,13 @@ public class CustomUnionType extends Union implements UaStructure {
 
     public static final ExpandedNodeId TYPE_ID = ExpandedNodeId.parse(String.format(
         "nsu=%s;s=%s",
-        ExampleNamespace.NAMESPACE_URI,
+        FLCosNamespace.NAMESPACE_URI,
         "DataType.CustomUnionType"
     ));
 
     public static final ExpandedNodeId BINARY_ENCODING_ID = ExpandedNodeId.parse(String.format(
         "nsu=%s;s=%s",
-        ExampleNamespace.NAMESPACE_URI,
+        FLCosNamespace.NAMESPACE_URI,
         "DataType.CustomUnionType.BinaryEncoding"
     ));
 
