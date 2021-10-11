@@ -1,5 +1,8 @@
 package com.enisco.flcos.server.opc.server;
 
+import com.enisco.flcos.server.api.UsersController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xml.sax.*;
 
@@ -17,7 +20,7 @@ import java.util.List;
 
 @Component
 public class OPCServerFactory {
-
+    private static final Logger logger = LoggerFactory.getLogger(OPCServerFactory.class);
     private List<FLCosOPCServer> opcServers = new ArrayList<>();
 
     public List<FLCosOPCServer> getOpcServers() {
@@ -51,7 +54,7 @@ public class OPCServerFactory {
 
         assert files != null;
         for (File modFile : files) {
-            System.out.println(modFile);
+            logger.info(modFile.toString());
             var emeModule = loadModule(modFile);
             if (emeModule != null)
                 modules.add(emeModule);
@@ -75,7 +78,7 @@ public class OPCServerFactory {
             EmesModule emesModule = (EmesModule) jaxbUnmarshaller.unmarshal(source);
 
             newInStream.close();
-            System.out.println(emesModule);
+            logger.info(emesModule.toString());
             return emesModule;
         } catch (JAXBException e) {
             e.printStackTrace();
