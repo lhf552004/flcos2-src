@@ -30,13 +30,13 @@ public class OPCUAClientRunner implements CommandLineRunner {
 //            }
 //
 //        });
-//        SubscriptionExample subscriptionExample = new SubscriptionExample();
-//        ClientExampleRunner clientExampleRunner = null;
-//        try {
-//            clientExampleRunner = new ClientExampleRunner(subscriptionExample );
-//            clientExampleRunner.run();
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
+        SubscriptionExample subscriptionExample = new SubscriptionExample();
+        ClientExampleRunner clientExampleRunner = null;
+        try {
+            clientExampleRunner = new ClientExampleRunner(subscriptionExample );
+            clientExampleRunner.run();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }

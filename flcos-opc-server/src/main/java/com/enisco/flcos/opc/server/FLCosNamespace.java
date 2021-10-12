@@ -8,13 +8,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package com.enisco.flcos.server.opc.server;
+package com.enisco.flcos.opc.server;
 
-import com.enisco.flcos.server.opc.server.methods.GenerateEventMethod;
-import com.enisco.flcos.server.opc.server.methods.SqrtMethod;
-import com.enisco.flcos.server.opc.server.types.CustomEnumType;
-import com.enisco.flcos.server.opc.server.types.CustomStructType;
-import com.enisco.flcos.server.opc.server.types.CustomUnionType;
+import com.enisco.flcos.opc.server.methods.GenerateEventMethod;
+import com.enisco.flcos.opc.server.methods.SqrtMethod;
+import com.enisco.flcos.opc.server.types.CustomEnumType;
+import com.enisco.flcos.opc.server.types.CustomStructType;
+import com.enisco.flcos.opc.server.types.CustomUnionType;
 import org.eclipse.milo.opcua.sdk.core.AccessLevel;
 import org.eclipse.milo.opcua.sdk.core.Reference;
 import org.eclipse.milo.opcua.sdk.core.ValueRank;
@@ -28,7 +28,6 @@ import org.eclipse.milo.opcua.sdk.server.dtd.DataTypeDictionaryManager;
 import org.eclipse.milo.opcua.sdk.server.model.nodes.objects.BaseEventTypeNode;
 import org.eclipse.milo.opcua.sdk.server.model.nodes.objects.ServerTypeNode;
 import org.eclipse.milo.opcua.sdk.server.model.nodes.variables.AnalogItemTypeNode;
-import org.eclipse.milo.opcua.sdk.server.nodes.*;
 import org.eclipse.milo.opcua.sdk.server.nodes.factories.NodeFactory;
 import org.eclipse.milo.opcua.sdk.server.nodes.filters.AttributeFilters;
 import org.eclipse.milo.opcua.sdk.server.util.SubscriptionModel;
@@ -36,10 +35,8 @@ import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.BuiltinDataType;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaException;
-import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.StructureType;
-import org.eclipse.milo.opcua.stack.core.types.structured.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -313,8 +310,8 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
             builder.setDisplayName(LocalizedText.english(nodeName));
             builder.setDataType(nodeTypeId);
             builder.setTypeDefinition(Identifiers.BaseDataVariableType);
-//            builder.setValueRank(ValueRank.OneDimension.getValue());
-//            builder.setArrayDimensions(new UInteger[]{uint(0)});
+            builder.setValueRank(ValueRank.OneDimension.getValue());
+            builder.setArrayDimensions(new UInteger[]{uint(0)});
             builder.setValue(new DataValue(variant));
 
             builder.addAttributeFilter(new AttributeLoggingFilter(AttributeId.Value::equals));

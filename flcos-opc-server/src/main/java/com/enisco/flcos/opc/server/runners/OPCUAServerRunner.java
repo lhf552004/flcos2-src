@@ -1,8 +1,6 @@
-package com.enisco.flcos.server.runners;
+package com.enisco.flcos.opc.server.runners;
 
-import com.enisco.flcos.server.entities.opc.OPCServerEntity;
-import com.enisco.flcos.server.opc.server.OPCServerFactory;
-import com.enisco.flcos.server.repository.postgresql.OPCServerRepository;
+import com.enisco.flcos.opc.server.OPCServerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Order(value = 2)
@@ -22,16 +19,13 @@ public class OPCUAServerRunner implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(OPCUAServerRunner.class);
     @Autowired
     OPCServerFactory moduleFactory;
-
-    @Autowired
-    OPCServerRepository opcServerRepository;
-
     @Override
     public void run(String... args) throws Exception {
-        logger.debug("OPCUA Servers loading");
-        var opcServers = opcServerRepository.findAll();
-        // TODO: load internal server
-        moduleFactory.loadAllOPCServers(opcServers);
-        logger.debug("OPCUA Servers loading finished");
+        Path modFolder = Paths.get("C:\\tmp\\mod");
+        List<Path> folders = new ArrayList<>();
+        folders.add(modFolder);
+        moduleFactory.loadAllOPCServers(folders);
+        logger.debug("OPCUA Servers started");
+//        ExampleServer.getInstance().run();
     }
 }
