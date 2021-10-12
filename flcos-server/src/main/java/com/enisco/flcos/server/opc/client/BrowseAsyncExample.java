@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,11 +27,11 @@ import java.util.stream.Stream;
 
 public class BrowseAsyncExample implements ClientExample {
 
-    public BrowseAsyncExample() throws Exception {
-        BrowseAsyncExample example = new BrowseAsyncExample();
-
-        new ClientExampleRunner(example).run();
-    }
+//    public BrowseAsyncExample() throws Exception {
+//        BrowseAsyncExample example = new BrowseAsyncExample();
+//
+//        new ClientExampleRunner(example).run();
+//    }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -40,7 +41,8 @@ public class BrowseAsyncExample implements ClientExample {
         client.connect().get();
 
         // start browsing at root folder
-        UaNode rootNode = client.getAddressSpace().getNode(Identifiers.RootFolder);
+        var rootFolder = new NodeId(2, "FLCos");
+        UaNode rootNode = client.getAddressSpace().getNode(rootFolder);
 
         Tree<UaNode> tree = new Tree<>(rootNode);
 

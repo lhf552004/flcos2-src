@@ -46,7 +46,7 @@ public class ClientExampleRunner {
     private DefaultTrustListManager trustListManager;
 
     private final ClientExample clientExample;
-    private final boolean serverRequired;
+    private boolean serverRequired;
 
     public ClientExampleRunner(ClientExample clientExample) throws Exception {
         this(clientExample, true);
@@ -55,10 +55,15 @@ public class ClientExampleRunner {
     public ClientExampleRunner(ClientExample clientExample, boolean serverRequired) throws Exception {
         this.clientExample = clientExample;
         this.serverRequired = serverRequired;
+    }
 
-        if (serverRequired) {
-//            exampleServer = ExampleServer.getInstance();
-        }
+    public ClientExampleRunner(ClientExample clientExample, FLCosOPCServer exampleServer) throws Exception {
+        this.clientExample = clientExample;
+//        this.serverRequired = serverRequired;
+        this.exampleServer = exampleServer;
+//        if (serverRequired) {
+////            exampleServer = ExampleServer.getInstance();
+//        }
     }
 
     private OpcUaClient createClient() throws Exception {
@@ -113,31 +118,31 @@ public class ClientExampleRunner {
             // "pki/trusted/certs" directory.
 
             // Make the example server trust the example client certificate by default.
-            client.getConfig().getCertificate().ifPresent(
-                certificate ->
-                    exampleServer.getServer().getConfig().getTrustListManager().addTrustedCertificate(certificate)
-            );
+//            client.getConfig().getCertificate().ifPresent(
+//                certificate ->
+//                    exampleServer.getServer().getConfig().getTrustListManager().addTrustedCertificate(certificate)
+//            );
 
             // Make the example client trust the example server certificate by default.
-            exampleServer.getServer().getConfig().getCertificateManager().getCertificates().forEach(
-                certificate ->
-                    trustListManager.addTrustedCertificate(certificate)
-            );
+//            exampleServer.getServer().getConfig().getCertificateManager().getCertificates().forEach(
+//                certificate ->
+//                    trustListManager.addTrustedCertificate(certificate)
+//            );
 
             future.whenCompleteAsync((c, ex) -> {
                 if (ex != null) {
                     logger.error("Error running example: {}", ex.getMessage(), ex);
                 }
 
-                try {
-                    client.disconnect().get();
-//                    if (serverRequired && exampleServer != null) {
-//                        exampleServer.shutdown().get();
-//                    }
-                    Stack.releaseSharedResources();
-                } catch (InterruptedException | ExecutionException e) {
-                    logger.error("Error disconnecting: {}", e.getMessage(), e);
-                }
+//                try {
+////                    client.disconnect().get();
+////                    if (serverRequired && exampleServer != null) {
+////                        exampleServer.shutdown().get();
+////                    }
+////                    Stack.releaseSharedResources();
+//                } catch (InterruptedException | ExecutionException e) {
+//                    logger.error("Error disconnecting: {}", e.getMessage(), e);
+//                }
 
 //                try {
 //                    Thread.sleep(1000);

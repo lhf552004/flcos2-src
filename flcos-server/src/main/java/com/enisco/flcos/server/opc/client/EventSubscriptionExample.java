@@ -10,12 +10,14 @@
 
 package com.enisco.flcos.server.opc.client;
 
+import com.enisco.flcos.server.opc.server.FLCosOPCServer;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaMonitoredItem;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
 import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.QualifiedName;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MonitoringMode;
@@ -34,10 +36,8 @@ import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.
 
 public class EventSubscriptionExample implements ClientExample {
 
-    public EventSubscriptionExample() throws Exception {
-        EventSubscriptionExample example = new EventSubscriptionExample();
+    public EventSubscriptionExample() {
 
-        new ClientExampleRunner(example, true).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

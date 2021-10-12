@@ -167,12 +167,12 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
                 false
         ));
 
-//        // Add the rest of the nodes
-//        addVariableNodes(folderNode);
-//
-//        addSqrtMethod(folderNode);
-//
-//        addGenerateEventMethod(folderNode);
+        // Add the rest of the nodes
+        addVariableNodes(rootNode);
+
+        addSqrtMethod(rootNode);
+
+        addGenerateEventMethod(rootNode);
 
         modules.stream().forEach(module -> {
             NodeId nodeId = newNodeId(module.getName());
@@ -244,7 +244,7 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
 
                         //noinspection UnstableApiUsage
                         getServer().getEventBus().post(eventNode);
-
+                        logger.info("Event posted");
                         eventNode.delete();
                     } catch (Throwable e) {
                         logger.error("Error creating EventNode: {}", e.getMessage(), e);
@@ -302,7 +302,7 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
     }
 
     private void addVariableNode(NodeId nodeTypeId, String nodeName, Object value, UaFolderNode rootNode) {
-
+        logger.info("addVariableNode, NodeName: " + nodeName + "value: " + value);
         Variant variant = new Variant(value);
 
         UaVariableNode.build(getNodeContext(), builder -> {

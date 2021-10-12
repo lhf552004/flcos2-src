@@ -34,11 +34,11 @@ import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.
 
 public class SubscriptionExample implements ClientExample {
 
-    public SubscriptionExample() throws Exception {
-        SubscriptionExample example = new SubscriptionExample();
-
-        new ClientExampleRunner(example).run();
-    }
+//    public SubscriptionExample() throws Exception {
+//        SubscriptionExample example = new SubscriptionExample();
+//
+//        new ClientExampleRunner(example).run();
+//    }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
