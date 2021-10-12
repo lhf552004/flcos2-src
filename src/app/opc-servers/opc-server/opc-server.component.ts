@@ -46,7 +46,7 @@ export class OpcServerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  nameChanged() {
+  opcServerChanged() {
     this.isChanged = true;
   }
 
@@ -64,7 +64,8 @@ export class OpcServerComponent implements OnInit, OnDestroy {
   }
 
   copy() {
-    this.opcServerConfigService.create(this.opcServer.name + '- copy', this.opcServer.endpointUrl)
+    const newOpcServer = {...this.opcServer, id: '', name: this.opcServer.name + '- copy'};
+    this.opcServerConfigService.create(newOpcServer)
       .pipe(takeUntil(this.unsubscribe)).subscribe(x => {
       this.notificatorService.sendNotification(new Notification('Copy successfully with ' + this.opcServer.name + '- copy', 'info'));
     });

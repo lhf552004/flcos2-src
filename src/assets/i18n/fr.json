@@ -16,11 +16,15 @@
     "SAVE": "Save",
     "COPY": "Copy",
     "CLOSE": "Close",
-    "DELETE": "Delete"
+    "DELETE": "Delete",
+    "INTERNAL": "Internal"
   },
   "OPC" : {
     "ENDPOINT URL":  "Endpoint url",
     "OPC SERVER": "OPC Server",
-    "OPC SERVERS": "OPC Servers"
+    "OPC SERVERS": "OPC Servers",
+    "TCP PORT": "TCP Port",
+    "HTTPS PORT": "Https Port",
+    "ADDRESS": "Address"
   }
 }

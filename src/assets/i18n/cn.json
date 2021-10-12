@@ -16,11 +16,15 @@
     "SAVE": "保存",
     "COPY": "复制",
     "CLOSE": "关闭",
-    "DELETE": "删除"
+    "DELETE": "删除",
+    "INTERNAL": "内部"
   },
   "OPC" : {
     "ENDPOINT URL":  "终端地址",
     "OPC SERVER": "OPC 服务器",
-    "OPC SERVERS": "OPC 服务器"
+    "OPC SERVERS": "OPC 服务器",
+    "TCP PORT": "TCP端口",
+    "HTTPS PORT": "Https端口",
+    "ADDRESS": "地址"
   }
 }

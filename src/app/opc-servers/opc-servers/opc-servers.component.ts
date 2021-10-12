@@ -11,6 +11,7 @@ import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
 import {OpcServerConfigService} from '../shared/opc-server-config.service';
 import {MenuItem} from '../../shared/side-bar/model/menu-item.model';
 import {ActivatedRoute, Router} from '@angular/router';
+import {OPCServer} from '../shared/models/opc-server.model';
 
 @Component({
   selector: 'emes-opc-servers',
@@ -61,7 +62,7 @@ export class OpcServersComponent implements OnInit, OnDestroy {
       headerText: 'Create a Opc Server',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: { name: string, endpointUrl: string }) => this.doCreateOpcServer(e),
+      onSubmit: (e: OPCServer) => this.doCreateOpcServer(e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -77,20 +78,54 @@ export class OpcServersComponent implements OnInit, OnDestroy {
         },
         {
           type: 'input',
-          label: 'Endpoint url',
-          name: 'endpointUrl',
-          placeholder: 'Enter the endpoint url',
+          label: 'Address',
+          name: 'address',
+          placeholder: 'Enter the address',
           validation: [
-            CustomValidators.required('Endpoint url required'),
+            CustomValidators.required('Address required'),
           ]
-        }
+        },
+        {
+          type: 'checkbox',
+          label: 'Is internal',
+          name: 'internal',
+          placeholder: 'Is Internal',
+          validation: []
+        },
+        {
+          type: 'number',
+          label: 'Tcp binding port',
+          name: 'tcpPort',
+          placeholder: 'Enter the tcp binding port',
+          validation: [
+            CustomValidators.required('Tcp binding port required'),
+          ]
+        },
+        {
+          type: 'number',
+          label: 'Https binding port',
+          name: 'httpsPort',
+          placeholder: 'Enter the https binding port',
+          validation: [
+            CustomValidators.required('Https binding port required'),
+          ]
+        },
+        {
+          type: 'input',
+          label: 'Config path',
+          name: 'configPath',
+          placeholder: 'Enter the config path',
+          validation: [
+            CustomValidators.required('Config path required'),
+          ]
+        },
       ]
     };
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  doCreateOpcServer(e: { name: string, endpointUrl: string }) {
-    this.opcServerConfigService.create(e.name, e.endpointUrl).pipe(takeUntil(this.unsubscribe)).subscribe();
+  doCreateOpcServer(opcServer: OPCServer) {
+    this.opcServerConfigService.create(opcServer).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
 }

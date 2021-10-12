@@ -14,15 +14,6 @@ export class OpcServerConfigService {
   opcServers$: BehaviorSubject<OPCServer[]> = new BehaviorSubject<OPCServer[]>([]);
   opcServer$: BehaviorSubject<OPCServer | null> = new BehaviorSubject<OPCServer | null>(null);
 
-  opcServers: OPCServer[] = [
-    {
-      id: '1',
-      name: 'OPC 1',
-      endpointUrl: 'opc.tcp://localhost:12686/milo',
-      status: 'Running'
-    }
-  ];
-
   constructor(private http: HttpClient) {
   }
 
@@ -40,12 +31,11 @@ export class OpcServerConfigService {
     }));
   }
 
-  create(name: string, endpointUrl: string): Observable<any> {
+  create(opcServer: OPCServer): Observable<any> {
     const url = `${this.opcConfigUrl}`;
-    const payload = {name, endpointUrl};
-    return this.http.post(url, payload).pipe(tap(x => {
+    return this.http.post(url, opcServer).pipe(tap(x => {
       const opcServers = this.opcServers$.getValue();
-      opcServers.push({...payload, id: x, status: 'New'});
+      opcServers.push({...opcServer, id: x, status: 'New'});
       this.opcServers$.next(opcServers);
     }));
   }
