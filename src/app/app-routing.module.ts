@@ -28,6 +28,7 @@ const routes: Routes = [
   {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
   {path: 'alarms', loadChildren: () => import('./alarms/alarms.module').then(m => m.AlarmsModule)},
   {path: 'schemes', loadChildren: () => import('./schemes/schemes.module').then(m => m.SchemesModule)},
+  {path: 'opc-servers', loadChildren: () => import('./opc-servers/opc-servers.module').then(m => m.OpcServersModule)},
   {path: '**', redirectTo: 'home'}
 ];
 
