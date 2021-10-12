@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
 import { Job } from '../shared/models/job.model';
 
 @Component({
@@ -14,10 +13,10 @@ import { Job } from '../shared/models/job.model';
 export class JobsComponent implements OnInit, OnDestroy {
 
   jobs: Job[];
-  
-  // Used for cleaning subscription 
+
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
-  
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {

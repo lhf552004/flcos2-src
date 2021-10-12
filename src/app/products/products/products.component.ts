@@ -4,7 +4,7 @@ import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
+import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 import { Product } from '../shared/models/product.model';
 
 @Component({

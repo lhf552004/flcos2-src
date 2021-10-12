@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
+import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 import { Bin } from '../shared/models/bin.model';
 
 @Component({
@@ -14,10 +14,10 @@ import { Bin } from '../shared/models/bin.model';
 export class BinsComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[];
-  
-  // Used for cleaning subscription 
+
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
-  
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -30,7 +30,7 @@ export class BinsComponent implements OnInit, OnDestroy {
         children: []
       }));
     });
-    
+
   }
 
   ngOnDestroy() {

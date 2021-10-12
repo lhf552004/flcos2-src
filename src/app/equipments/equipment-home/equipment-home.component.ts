@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { faTasks } from '@fortawesome/free-solid-svg-icons';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
+import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 
 @Component({
   selector: 'emes-equipment-home',
@@ -12,7 +12,7 @@ export class EquipmentHomeComponent implements OnInit {
   // Menu items
   menuItems: MenuItem[];
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor() { }

@@ -5,6 +5,7 @@ import { OpcServerComponent } from './opc-server/opc-server.component';
 import { OpcServerDefaultComponent } from './opc-server-default/opc-server-default.component';
 import {OpcServerRoutingModule} from './opc-server-routing.module';
 import {SharedModule} from '../shared/shared.module';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -12,6 +13,7 @@ import {SharedModule} from '../shared/shared.module';
   declarations: [OpcServersComponent, OpcServerComponent, OpcServerDefaultComponent],
   imports: [
     SharedModule,
+    NgbDropdownModule,
     OpcServerRoutingModule
   ]
 })

@@ -8,11 +8,13 @@ import {FormsModule} from '@angular/forms';
 import {WorkFlowComponent} from './workflow/work-flow/work-flow.component';
 import {DynamicFormModule} from 'dynamic-form';
 import { DataTableModule } from 'data-table';
+import { TreeViewModule } from 'tree-view';
 import { ItemsSelectorComponent } from './items-selector/items-selector.component';
 import {TranslateModule} from '@ngx-translate/core';
+import { StickyPopoverDirective } from './side-bar/sticky-popover.directive';
 
 @NgModule({
-  declarations: [SideBarComponent, WorkFlowComponent, ItemsSelectorComponent],
+  declarations: [SideBarComponent, WorkFlowComponent, ItemsSelectorComponent, StickyPopoverDirective],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,7 +23,8 @@ import {TranslateModule} from '@ngx-translate/core';
     NgbPopoverModule,
     DynamicFormModule,
     DataTableModule,
-    TranslateModule
+    TranslateModule,
+    TreeViewModule
   ],
   exports: [
     SideBarComponent,

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faTasks } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
+import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 
 @Component({
   selector: 'emes-line',
@@ -14,7 +14,7 @@ export class LineComponent implements OnInit {
   // Menu items
   menuItems: MenuItem[];
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private route: ActivatedRoute, private router: Router) { }

@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { faTasks } from '@fortawesome/free-solid-svg-icons';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
 import { Equipment } from '../shared/models/equipment.model';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +13,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
 
   equipments: Equipment[];
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private route: ActivatedRoute) { }

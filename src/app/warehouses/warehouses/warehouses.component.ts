@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'src/app/shared/side-bar/models/menu-items.model';
+import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 import { Warehouse } from '../shared/models/warehouse.model';
 
 
@@ -15,10 +15,10 @@ import { Warehouse } from '../shared/models/warehouse.model';
 export class WarehousesComponent implements OnInit {
 
   menuItems: MenuItem[];
-  
-  // Used for cleaning subscription 
+
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
-  
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class WarehousesComponent implements OnInit {
         children: []
       }));
     });
-    
+
   }
 
   ngOnDestroy() {

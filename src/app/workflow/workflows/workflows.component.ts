@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subject} from 'rxjs';
 import {Workflow} from '../../shared/workflow/models/workflow.model';
 import {faSearch, IconDefinition} from '@fortawesome/free-solid-svg-icons';
-import {MenuItem} from '../../shared/side-bar/models/menu-items.model';
+import {MenuItem} from '../../shared/side-bar/model/menu-item.model';
 import {faProductHunt} from '@fortawesome/free-brands-svg-icons';
 
 @Component({

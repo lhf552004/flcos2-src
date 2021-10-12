@@ -9,5 +9,18 @@
   },
   "ORDER": {
     "ORDERS": "Orders"
+  },
+  "GENERAL": {
+    "STATUS": "Status",
+    "NAME": "Name",
+    "SAVE": "Save",
+    "COPY": "Copy",
+    "CLOSE": "Close",
+    "DELETE": "Delete"
+  },
+  "OPC" : {
+    "ENDPOINT URL":  "Endpoint url",
+    "OPC SERVER": "OPC Server",
+    "OPC SERVERS": "OPC Servers"
   }
 }

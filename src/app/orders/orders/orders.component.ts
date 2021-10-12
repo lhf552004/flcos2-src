@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {takeUntil} from 'rxjs/operators';
-import {Product} from '../../products/shared/models/product.model';
-import {faProductHunt} from '@fortawesome/free-brands-svg-icons';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, Observable, Subject} from 'rxjs';
-import {MenuItem} from '../../shared/side-bar/models/menu-items.model';
 import {Order} from '../shared/models/order.model';
 import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} from 'data-table';
 import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
@@ -13,11 +10,7 @@ import {Scheme} from '../../shared/models/scheme.model';
 import {SchemeField} from '../../shared/models/scheme-field.model';
 import {OrderAttribute} from '../shared/models/order-attribute.model';
 import {TranslateService} from '@ngx-translate/core';
-import {UserService} from '../../core/user/user.service';
 import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
-import {Role} from '../../core/user/models/role.model';
-import {UserViewerComponent} from '../../admin/user-viewer/user-viewer.component';
-import {OrderViewerComponent} from '../order-viewer/order-viewer.component';
 
 @Component({
   selector: 'emes-orders',

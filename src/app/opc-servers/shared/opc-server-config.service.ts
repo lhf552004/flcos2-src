@@ -27,29 +27,25 @@ export class OpcServerConfigService {
   }
 
   get(id: string): Observable<OPCServer> {
-    const opcServer = this.opcServers.find(o => o.id === id);
-    this.opcServer$.next(opcServer);
-    return of(opcServer);
-    // const url = `${this.opcConfigUrl}/${id}`;
-    // return this.http.get<OPCServer>(url).pipe(tap(x => {
-    //   this.opcServer$.next(x);
-    // }));
+    const url = `${this.opcConfigUrl}/${id}`;
+    return this.http.get<OPCServer>(url).pipe(tap(x => {
+      this.opcServer$.next(x);
+    }));
   }
 
   getAll(page: number, size: number): Observable<OPCServer[]> {
-    this.opcServers$.next(this.opcServers);
-    return of(this.opcServers);
-    // const url = `${this.opcConfigUrl}`;
-    // return this.http.get<OPCServer[]>(url).pipe(tap(x => {
-    //   this.opcServers$.next(x);
-    // }));
+    const url = `${this.opcConfigUrl}`;
+    return this.http.get<OPCServer[]>(url).pipe(tap(x => {
+      this.opcServers$.next(x);
+    }));
   }
 
-  create(opcServer: OPCServer): Observable<any> {
+  create(name: string, endpointUrl: string): Observable<any> {
     const url = `${this.opcConfigUrl}`;
-    return this.http.post(url, opcServer).pipe(tap(x => {
+    const payload = {name, endpointUrl};
+    return this.http.post(url, payload).pipe(tap(x => {
       const opcServers = this.opcServers$.getValue();
-      opcServers.push({...opcServer, id: x});
+      opcServers.push({...payload, id: x, status: 'New'});
       this.opcServers$.next(opcServers);
     }));
   }

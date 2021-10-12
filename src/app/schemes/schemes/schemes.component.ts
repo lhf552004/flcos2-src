@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MenuItem} from '../../shared/side-bar/models/menu-items.model';
+import {MenuItem} from '../../shared/side-bar/model/menu-item.model';
 import {Subject} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';

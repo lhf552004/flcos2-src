@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuItem} from '../../shared/side-bar/models/menu-items.model';
+import {MenuItem} from '../../shared/side-bar/model/menu-item.model';
 import {faTasks} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
