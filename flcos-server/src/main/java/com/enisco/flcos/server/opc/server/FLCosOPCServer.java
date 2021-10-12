@@ -61,6 +61,9 @@ public class FLCosOPCServer {
     Logger logger = LoggerFactory.getLogger(FLCosOPCServer.class);
     private static final int TCP_BIND_PORT = 12686;
     private static final int HTTPS_BIND_PORT = 8443;
+    private int tcpPort;
+    private int httpsPort;
+    private String address;
 
     static {
         // Required for SecurityPolicy.Aes256_Sha256_RsaPss
@@ -97,7 +100,10 @@ public class FLCosOPCServer {
     private final OpcUaServer server;
     private final FLCosNamespace exampleNamespace;
 
-    public FLCosOPCServer(List<EmesModule> modules) throws Exception {
+    public FLCosOPCServer(String address, int tcpPort, int httpsPort, List<EmesModule> modules) throws Exception {
+        this.address = address;
+        this.tcpPort = tcpPort;
+        this.httpsPort = httpsPort;
         Path securityTempDir = Paths.get(System.getProperty("java.io.tmpdir"), "server", "security");
         Files.createDirectories(securityTempDir);
         if (!Files.exists(securityTempDir)) {
@@ -190,11 +196,11 @@ public class FLCosOPCServer {
         Set<EndpointConfiguration> endpointConfigurations = new LinkedHashSet<>();
 
         List<String> bindAddresses = newArrayList();
-        bindAddresses.add("0.0.0.0");
+        bindAddresses.add(address);
 
         Set<String> hostnames = new LinkedHashSet<>();
         hostnames.add(HostnameUtil.getHostname());
-        hostnames.addAll(HostnameUtil.getHostnames("0.0.0.0"));
+        hostnames.addAll(HostnameUtil.getHostnames(address));
 
         for (String bindAddress : bindAddresses) {
             for (String hostname : hostnames) {
@@ -213,21 +219,21 @@ public class FLCosOPCServer {
                     .setSecurityPolicy(SecurityPolicy.None)
                     .setSecurityMode(MessageSecurityMode.None);
 
-                endpointConfigurations.add(buildTcpEndpoint(noSecurityBuilder));
-                endpointConfigurations.add(buildHttpsEndpoint(noSecurityBuilder));
+                endpointConfigurations.add(buildTcpEndpoint(noSecurityBuilder, tcpPort));
+                endpointConfigurations.add(buildHttpsEndpoint(noSecurityBuilder, httpsPort));
 
                 // TCP Basic256Sha256 / SignAndEncrypt
                 endpointConfigurations.add(buildTcpEndpoint(
                     builder.copy()
                         .setSecurityPolicy(SecurityPolicy.Basic256Sha256)
-                        .setSecurityMode(MessageSecurityMode.SignAndEncrypt))
+                        .setSecurityMode(MessageSecurityMode.SignAndEncrypt), tcpPort)
                 );
 
                 // HTTPS Basic256Sha256 / Sign (SignAndEncrypt not allowed for HTTPS)
                 endpointConfigurations.add(buildHttpsEndpoint(
                     builder.copy()
                         .setSecurityPolicy(SecurityPolicy.Basic256Sha256)
-                        .setSecurityMode(MessageSecurityMode.Sign))
+                        .setSecurityMode(MessageSecurityMode.Sign), httpsPort)
                 );
 
                 /*
@@ -246,25 +252,25 @@ public class FLCosOPCServer {
                     .setSecurityPolicy(SecurityPolicy.None)
                     .setSecurityMode(MessageSecurityMode.None);
 
-                endpointConfigurations.add(buildTcpEndpoint(discoveryBuilder));
-                endpointConfigurations.add(buildHttpsEndpoint(discoveryBuilder));
+                endpointConfigurations.add(buildTcpEndpoint(discoveryBuilder, tcpPort));
+                endpointConfigurations.add(buildHttpsEndpoint(discoveryBuilder, httpsPort));
             }
         }
 
         return endpointConfigurations;
     }
 
-    private static EndpointConfiguration buildTcpEndpoint(EndpointConfiguration.Builder base) {
+    private static EndpointConfiguration buildTcpEndpoint(EndpointConfiguration.Builder base, Integer bindPort) {
         return base.copy()
             .setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
-            .setBindPort(TCP_BIND_PORT)
+            .setBindPort(bindPort)
             .build();
     }
 
-    private static EndpointConfiguration buildHttpsEndpoint(EndpointConfiguration.Builder base) {
+    private static EndpointConfiguration buildHttpsEndpoint(EndpointConfiguration.Builder base, Integer httpsPort) {
         return base.copy()
             .setTransportProfile(TransportProfile.HTTPS_UABINARY)
-            .setBindPort(HTTPS_BIND_PORT)
+            .setBindPort(httpsPort)
             .build();
     }
 

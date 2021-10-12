@@ -1,6 +1,7 @@
 package com.enisco.flcos.server.opc.server;
 
 import com.enisco.flcos.server.api.UsersController;
+import com.enisco.flcos.server.entities.opc.OPCServerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import javax.xml.transform.sax.SAXSource;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +29,21 @@ public class OPCServerFactory {
         return opcServers;
     }
 
-    public void loadAllOPCServers(List<Path> OPCConfigPaths) {
+    public void loadAllOPCServers(List<OPCServerEntity> opcServerEntities) {
         opcServers.clear();
-        OPCConfigPaths.forEach(modFolderPath-> {
+        opcServerEntities.forEach(opcServerEntity -> {
             try {
-                loadOPCServer(modFolderPath);
+                var modFolderPath = Paths.get(opcServerEntity.getConfigPath());
+                loadOPCServer(opcServerEntity.getAddress(), opcServerEntity.getTcpPort(), opcServerEntity.getHttpsPort(), modFolderPath);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
         });
     }
 
-    private void loadOPCServer(Path modFolderPath) throws Exception {
+    private void loadOPCServer(String address, int tcpPort, int httpsPort, Path modFolderPath) throws Exception {
         var modules = loadModules(modFolderPath);
-        FLCosOPCServer server = new FLCosOPCServer(modules);
+        FLCosOPCServer server = new FLCosOPCServer(address, tcpPort, httpsPort, modules);
         server.startup().get();
         opcServers.add(server);
     }

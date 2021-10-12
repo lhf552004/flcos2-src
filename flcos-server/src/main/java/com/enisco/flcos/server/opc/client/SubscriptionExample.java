@@ -16,6 +16,7 @@ import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
 import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.QualifiedName;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MonitoringMode;
@@ -52,7 +53,7 @@ public class SubscriptionExample implements ClientExample {
 
         // subscribe to the Value attribute of the server's CurrentTime node
         ReadValueId readValueId = new ReadValueId(
-            Identifiers.Server_ServerStatus_CurrentTime,
+            new NodeId(2, "T1C041/Visu/P11/035RB/BMK"),
             AttributeId.Value.uid(), null, QualifiedName.NULL_VALUE
         );
 

@@ -7,7 +7,16 @@ import lombok.Setter;
 @Setter
 public class OpcServerDTO {
     private Long id;
+
     private String status;
+
     private String name;
-    private String endpointUrl;
+
+    private String address;
+
+    private boolean internal;
+
+    private Integer tcpPort;
+
+    private Integer httpsPort;
 }

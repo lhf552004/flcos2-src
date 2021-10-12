@@ -10,13 +10,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(value = 3)
 public class OPCUAClientRunner implements CommandLineRunner {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     OPCServerFactory moduleFactory;
     @Override
     public void run(String... args) throws Exception {
-        logger.debug("OPCUA clients started");
+        logger.debug("OPCUA clients starting");
         logger.debug("OPCUA server counts: " + moduleFactory.getOpcServers().size());
 //        moduleFactory.getOpcServers().forEach(flCosOPCServer -> {
 //            BrowseAsyncExample subscriptionExample = new BrowseAsyncExample();
@@ -29,13 +30,13 @@ public class OPCUAClientRunner implements CommandLineRunner {
 //            }
 //
 //        });
-        BrowseAsyncExample subscriptionExample = new BrowseAsyncExample();
-        ClientExampleRunner clientExampleRunner = null;
-        try {
-            clientExampleRunner = new ClientExampleRunner(subscriptionExample );
-            clientExampleRunner.run();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+//        SubscriptionExample subscriptionExample = new SubscriptionExample();
+//        ClientExampleRunner clientExampleRunner = null;
+//        try {
+//            clientExampleRunner = new ClientExampleRunner(subscriptionExample );
+//            clientExampleRunner.run();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
     }
 }

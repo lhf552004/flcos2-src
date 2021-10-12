@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.security.Security;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 
@@ -154,7 +155,7 @@ public class ClientExampleRunner {
 
             try {
                 clientExample.run(client, future);
-//                future.get(60, TimeUnit.SECONDS);
+                future.get(60, TimeUnit.SECONDS);
             } catch (Throwable t) {
                 logger.error("Error running client example: {}", t.getMessage(), t);
                 future.completeExceptionally(t);
