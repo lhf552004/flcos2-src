@@ -30,7 +30,7 @@ public class MethodExample2 implements ClientExample {
     public MethodExample2() throws Exception {
         MethodExample2 example = new MethodExample2();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

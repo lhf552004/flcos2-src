@@ -25,6 +25,7 @@ import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
 import org.eclipse.milo.opcua.stack.core.transport.TransportProfile;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MessageSecurityMode;
 import org.eclipse.milo.opcua.stack.core.types.structured.BuildInfo;
 import org.eclipse.milo.opcua.stack.core.util.CertificateUtil;
@@ -64,6 +65,7 @@ public class FLCosOPCServer {
     private int tcpPort;
     private int httpsPort;
     private String address;
+    private String name;
 
     static {
         // Required for SecurityPolicy.Aes256_Sha256_RsaPss
@@ -86,6 +88,9 @@ public class FLCosOPCServer {
 //
 //    private static ExampleServer exampleServer;
 
+    public List<NodeId> getNodeIdsToSubscribe() {
+        return this.exampleNamespace.getNodeIdsToSubscribe();
+    }
     public void run() throws Exception {
         logger.debug("Startup example Server");
         startup().get();
@@ -97,13 +102,18 @@ public class FLCosOPCServer {
         future.get();
     }
 
+    public String getEndpointUrl() {
+        return "opc.tcp://" + address + ":" + tcpPort + "/" + name;
+    }
+
     private final OpcUaServer server;
     private final FLCosNamespace exampleNamespace;
 
-    public FLCosOPCServer(String address, int tcpPort, int httpsPort, List<EmesModule> modules) throws Exception {
+    public FLCosOPCServer(String address, int tcpPort, int httpsPort, String name, List<EmesModule> modules) throws Exception {
         this.address = address;
         this.tcpPort = tcpPort;
         this.httpsPort = httpsPort;
+        this.name = name;
         Path securityTempDir = Paths.get(System.getProperty("java.io.tmpdir"), "server", "security");
         Files.createDirectories(securityTempDir);
         if (!Files.exists(securityTempDir)) {
@@ -168,13 +178,13 @@ public class FLCosOPCServer {
 
         OpcUaServerConfig serverConfig = OpcUaServerConfig.builder()
             .setApplicationUri(applicationUri)
-            .setApplicationName(LocalizedText.english("Eclipse Milo OPC UA Example Server"))
+            .setApplicationName(LocalizedText.english("Enisco FLCos OPC UA Server"))
             .setEndpoints(endpointConfigurations)
             .setBuildInfo(
                 new BuildInfo(
-                    "urn:eclipse:milo:example-server",
-                    "eclipse",
-                    "eclipse milo example server",
+                    "urn:enisco:flcos:opc-server",
+                    "Enisco",
+                    "Enisco FLCos OPC server",
                     OpcUaServer.SDK_VERSION,
                     "", DateTime.now()))
             .setCertificateManager(certificateManager)
@@ -183,7 +193,7 @@ public class FLCosOPCServer {
             .setHttpsKeyPair(httpsKeyPair)
             .setHttpsCertificate(httpsCertificate)
             .setIdentityValidator(new CompositeValidator(identityValidator, x509IdentityValidator))
-            .setProductUri("urn:eclipse:milo:example-server")
+            .setProductUri("urn:enisco:flcos:opc-server")
             .build();
 
         server = new OpcUaServer(serverConfig);
@@ -207,7 +217,7 @@ public class FLCosOPCServer {
                 EndpointConfiguration.Builder builder = EndpointConfiguration.newBuilder()
                     .setBindAddress(bindAddress)
                     .setHostname(hostname)
-                    .setPath("/milo")
+                    .setPath("/" + name)
                     .setCertificate(certificate)
                     .addTokenPolicies(
                         USER_TOKEN_POLICY_ANONYMOUS,
@@ -248,7 +258,7 @@ public class FLCosOPCServer {
                  */
 
                 EndpointConfiguration.Builder discoveryBuilder = builder.copy()
-                    .setPath("/milo/discovery")
+                    .setPath("/" + name + "/discovery")
                     .setSecurityPolicy(SecurityPolicy.None)
                     .setSecurityMode(MessageSecurityMode.None);
 

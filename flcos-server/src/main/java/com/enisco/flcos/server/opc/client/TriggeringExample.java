@@ -41,7 +41,7 @@ public class TriggeringExample implements ClientExample {
     public TriggeringExample() throws Exception {
         TriggeringExample example = new TriggeringExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

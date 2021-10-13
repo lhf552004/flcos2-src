@@ -1,5 +1,6 @@
-package com.enisco.flcos.opc.server;
+package com.enisco.flcos.opc.server.opc;
 
+import com.enisco.flcos.server.entities.opc.OPCServerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,33 +15,61 @@ import javax.xml.transform.sax.SAXSource;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class OPCServerFactory {
     private static final Logger logger = LoggerFactory.getLogger(OPCServerFactory.class);
     private List<FLCosOPCServer> opcServers = new ArrayList<>();
 
+    public Map<String, List<EmesModule>> getModulesMap() {
+        return modulesMap;
+    }
+
+    private Map<String, List<EmesModule>> modulesMap = new HashMap<>();
+
     public List<FLCosOPCServer> getOpcServers() {
         return opcServers;
     }
 
-    public void loadAllOPCServers(List<Path> OPCConfigPaths) {
+    public List<String> getEndpointUrls() {
+        return endpointUrls;
+    }
+
+    private List<String> endpointUrls = new ArrayList<>();
+
+
+    public void loadAllOPCServers(List<OPCServerEntity> opcServerEntities) {
         opcServers.clear();
-        OPCConfigPaths.forEach(modFolderPath-> {
+        opcServerEntities.forEach(opcServerEntity -> {
             try {
-                loadOPCServer(modFolderPath);
+                var endpointUrl = "opc.tcp://" +
+                        opcServerEntity.getAddress() + ":" +
+                        opcServerEntity.getTcpPort() + "/" +
+                        opcServerEntity.getName();
+                endpointUrls.add(endpointUrl);
+                if(opcServerEntity.isInternal()) {
+                    var modFolderPath = Paths.get(opcServerEntity.getConfigPath());
+                    if(Files.exists(modFolderPath)) {
+                        loadOPCServer(opcServerEntity.getAddress(), opcServerEntity.getTcpPort(), opcServerEntity.getHttpsPort(), opcServerEntity.getName(), modFolderPath);
+                    }
+                }
+
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
         });
     }
 
-    private void loadOPCServer(Path modFolderPath) throws Exception {
+    private void loadOPCServer(String address, int tcpPort, int httpsPort, String name, Path modFolderPath) throws Exception {
         var modules = loadModules(modFolderPath);
-        FLCosOPCServer server = new FLCosOPCServer(modules);
+        FLCosOPCServer server = new FLCosOPCServer(address, tcpPort, httpsPort, name, modules);
         server.startup().get();
+        modulesMap.put(server.getEndpointUrl(), modules);
         opcServers.add(server);
     }
 

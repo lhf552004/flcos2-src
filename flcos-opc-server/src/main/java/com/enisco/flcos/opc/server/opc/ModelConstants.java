@@ -1,4 +1,4 @@
-package com.enisco.flcos.opc.server;
+package com.enisco.flcos.opc.server.opc;
 
 public final class ModelConstants
 {

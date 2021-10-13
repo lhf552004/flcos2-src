@@ -27,7 +27,7 @@ public class ReadWriteCustomDataTypeNodeExample implements ClientExample {
     public ReadWriteCustomDataTypeNodeExample() throws Exception {
         ReadWriteCustomDataTypeNodeExample example = new ReadWriteCustomDataTypeNodeExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

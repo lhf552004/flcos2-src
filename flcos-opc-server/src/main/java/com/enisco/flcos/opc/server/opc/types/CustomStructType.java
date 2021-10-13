@@ -8,9 +8,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package com.enisco.flcos.opc.server.types;
+package com.enisco.flcos.opc.server.opc.types;
 
-import com.enisco.flcos.opc.server.FLCosNamespace;
+import com.enisco.flcos.opc.server.opc.FLCosNamespace;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;

@@ -1,7 +1,7 @@
 /*
  * (c) 2015 - 2016 ENisco GmbH & Co. KG
  */
-package com.enisco.flcos.opc.server;
+package com.enisco.flcos.opc.server.opc;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

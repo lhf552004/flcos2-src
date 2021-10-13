@@ -18,6 +18,7 @@ import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.QualifiedName;
+import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MonitoringMode;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
@@ -29,11 +30,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 
-public class SubscriptionExample implements ClientExample {
+public class OPCClientVariableSubscriber {
 
 //    public SubscriptionExample() throws Exception {
 //        SubscriptionExample example = new SubscriptionExample();
@@ -41,21 +44,28 @@ public class SubscriptionExample implements ClientExample {
 //        new ClientExampleRunner(example).run();
 //    }
 
+    public OPCClientVariableSubscriber(OPCClientHandler opcClientHandler, List<NodeId> nodeIdsToSubscribe, BiConsumer<NodeId, Variant> consumer) {
+        this.opcClientHandler = opcClientHandler;
+        this.nodeIdsToSubscribe = nodeIdsToSubscribe;
+        this.consumer = consumer;
+    }
+
+    private OPCClientHandler opcClientHandler;
+
+    private List<NodeId> nodeIdsToSubscribe;
+
+    private BiConsumer consumer;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+    public void run() throws Exception {
         // synchronous connect
-        client.connect().get();
+//        client.connect().get();
 
         // create a subscription @ 1000ms
-        UaSubscription subscription = client.getSubscriptionManager().createSubscription(1000.0).get();
+        UaSubscription subscription = opcClientHandler.getOpcUaClient().getSubscriptionManager().createSubscription(1000.0).get();
 
-        // subscribe to the Value attribute of the server's CurrentTime node
-        ReadValueId readValueId = new ReadValueId(
-            new NodeId(2, "T1C041/Visu/P11/035RB/BMK"),
-            AttributeId.Value.uid(), null, QualifiedName.NULL_VALUE
-        );
+
 
         // IMPORTANT: client handle must be unique per item within the context of a subscription.
         // You are not required to use the UaSubscription's client handle sequence; it is provided as a convenience.
@@ -70,11 +80,20 @@ public class SubscriptionExample implements ClientExample {
             true        // discard oldest
         );
 
-        MonitoredItemCreateRequest request = new MonitoredItemCreateRequest(
-            readValueId,
-            MonitoringMode.Reporting,
-            parameters
-        );
+        var requests = nodeIdsToSubscribe.stream().map(nodeId -> {
+            // subscribe to the Value attribute of the server's CurrentTime node
+            ReadValueId readValueId = new ReadValueId(
+                    nodeId,
+                    AttributeId.Value.uid(), null, QualifiedName.NULL_VALUE
+            );
+            return new MonitoredItemCreateRequest(
+                    readValueId,
+                    MonitoringMode.Reporting,
+                    parameters
+            );
+        }).collect(Collectors.toList());
+
+
 
         // when creating items in MonitoringMode.Reporting this callback is where each item needs to have its
         // value/event consumer hooked up. The alternative is to create the item in sampling mode, hook up the
@@ -84,7 +103,7 @@ public class SubscriptionExample implements ClientExample {
 
         List<UaMonitoredItem> items = subscription.createMonitoredItems(
             TimestampsToReturn.Both,
-            newArrayList(request),
+            newArrayList(requests),
             onItemCreated
         ).get();
 
@@ -97,16 +116,13 @@ public class SubscriptionExample implements ClientExample {
                     item.getReadValueId().getNodeId(), item.getStatusCode());
             }
         }
-
-        // let the example run for 5 seconds then terminate
-        Thread.sleep(5000);
-        future.complete(client);
     }
 
     private void onSubscriptionValue(UaMonitoredItem item, DataValue value) {
         logger.info(
             "subscription value received: item={}, value={}",
             item.getReadValueId().getNodeId(), value.getValue());
+        consumer.accept(item.getReadValueId().getNodeId(), value.getValue());
     }
 
 }

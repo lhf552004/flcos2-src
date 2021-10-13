@@ -33,7 +33,7 @@ public class UnifiedAutomationReadCustomDataTypeExample implements ClientExample
         UnifiedAutomationReadCustomDataTypeExample example =
             new UnifiedAutomationReadCustomDataTypeExample();
 
-        new ClientExampleRunner(example, false).run();
+        new OPCClientHandler(example, false).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

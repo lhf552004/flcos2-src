@@ -8,13 +8,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package com.enisco.flcos.opc.server;
+package com.enisco.flcos.opc.server.opc;
 
-import com.enisco.flcos.opc.server.methods.GenerateEventMethod;
-import com.enisco.flcos.opc.server.methods.SqrtMethod;
-import com.enisco.flcos.opc.server.types.CustomEnumType;
-import com.enisco.flcos.opc.server.types.CustomStructType;
-import com.enisco.flcos.opc.server.types.CustomUnionType;
+import com.enisco.flcos.server.opc.server.methods.GenerateEventMethod;
+import com.enisco.flcos.server.opc.server.methods.SqrtMethod;
+import com.enisco.flcos.server.opc.server.types.CustomEnumType;
+import com.enisco.flcos.server.opc.server.types.CustomStructType;
+import com.enisco.flcos.server.opc.server.types.CustomUnionType;
 import org.eclipse.milo.opcua.sdk.core.AccessLevel;
 import org.eclipse.milo.opcua.sdk.core.Reference;
 import org.eclipse.milo.opcua.sdk.core.ValueRank;
@@ -28,6 +28,7 @@ import org.eclipse.milo.opcua.sdk.server.dtd.DataTypeDictionaryManager;
 import org.eclipse.milo.opcua.sdk.server.model.nodes.objects.BaseEventTypeNode;
 import org.eclipse.milo.opcua.sdk.server.model.nodes.objects.ServerTypeNode;
 import org.eclipse.milo.opcua.sdk.server.model.nodes.variables.AnalogItemTypeNode;
+import org.eclipse.milo.opcua.sdk.server.nodes.*;
 import org.eclipse.milo.opcua.sdk.server.nodes.factories.NodeFactory;
 import org.eclipse.milo.opcua.sdk.server.nodes.filters.AttributeFilters;
 import org.eclipse.milo.opcua.sdk.server.util.SubscriptionModel;
@@ -35,8 +36,10 @@ import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.BuiltinDataType;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaException;
+import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.StructureType;
+import org.eclipse.milo.opcua.stack.core.types.structured.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +51,7 @@ import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.
 
 public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
 
-    public static final String NAMESPACE_URI = "urn:eclipse:milo:hello-world";
+    public static final String NAMESPACE_URI = "urn:enisco:flcos:opc";
 
     private static final Object[][] STATIC_SCALAR_NODES = new Object[][]{
             {"Boolean", Identifiers.Boolean, new Variant(false)},
@@ -99,6 +102,7 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
             {"NodeIdArray", Identifiers.NodeId, new NodeId(1234, "abcd")}
     };
 
+    private List<NodeId> nodeIdsToSubscribe = new ArrayList<>();
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -112,6 +116,10 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
     private final SubscriptionModel subscriptionModel;
 
     private List<EmesModule> modules = new ArrayList<>();
+
+    public List<NodeId> getNodeIdsToSubscribe() {
+        return nodeIdsToSubscribe;
+    }
 
     FLCosNamespace(OpcUaServer server, List<EmesModule> modules) {
         super(server, NAMESPACE_URI);
@@ -127,7 +135,7 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
         getLifecycleManager().addLifecycle(new Lifecycle() {
             @Override
             public void startup() {
-                startBogusEventNotifier();
+//                startBogusEventNotifier();
             }
 
             @Override
@@ -165,11 +173,11 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
         ));
 
         // Add the rest of the nodes
-        addVariableNodes(rootNode);
-
-        addSqrtMethod(rootNode);
-
-        addGenerateEventMethod(rootNode);
+//        addVariableNodes(rootNode);
+//
+//        addSqrtMethod(rootNode);
+//
+//        addGenerateEventMethod(rootNode);
 
         modules.stream().forEach(module -> {
             NodeId nodeId = newNodeId(module.getName());
@@ -185,28 +193,28 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
 
         });
 
-        try {
-            registerCustomEnumType();
-            addCustomEnumTypeVariable(rootNode);
-        } catch (Exception e) {
-            logger.warn("Failed to register custom enum type", e);
-        }
-
-        try {
-            registerCustomStructType();
-            addCustomStructTypeVariable(rootNode);
-        } catch (Exception e) {
-            logger.warn("Failed to register custom struct type", e);
-        }
-
-        try {
-            registerCustomUnionType();
-            addCustomUnionTypeVariable(rootNode);
-        } catch (Exception e) {
-            logger.warn("Failed to register custom struct type", e);
-        }
-
-        addCustomObjectTypeAndInstance(rootNode);
+//        try {
+//            registerCustomEnumType();
+//            addCustomEnumTypeVariable(rootNode);
+//        } catch (Exception e) {
+//            logger.warn("Failed to register custom enum type", e);
+//        }
+//
+//        try {
+//            registerCustomStructType();
+//            addCustomStructTypeVariable(rootNode);
+//        } catch (Exception e) {
+//            logger.warn("Failed to register custom struct type", e);
+//        }
+//
+//        try {
+//            registerCustomUnionType();
+//            addCustomUnionTypeVariable(rootNode);
+//        } catch (Exception e) {
+//            logger.warn("Failed to register custom struct type", e);
+//        }
+//
+//        addCustomObjectTypeAndInstance(rootNode);
     }
 
     private void startBogusEventNotifier() {
@@ -302,7 +310,7 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
         logger.info("addVariableNode, NodeName: " + nodeName + "value: " + value);
         Variant variant = new Variant(value);
 
-        UaVariableNode.build(getNodeContext(), builder -> {
+        var variableNode = UaVariableNode.build(getNodeContext(), builder -> {
             builder.setNodeId(newNodeId(rootNode.getNodeId().getIdentifier() + "/" + nodeName));
             builder.setAccessLevel(AccessLevel.READ_WRITE);
             builder.setUserAccessLevel(AccessLevel.READ_WRITE);
@@ -310,8 +318,8 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
             builder.setDisplayName(LocalizedText.english(nodeName));
             builder.setDataType(nodeTypeId);
             builder.setTypeDefinition(Identifiers.BaseDataVariableType);
-            builder.setValueRank(ValueRank.OneDimension.getValue());
-            builder.setArrayDimensions(new UInteger[]{uint(0)});
+//            builder.setValueRank(ValueRank.OneDimension.getValue());
+//            builder.setArrayDimensions(new UInteger[]{uint(0)});
             builder.setValue(new DataValue(variant));
 
             builder.addAttributeFilter(new AttributeLoggingFilter(AttributeId.Value::equals));
@@ -325,6 +333,7 @@ public class FLCosNamespace extends ManagedNamespaceWithLifecycle {
 
             return builder.buildAndAdd();
         });
+        nodeIdsToSubscribe.add(variableNode.getNodeId());
     }
 
     private void addArrayNodes(UaFolderNode rootNode) {

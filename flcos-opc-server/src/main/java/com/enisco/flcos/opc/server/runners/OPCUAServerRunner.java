@@ -1,6 +1,6 @@
 package com.enisco.flcos.opc.server.runners;
 
-import com.enisco.flcos.opc.server.OPCServerFactory;
+import com.enisco.flcos.opc.server.opc.OPCServerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

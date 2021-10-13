@@ -30,7 +30,7 @@ public class ManagedSubscriptionEventExample implements ClientExample {
     public ManagedSubscriptionEventExample() throws Exception {
         ManagedSubscriptionEventExample example = new ManagedSubscriptionEventExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

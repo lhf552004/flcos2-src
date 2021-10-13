@@ -14,29 +14,11 @@ import org.springframework.stereotype.Component;
 public class OPCUAClientRunner implements CommandLineRunner {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    OPCServerFactory moduleFactory;
+    OPCClientFactory clientFactory;
     @Override
     public void run(String... args) throws Exception {
-        logger.debug("OPCUA clients starting");
-        logger.debug("OPCUA server counts: " + moduleFactory.getOpcServers().size());
-//        moduleFactory.getOpcServers().forEach(flCosOPCServer -> {
-//            BrowseAsyncExample subscriptionExample = new BrowseAsyncExample();
-//            ClientExampleRunner clientExampleRunner = null;
-//            try {
-//                clientExampleRunner = new ClientExampleRunner(subscriptionExample,flCosOPCServer );
-//                clientExampleRunner.run();
-//            } catch (Exception exception) {
-//                exception.printStackTrace();
-//            }
-//
-//        });
-        SubscriptionExample subscriptionExample = new SubscriptionExample();
-        ClientExampleRunner clientExampleRunner = null;
-        try {
-            clientExampleRunner = new ClientExampleRunner(subscriptionExample );
-            clientExampleRunner.run();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        logger.debug("OPCUA clients initializing");
+        clientFactory.initialize();
+        logger.debug("OPCUA clients initialized");
     }
 }

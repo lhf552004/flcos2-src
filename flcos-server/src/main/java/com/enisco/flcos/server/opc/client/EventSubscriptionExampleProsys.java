@@ -15,7 +15,7 @@ public class EventSubscriptionExampleProsys extends EventSubscriptionExample {
     public EventSubscriptionExampleProsys() throws Exception {
         EventSubscriptionExampleProsys example = new EventSubscriptionExampleProsys();
 
-        new ClientExampleRunner(example, false).run();
+        new OPCClientHandler(example, false).run();
     }
 
     @Override

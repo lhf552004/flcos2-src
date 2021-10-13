@@ -32,6 +32,6 @@ public class OPCUAServerRunner implements CommandLineRunner {
         var opcServers = opcServerRepository.findAll();
         // TODO: load internal server
         moduleFactory.loadAllOPCServers(opcServers);
-        logger.debug("OPCUA Servers loading finished");
+        logger.debug("OPCUA Servers loaded");
     }
 }

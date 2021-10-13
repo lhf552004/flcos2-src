@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package com.enisco.flcos.opc.server;
+package com.enisco.flcos.opc.server.opc;
 
 import com.google.common.collect.Sets;
 import org.eclipse.milo.opcua.sdk.server.util.HostnameUtil;
@@ -54,10 +54,10 @@ class KeyStoreLoader {
 
             KeyPair keyPair = SelfSignedCertificateGenerator.generateRsaKeyPair(2048);
 
-            String applicationUri = "urn:eclipse:milo:examples:server:" + UUID.randomUUID();
+            String applicationUri = "urn:enisco:flcos:opc:server:" + UUID.randomUUID();
 
             SelfSignedCertificateBuilder builder = new SelfSignedCertificateBuilder(keyPair)
-                .setCommonName("Eclipse Milo Example Server")
+                .setCommonName("Enisco FLCos OPC Server")
                 .setOrganization("digitalpetri")
                 .setOrganizationalUnit("dev")
                 .setLocalityName("Folsom")

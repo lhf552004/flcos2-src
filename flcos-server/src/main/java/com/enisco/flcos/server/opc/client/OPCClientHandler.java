@@ -13,10 +13,13 @@ package com.enisco.flcos.server.opc.client;
 import com.enisco.flcos.server.opc.server.FLCosOPCServer;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
+import org.eclipse.milo.opcua.sdk.client.api.identity.AnonymousProvider;
+import org.eclipse.milo.opcua.sdk.client.api.identity.IdentityProvider;
 import org.eclipse.milo.opcua.stack.client.security.DefaultClientCertificateValidator;
-import org.eclipse.milo.opcua.stack.core.Stack;
 import org.eclipse.milo.opcua.stack.core.security.DefaultTrustListManager;
+import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
+import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,14 +31,33 @@ import java.security.Security;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 
-public class ClientExampleRunner {
+public class OPCClientHandler {
 
     static {
         // Required for SecurityPolicy.Aes256_Sha256_RsaPss
         Security.addProvider(new BouncyCastleProvider());
+    }
+
+    private final String endpointUrl;
+
+    public String getEndpointUrl() {
+        return endpointUrl;
+    }
+
+    private Predicate<EndpointDescription> endpointFilter() {
+        return e -> getSecurityPolicy().getUri().equals(e.getSecurityPolicyUri());
+    }
+
+    private SecurityPolicy getSecurityPolicy() {
+        return SecurityPolicy.Basic256Sha256;
+    }
+
+    private IdentityProvider getIdentityProvider() {
+        return new AnonymousProvider();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -46,25 +68,42 @@ public class ClientExampleRunner {
 
     private DefaultTrustListManager trustListManager;
 
-    private final ClientExample clientExample;
+    private ClientExample clientExample;
     private boolean serverRequired;
 
-    public ClientExampleRunner(ClientExample clientExample) throws Exception {
+    private OpcUaClient opcUaClient;
+
+    public OPCClientHandler(String endpointUrl) throws Exception {
+        this.endpointUrl = endpointUrl;
+        opcUaClient = createClient();
+    }
+
+    public void connect() throws ExecutionException, InterruptedException {
+        opcUaClient.connect().get();
+    }
+
+    public OPCClientHandler(ClientExample clientExample) throws Exception {
         this(clientExample, true);
     }
 
-    public ClientExampleRunner(ClientExample clientExample, boolean serverRequired) throws Exception {
+    public OPCClientHandler(ClientExample clientExample, boolean serverRequired) throws Exception {
         this.clientExample = clientExample;
         this.serverRequired = serverRequired;
+        this.endpointUrl = "";
     }
 
-    public ClientExampleRunner(ClientExample clientExample, FLCosOPCServer exampleServer) throws Exception {
+    public OPCClientHandler(ClientExample clientExample, FLCosOPCServer exampleServer) throws Exception {
         this.clientExample = clientExample;
 //        this.serverRequired = serverRequired;
         this.exampleServer = exampleServer;
+        this.endpointUrl = exampleServer.getEndpointUrl();
 //        if (serverRequired) {
 ////            exampleServer = ExampleServer.getInstance();
 //        }
+    }
+
+    public OpcUaClient getOpcUaClient() {
+        return opcUaClient;
     }
 
     private OpcUaClient createClient() throws Exception {
@@ -89,20 +128,20 @@ public class ClientExampleRunner {
             new DefaultClientCertificateValidator(trustListManager);
 
         return OpcUaClient.create(
-            clientExample.getEndpointUrl(),
+            getEndpointUrl(),
             endpoints ->
                 endpoints.stream()
-                    .filter(clientExample.endpointFilter())
+                    .filter(endpointFilter())
                     .findFirst(),
             configBuilder ->
                 configBuilder
-                    .setApplicationName(LocalizedText.english("eclipse milo opc-ua client"))
-                    .setApplicationUri("urn:eclipse:milo:examples:client")
+                    .setApplicationName(LocalizedText.english("Enisco FLCos opc-ua client"))
+                    .setApplicationUri("urn:enisco:flcos:opc:client")
                     .setKeyPair(loader.getClientKeyPair())
                     .setCertificate(loader.getClientCertificate())
                     .setCertificateChain(loader.getClientCertificateChain())
                     .setCertificateValidator(certificateValidator)
-                    .setIdentityProvider(clientExample.getIdentityProvider())
+                    .setIdentityProvider(getIdentityProvider())
                     .setRequestTimeout(uint(5000))
                     .build()
         );
@@ -110,7 +149,7 @@ public class ClientExampleRunner {
 
     public void run() {
         try {
-            OpcUaClient client = createClient();
+//            OpcUaClient client = createClient();
 
             // For the sake of the examples we will create mutual trust between the client and
             // server so we can run them with security enabled by default.
@@ -154,7 +193,7 @@ public class ClientExampleRunner {
             });
 
             try {
-                clientExample.run(client, future);
+                clientExample.run(opcUaClient, future);
                 future.get(60, TimeUnit.SECONDS);
             } catch (Throwable t) {
                 logger.error("Error running client example: {}", t.getMessage(), t);

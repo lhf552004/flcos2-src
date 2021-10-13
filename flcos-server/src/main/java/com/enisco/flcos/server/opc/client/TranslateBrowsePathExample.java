@@ -28,7 +28,7 @@ public class TranslateBrowsePathExample implements ClientExample {
     public TranslateBrowsePathExample() throws Exception {
         TranslateBrowsePathExample example = new TranslateBrowsePathExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

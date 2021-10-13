@@ -8,6 +8,7 @@ import com.enisco.flcos.server.dto.opcs.OpcServerDTO;
 import com.enisco.flcos.server.entities.UserEntity;
 import com.enisco.flcos.server.entities.opc.OPCServerEntity;
 import com.enisco.flcos.server.repository.postgresql.OPCServerRepository;
+import com.enisco.flcos.server.util.RepositoryUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class OPCUAConfigController {
     @PostMapping
     public long createOPC(@RequestBody NewOpcServerDTO opcServerDTO){
         var opcServerEntity = modelMapper.map(opcServerDTO, OPCServerEntity.class);
-        opcServerRepository.save(opcServerEntity);
+        RepositoryUtil.create(opcServerRepository, opcServerEntity);
         return opcServerEntity.getId();
     }
 
@@ -54,9 +55,9 @@ public class OPCUAConfigController {
     public ResponseEntity updateOPCServer(@PathVariable Long id, @RequestBody OpcServerDTO opcServerDTO){
         var result = opcServerRepository.findById(id);
         if (result.isPresent()) {
-            var userEntity = modelMapper.map(opcServerDTO, OPCServerEntity.class);
-            opcServerRepository.save(userEntity);
-            return ResponseEntity.ok(userEntity.getId());
+            var opcServerEntity = modelMapper.map(opcServerDTO, OPCServerEntity.class);
+            RepositoryUtil.update(opcServerRepository, opcServerEntity);
+            return ResponseEntity.ok(opcServerEntity.getId());
         } else{
             logger.error("User {} not found", id);
             return ResponseEntity.notFound().build();

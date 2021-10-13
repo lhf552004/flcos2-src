@@ -27,7 +27,7 @@ public class HistoryReadExampleProsys implements ClientExample {
     public HistoryReadExampleProsys() throws Exception {
         HistoryReadExampleProsys example = new HistoryReadExampleProsys();
 
-        new ClientExampleRunner(example, false).run();
+        new OPCClientHandler(example, false).run();
     }
 
     @Override

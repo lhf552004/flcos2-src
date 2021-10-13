@@ -52,13 +52,13 @@ class KeyStoreLoader {
             KeyPair keyPair = SelfSignedCertificateGenerator.generateRsaKeyPair(2048);
 
             SelfSignedCertificateBuilder builder = new SelfSignedCertificateBuilder(keyPair)
-                .setCommonName("Eclipse Milo Example Client")
+                .setCommonName("Enisco FLCos OPC Client")
                 .setOrganization("digitalpetri")
                 .setOrganizationalUnit("dev")
                 .setLocalityName("Folsom")
                 .setStateName("CA")
                 .setCountryCode("US")
-                .setApplicationUri("urn:eclipse:milo:examples:client")
+                .setApplicationUri("urn:enisco:flcos:opc:client")
                 .addDnsName("localhost")
                 .addIpAddress("127.0.0.1");
 

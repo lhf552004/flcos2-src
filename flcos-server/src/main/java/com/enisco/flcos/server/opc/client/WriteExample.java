@@ -27,7 +27,7 @@ public class WriteExample implements ClientExample {
     public WriteExample() throws Exception {
         WriteExample example = new WriteExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

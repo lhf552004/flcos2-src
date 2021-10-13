@@ -29,7 +29,7 @@ public class ReadNodeExample implements ClientExample {
     public ReadNodeExample() throws Exception {
         ReadNodeExample example = new ReadNodeExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

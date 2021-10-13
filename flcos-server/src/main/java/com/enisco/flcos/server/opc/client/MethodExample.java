@@ -28,7 +28,7 @@ public class MethodExample implements ClientExample {
     public MethodExample() throws Exception {
         MethodExample example = new MethodExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

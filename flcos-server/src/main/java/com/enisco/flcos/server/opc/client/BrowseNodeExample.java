@@ -26,7 +26,7 @@ public class BrowseNodeExample implements ClientExample {
     public BrowseNodeExample() throws Exception {
         BrowseNodeExample example = new BrowseNodeExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

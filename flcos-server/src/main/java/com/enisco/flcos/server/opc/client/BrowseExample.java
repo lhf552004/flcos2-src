@@ -34,7 +34,7 @@ public class BrowseExample implements ClientExample {
     public BrowseExample() throws Exception {
         BrowseExample example = new BrowseExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

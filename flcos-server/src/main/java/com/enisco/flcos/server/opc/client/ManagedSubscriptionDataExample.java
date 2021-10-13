@@ -25,7 +25,7 @@ public class ManagedSubscriptionDataExample implements ClientExample {
     public ManagedSubscriptionDataExample() throws Exception {
         ManagedSubscriptionDataExample example = new ManagedSubscriptionDataExample();
 
-        new ClientExampleRunner(example).run();
+        new OPCClientHandler(example).run();
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

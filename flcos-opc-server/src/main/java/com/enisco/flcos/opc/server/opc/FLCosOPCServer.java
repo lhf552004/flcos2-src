@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package com.enisco.flcos.opc.server;
+package com.enisco.flcos.opc.server.opc;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.milo.opcua.sdk.server.OpcUaServer;
@@ -25,6 +25,7 @@ import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
 import org.eclipse.milo.opcua.stack.core.transport.TransportProfile;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MessageSecurityMode;
 import org.eclipse.milo.opcua.stack.core.types.structured.BuildInfo;
 import org.eclipse.milo.opcua.stack.core.util.CertificateUtil;
@@ -60,6 +61,10 @@ public class FLCosOPCServer {
     Logger logger = LoggerFactory.getLogger(FLCosOPCServer.class);
     private static final int TCP_BIND_PORT = 12686;
     private static final int HTTPS_BIND_PORT = 8443;
+    private int tcpPort;
+    private int httpsPort;
+    private String address;
+    private String name;
 
     static {
         // Required for SecurityPolicy.Aes256_Sha256_RsaPss
@@ -82,6 +87,9 @@ public class FLCosOPCServer {
 //
 //    private static ExampleServer exampleServer;
 
+    public List<NodeId> getNodeIdsToSubscribe() {
+        return this.exampleNamespace.getNodeIdsToSubscribe();
+    }
     public void run() throws Exception {
         logger.debug("Startup example Server");
         startup().get();
@@ -93,10 +101,18 @@ public class FLCosOPCServer {
         future.get();
     }
 
+    public String getEndpointUrl() {
+        return "opc.tcp://" + address + ":" + tcpPort + "/" + name;
+    }
+
     private final OpcUaServer server;
     private final FLCosNamespace exampleNamespace;
 
-    public FLCosOPCServer(List<EmesModule> modules) throws Exception {
+    public FLCosOPCServer(String address, int tcpPort, int httpsPort, String name, List<EmesModule> modules) throws Exception {
+        this.address = address;
+        this.tcpPort = tcpPort;
+        this.httpsPort = httpsPort;
+        this.name = name;
         Path securityTempDir = Paths.get(System.getProperty("java.io.tmpdir"), "server", "security");
         Files.createDirectories(securityTempDir);
         if (!Files.exists(securityTempDir)) {
@@ -161,13 +177,13 @@ public class FLCosOPCServer {
 
         OpcUaServerConfig serverConfig = OpcUaServerConfig.builder()
             .setApplicationUri(applicationUri)
-            .setApplicationName(LocalizedText.english("Eclipse Milo OPC UA Example Server"))
+            .setApplicationName(LocalizedText.english("Enisco FLCos OPC UA Server"))
             .setEndpoints(endpointConfigurations)
             .setBuildInfo(
                 new BuildInfo(
-                    "urn:eclipse:milo:example-server",
-                    "eclipse",
-                    "eclipse milo example server",
+                    "urn:enisco:flcos:opc-server",
+                    "Enisco",
+                    "Enisco FLCos OPC server",
                     OpcUaServer.SDK_VERSION,
                     "", DateTime.now()))
             .setCertificateManager(certificateManager)
@@ -176,7 +192,7 @@ public class FLCosOPCServer {
             .setHttpsKeyPair(httpsKeyPair)
             .setHttpsCertificate(httpsCertificate)
             .setIdentityValidator(new CompositeValidator(identityValidator, x509IdentityValidator))
-            .setProductUri("urn:eclipse:milo:example-server")
+            .setProductUri("urn:enisco:flcos:opc-server")
             .build();
 
         server = new OpcUaServer(serverConfig);
@@ -189,18 +205,18 @@ public class FLCosOPCServer {
         Set<EndpointConfiguration> endpointConfigurations = new LinkedHashSet<>();
 
         List<String> bindAddresses = newArrayList();
-        bindAddresses.add("0.0.0.0");
+        bindAddresses.add(address);
 
         Set<String> hostnames = new LinkedHashSet<>();
         hostnames.add(HostnameUtil.getHostname());
-        hostnames.addAll(HostnameUtil.getHostnames("0.0.0.0"));
+        hostnames.addAll(HostnameUtil.getHostnames(address));
 
         for (String bindAddress : bindAddresses) {
             for (String hostname : hostnames) {
                 EndpointConfiguration.Builder builder = EndpointConfiguration.newBuilder()
                     .setBindAddress(bindAddress)
                     .setHostname(hostname)
-                    .setPath("/milo")
+                    .setPath("/" + name)
                     .setCertificate(certificate)
                     .addTokenPolicies(
                         USER_TOKEN_POLICY_ANONYMOUS,
@@ -212,21 +228,21 @@ public class FLCosOPCServer {
                     .setSecurityPolicy(SecurityPolicy.None)
                     .setSecurityMode(MessageSecurityMode.None);
 
-                endpointConfigurations.add(buildTcpEndpoint(noSecurityBuilder));
-                endpointConfigurations.add(buildHttpsEndpoint(noSecurityBuilder));
+                endpointConfigurations.add(buildTcpEndpoint(noSecurityBuilder, tcpPort));
+                endpointConfigurations.add(buildHttpsEndpoint(noSecurityBuilder, httpsPort));
 
                 // TCP Basic256Sha256 / SignAndEncrypt
                 endpointConfigurations.add(buildTcpEndpoint(
                     builder.copy()
                         .setSecurityPolicy(SecurityPolicy.Basic256Sha256)
-                        .setSecurityMode(MessageSecurityMode.SignAndEncrypt))
+                        .setSecurityMode(MessageSecurityMode.SignAndEncrypt), tcpPort)
                 );
 
                 // HTTPS Basic256Sha256 / Sign (SignAndEncrypt not allowed for HTTPS)
                 endpointConfigurations.add(buildHttpsEndpoint(
                     builder.copy()
                         .setSecurityPolicy(SecurityPolicy.Basic256Sha256)
-                        .setSecurityMode(MessageSecurityMode.Sign))
+                        .setSecurityMode(MessageSecurityMode.Sign), httpsPort)
                 );
 
                 /*
@@ -241,29 +257,29 @@ public class FLCosOPCServer {
                  */
 
                 EndpointConfiguration.Builder discoveryBuilder = builder.copy()
-                    .setPath("/milo/discovery")
+                    .setPath("/" + name + "/discovery")
                     .setSecurityPolicy(SecurityPolicy.None)
                     .setSecurityMode(MessageSecurityMode.None);
 
-                endpointConfigurations.add(buildTcpEndpoint(discoveryBuilder));
-                endpointConfigurations.add(buildHttpsEndpoint(discoveryBuilder));
+                endpointConfigurations.add(buildTcpEndpoint(discoveryBuilder, tcpPort));
+                endpointConfigurations.add(buildHttpsEndpoint(discoveryBuilder, httpsPort));
             }
         }
 
         return endpointConfigurations;
     }
 
-    private static EndpointConfiguration buildTcpEndpoint(EndpointConfiguration.Builder base) {
+    private static EndpointConfiguration buildTcpEndpoint(EndpointConfiguration.Builder base, Integer bindPort) {
         return base.copy()
             .setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
-            .setBindPort(TCP_BIND_PORT)
+            .setBindPort(bindPort)
             .build();
     }
 
-    private static EndpointConfiguration buildHttpsEndpoint(EndpointConfiguration.Builder base) {
+    private static EndpointConfiguration buildHttpsEndpoint(EndpointConfiguration.Builder base, Integer httpsPort) {
         return base.copy()
             .setTransportProfile(TransportProfile.HTTPS_UABINARY)
-            .setBindPort(HTTPS_BIND_PORT)
+            .setBindPort(httpsPort)
             .build();
     }
 
