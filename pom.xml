@@ -6,7 +6,6 @@
     <modules>
         <module>flcos-server</module>
         <module>flcos-opc-server</module>
-        <module>flcos-sdk</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

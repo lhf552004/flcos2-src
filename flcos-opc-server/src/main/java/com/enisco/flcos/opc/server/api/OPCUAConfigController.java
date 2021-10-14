@@ -2,9 +2,9 @@ package com.enisco.flcos.opc.server.api;
 
 import com.enisco.flcos.opc.server.repository.OPCServerRepository;
 import com.enisco.flcos.opc.server.util.RepositoryUtil;
-import com.enisco.flcos.sdk.dto.opcs.NewOpcServerDTO;
-import com.enisco.flcos.sdk.dto.opcs.OpcServerDTO;
-import com.enisco.flcos.sdk.entities.OPCServerEntity;
+import com.enisco.flcos.opc.server.dto.opcs.NewOpcServerDTO;
+import com.enisco.flcos.opc.server.dto.opcs.OpcServerDTO;
+import com.enisco.flcos.opc.server.entities.OPCServerEntity;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

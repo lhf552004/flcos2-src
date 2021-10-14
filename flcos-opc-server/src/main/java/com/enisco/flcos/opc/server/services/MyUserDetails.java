@@ -1,6 +1,6 @@
 package com.enisco.flcos.opc.server.services;
 
-import com.enisco.flcos.sdk.entities.UserEntity;
+import com.enisco.flcos.opc.server.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

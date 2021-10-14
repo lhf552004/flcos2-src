@@ -1,6 +1,6 @@
 package com.enisco.flcos.opc.server.util;
 
-import com.enisco.flcos.sdk.entities.EntityBase;
+import com.enisco.flcos.opc.server.entities.EntityBase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

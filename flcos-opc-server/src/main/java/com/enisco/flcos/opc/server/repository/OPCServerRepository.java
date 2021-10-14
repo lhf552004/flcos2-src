@@ -1,7 +1,7 @@
 package com.enisco.flcos.opc.server.repository;
 
 
-import com.enisco.flcos.sdk.entities.OPCServerEntity;
+import com.enisco.flcos.opc.server.entities.OPCServerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
