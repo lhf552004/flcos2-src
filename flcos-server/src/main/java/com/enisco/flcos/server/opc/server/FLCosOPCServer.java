@@ -10,6 +10,7 @@
 
 package com.enisco.flcos.server.opc.server;
 
+import com.enisco.flcos.server.opc.EmesModule;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.milo.opcua.sdk.server.OpcUaServer;
 import org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Singleton;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

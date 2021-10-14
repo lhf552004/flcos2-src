@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.opc.server;
+package com.enisco.flcos.server.opc;
 
 public interface XMLConst
 {

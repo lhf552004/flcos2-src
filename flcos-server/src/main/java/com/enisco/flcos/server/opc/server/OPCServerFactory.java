@@ -1,20 +1,12 @@
 package com.enisco.flcos.server.opc.server;
 
-import com.enisco.flcos.server.api.UsersController;
 import com.enisco.flcos.server.entities.opc.OPCServerEntity;
 import com.enisco.flcos.server.opc.AbstractOPCFactory;
+import com.enisco.flcos.server.opc.EmesModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.xml.sax.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.sax.SAXSource;
-import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

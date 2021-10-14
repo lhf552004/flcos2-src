@@ -10,6 +10,8 @@
 
 package com.enisco.flcos.server.opc.server;
 
+import com.enisco.flcos.server.opc.EmesModule;
+import com.enisco.flcos.server.opc.XMLObject;
 import com.enisco.flcos.server.opc.server.methods.GenerateEventMethod;
 import com.enisco.flcos.server.opc.server.methods.SqrtMethod;
 import com.enisco.flcos.server.opc.server.types.CustomEnumType;

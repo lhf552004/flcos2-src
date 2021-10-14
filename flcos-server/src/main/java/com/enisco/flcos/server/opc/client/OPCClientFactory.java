@@ -1,12 +1,15 @@
 package com.enisco.flcos.server.opc.client;
 
 import com.enisco.flcos.server.opc.AbstractOPCFactory;
-import com.enisco.flcos.server.opc.server.EmesModule;
+import com.enisco.flcos.server.opc.EmesModule;
+import com.enisco.flcos.server.opc.OPCNodeItem;
+import com.enisco.flcos.server.opc.OPCNodeList;
 import com.enisco.flcos.server.opc.server.FLCosOPCException;
 import com.enisco.flcos.server.opc.server.OPCServerFactory;
 import com.enisco.flcos.server.repository.postgresql.OPCServerRepository;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaMonitoredItem;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
+import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
 import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
@@ -22,10 +25,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -44,19 +44,24 @@ public class OPCClientFactory extends AbstractOPCFactory {
     @Autowired
     OPCServerFactory moduleFactory;
 
-    private Map<String, OPCClientHandler> opcClientHandlers = new HashMap<>();
+    private Map<String, OPCClientHandler> opcClientHandlers;
 
-    private List<String> alarmVariables = new ArrayList<>();
+    private List<String> alarmVariables;
 
-    private List<String> processVariables = new ArrayList<>();
+    private List<String> processVariables;
 
-    private List<OPCClientVariableSubscriber> subscribers = new ArrayList<>();
+    private Map<String, List<NodeId>> nodeIdsMap;
 
-    private Map<String, List<NodeId>> nodeIdsMap = new HashMap<>();
+    private Map<String, Object> variables;
 
-    private Map<String, Object> variables = new HashMap<>();
+    private Map<String, List<EmesModule>> modulesMap;
+
+    private Map<String, OPCNodeList> opcNodeListMap;
 
     public void initialize() {
+        // Reset
+        initializeVariables();
+
         var opcServers = opcServerRepository.findAll();
         opcServers.forEach(opcServerEntity -> {
             try {
@@ -71,9 +76,18 @@ public class OPCClientFactory extends AbstractOPCFactory {
                 List<EmesModule> modules = new ArrayList<>();
                 if(Files.exists(modFolderPath)) {
                     modules = loadModules(modFolderPath);
+                    modulesMap.put(endpointUrl, modules);
                 }
                 var parentIdentifiers = modules.stream().map(module -> module.getName()).collect(Collectors.toList());
-                browseNode("", parentIdentifiers, opcClientHandler, Identifiers.ObjectsFolder);
+                var opcNodeList = new OPCNodeList();
+                var rootNodeDTO = new OPCNodeItem();
+                rootNodeDTO.setNodeId(Identifiers.ObjectsFolder.toParseableString());
+                rootNodeDTO.setNodeClass(NodeClass.Object.name());
+                rootNodeDTO.setName("Objects");
+                rootNodeDTO.setChildren(new ArrayList<>());
+                opcNodeList.setRoot(rootNodeDTO);
+                opcNodeListMap.put(endpointUrl, opcNodeList);
+                browseNode("", rootNodeDTO, parentIdentifiers, opcClientHandler, Identifiers.ObjectsFolder);
                 // Initialize all variables
 //                nodeIds.forEach(nodeId -> {
 //                    try {
@@ -96,7 +110,17 @@ public class OPCClientFactory extends AbstractOPCFactory {
         });
     }
 
-    private void browseNode(String indent, List<String> parentIdentifiers, OPCClientHandler clientHandler, NodeId browseRoot) {
+    private void initializeVariables() {
+        opcClientHandlers = new HashMap<>();
+        alarmVariables = new ArrayList<>();
+        processVariables = new ArrayList<>();
+        nodeIdsMap = new HashMap<>();
+        variables = new HashMap<>();
+        modulesMap = new HashMap<>();
+        opcNodeListMap = new HashMap<>();
+    }
+
+    private void browseNode(String indent, OPCNodeItem parentNodeDTO, List<String> parentIdentifiers, OPCClientHandler clientHandler, NodeId browseRoot) {
         BrowseDescription browse = new BrowseDescription(
                 browseRoot,
                 BrowseDirection.Forward,
@@ -120,6 +144,12 @@ public class OPCClientFactory extends AbstractOPCFactory {
                             var identifier = nodeId.getIdentifier().toString();
                             var count = parentIdentifiers.stream().filter(identifier::contains).count();
                             if (identifier.equals("FLCos") || count > 0) {
+                                var nodeItem = new OPCNodeItem();
+                                nodeItem.setNodeId(nodeId.toParseableString());
+                                nodeItem.setName(rd.getBrowseName().getName());
+                                nodeItem.setNodeClass(rd.getNodeClass().name());
+                                nodeItem.setChildren(new ArrayList<>());
+                                parentNodeDTO.getChildren().add(nodeItem);
                                 if (rd.getNodeClass() == NodeClass.Variable) {
                                     logger.info("{} NodeId={}, BrowseName={}", indent, nodeId.toParseableString(), rd.getBrowseName().getName());
                                     if(nodeIdsMap.containsKey(clientHandler.getEndpointUrl())) {
@@ -131,7 +161,7 @@ public class OPCClientFactory extends AbstractOPCFactory {
                                     }
 
                                 }
-                                browseNode(indent + "  ", parentIdentifiers, clientHandler, nodeId);
+                                browseNode(indent + "  ", nodeItem, parentIdentifiers, clientHandler, nodeId);
                             }
                         });
             }
@@ -144,9 +174,19 @@ public class OPCClientFactory extends AbstractOPCFactory {
         return variables;
     }
 
+    public Set<String> getEndpointUrls() {
+        return opcClientHandlers.keySet();
+    }
 
+    public Map<String, List<EmesModule>> getModulesMap() {
+        return modulesMap;
+    }
 
-    public Object readVariable(String endpointUrl, String nodeId) throws UaException {
+    public Map<String, OPCNodeList> getOpcNodeListMap() {
+        return opcNodeListMap;
+    }
+
+    public Object readVariableNodeValue(String endpointUrl, String nodeId) throws UaException {
         var clientHandler = opcClientHandlers.get(endpointUrl);
         if (clientHandler != null) {
             UaVariableNode node = clientHandler.getOpcUaClient().getAddressSpace().getVariableNode(NodeId.parse(nodeId));
@@ -157,7 +197,21 @@ public class OPCClientFactory extends AbstractOPCFactory {
         return null;
     }
 
-    public Object readVariable(String endpointUrl, NodeId nodeId) throws UaException {
+    public UaNode readNode(String endpointUrl, String nodeId, String nodeClassStr) throws UaException {
+        var clientHandler = opcClientHandlers.get(endpointUrl);
+        if (clientHandler != null) {
+            var nodeClass = NodeClass.valueOf(nodeClassStr);
+            switch (nodeClass) {
+                case Variable:
+                    return clientHandler.getOpcUaClient().getAddressSpace().getVariableNode(NodeId.parse(nodeId));
+                case Object:
+                    return clientHandler.getOpcUaClient().getAddressSpace().getObjectNode(NodeId.parse(nodeId));
+            }
+        }
+        return null;
+    }
+
+    public Object readVariableNodeValue(String endpointUrl, NodeId nodeId) throws UaException {
         var clientHandler = opcClientHandlers.get(endpointUrl);
         if (clientHandler != null) {
             UaVariableNode node = clientHandler.getOpcUaClient().getAddressSpace().getVariableNode(nodeId);

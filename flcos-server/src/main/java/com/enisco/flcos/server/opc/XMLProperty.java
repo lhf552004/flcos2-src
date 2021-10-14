@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.opc.server;
+package com.enisco.flcos.server.opc;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
