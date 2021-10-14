@@ -1,6 +1,7 @@
 {
   "ALARM": {
-    "START": "Start"
+    "START": "Start",
+    "CURRENT ALARMS": "Alarmes actuelles"
   },
   "ADMIN": {
     "USERS": "Benutzer",
@@ -26,5 +27,18 @@
     "TCP PORT": "TCP Port",
     "HTTPS PORT": "Https Port",
     "ADDRESS": "Address"
+  },
+  "MENU": {
+    "Dashboard": "Tableau de bord",
+    "Warehouses": "Entrepôts",
+    "Products": "Produits",
+    "Lines": "Lignes",
+    "Alarms": "Alarms",
+    "Bins": "Bacs",
+    "Workflows": "Flux de travail",
+    "Process": "Traiter",
+    "OPC Servers": "OPC Servers",
+    "Admin": "Administrateur",
+    "Schemes": "Schemes"
   }
 }

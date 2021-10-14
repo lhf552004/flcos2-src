@@ -23,7 +23,7 @@
         <!-- Leaf node buttons here -->
         <span *ngIf="!menuItem.children || menuItem.children.length === 0">
           <button mat-button class="nav-link" [routerLink]="menuItem.url">
-            {{menuItem.name}}
+             {{'MENU.' + menuItem.name | translate}}
           </button>
         </span>
 <!--        <a class="nav-link" [routerLink]="[menuItem.url]" [routerLinkActive]="'active'">{{menuItem.name}}</a>-->

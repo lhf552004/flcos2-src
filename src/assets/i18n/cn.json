@@ -1,6 +1,7 @@
 {
   "ALARM": {
-    "START": "开始"
+    "START": "开始",
+    "CURRENT ALARMS": "当前消息"
   },
   "ADMIN": {
     "USERS": "用户",
@@ -26,5 +27,18 @@
     "TCP PORT": "TCP端口",
     "HTTPS PORT": "Https端口",
     "ADDRESS": "地址"
+  },
+  "MENU": {
+    "Dashboard": "仪表盘",
+    "Warehouses": "仓库",
+    "Products": "产品",
+    "Lines": "生产线",
+    "Alarms": "消息",
+    "Bins": "仓管理",
+    "Workflows": "工作流程",
+    "Process": "工艺步骤",
+    "OPC Servers": "OPC服务器",
+    "Admin": "管理员",
+    "Schemes": "Schemes"
   }
 }
