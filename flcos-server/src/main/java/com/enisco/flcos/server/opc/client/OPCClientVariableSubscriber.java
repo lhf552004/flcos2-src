@@ -109,11 +109,11 @@ public class OPCClientVariableSubscriber {
 
         for (UaMonitoredItem item : items) {
             if (item.getStatusCode().isGood()) {
-                logger.info("item created for nodeId={}", item.getReadValueId().getNodeId());
+                logger.info("item created for nodeId={}", item.getReadValueId().getNodeId().toParseableString());
             } else {
                 logger.warn(
                     "failed to create item for nodeId={} (status={})",
-                    item.getReadValueId().getNodeId(), item.getStatusCode());
+                    item.getReadValueId().getNodeId().toParseableString(), item.getStatusCode());
             }
         }
     }

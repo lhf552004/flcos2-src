@@ -2,6 +2,7 @@ package com.enisco.flcos.server.opc.server;
 
 import com.enisco.flcos.server.api.UsersController;
 import com.enisco.flcos.server.entities.opc.OPCServerEntity;
+import com.enisco.flcos.server.opc.AbstractOPCFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Component
-public class OPCServerFactory {
+public class OPCServerFactory extends AbstractOPCFactory {
     private static final Logger logger = LoggerFactory.getLogger(OPCServerFactory.class);
     private List<FLCosOPCServer> opcServers = new ArrayList<>();
 
@@ -71,58 +72,5 @@ public class OPCServerFactory {
         opcServers.add(server);
     }
 
-    private List<EmesModule> loadModules(Path modFolderPath) throws FLCosOPCException {
-        List<EmesModule> modules = new ArrayList<>();
-        if (!Files.exists(modFolderPath)) {
-            throw new FLCosOPCException("Mod folder not existed: " + modFolderPath);
-        }
-        File[] files = modFolderPath.toFile().listFiles((dir, name) -> name.endsWith(".mod"));
 
-        assert files != null;
-        for (File modFile : files) {
-            logger.info(modFile.toString());
-            var emeModule = loadModule(modFile);
-            if (emeModule != null)
-                modules.add(emeModule);
-        }
-        return modules;
-    }
-
-    private EmesModule loadModule(File modFile) {
-
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(EmesModule.class);
-            InputStream newInStream = new FileInputStream(modFile);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            spf.setFeature("http://xml.org/sax/features/validation", false);
-            XMLReader xmlReader = spf.newSAXParser()
-                    .getXMLReader();
-            InputSource inputSource = new InputSource(newInStream);
-            SAXSource source = new SAXSource(xmlReader, inputSource);
-            EmesModule emesModule = (EmesModule) jaxbUnmarshaller.unmarshal(source);
-
-            newInStream.close();
-            logger.info(emesModule.toString());
-            return emesModule;
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (SAXNotSupportedException e) {
-            e.printStackTrace();
-        } catch (SAXNotRecognizedException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-
-        }
-        return null;
-    }
 }
