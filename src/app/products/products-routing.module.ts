@@ -10,7 +10,7 @@ import {AuthGuardService} from '../core/user/auth-guard.service';
 
 const routes: Routes = [
   {
-    path: 'products',
+    path: '',
     canActivate: [AuthGuardService],
     component: ProductsComponent,
     resolve: {products: ProductsResolverService},

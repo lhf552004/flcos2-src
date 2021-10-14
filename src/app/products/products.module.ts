@@ -12,7 +12,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [ProductsComponent, ProductComponent, ProductDefaultComponent],
   imports: [
-    BrowserModule,
     ProductsRoutingModule,
     SharedModule,
     NgbDropdownModule
