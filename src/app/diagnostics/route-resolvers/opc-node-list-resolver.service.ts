@@ -14,9 +14,7 @@ export class OpcNodeListResolverService {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<OPCNodeList> {
-    return this.opcServerService.getEndpointUrls()
-      .pipe(
-        switchMap(a => this.opcServerService.getNodeList(a[0]))
-      );
+    this.opcServerService.getEndpointUrls().subscribe();
+    return this.opcServerService.getNodeList();
   }
 }
