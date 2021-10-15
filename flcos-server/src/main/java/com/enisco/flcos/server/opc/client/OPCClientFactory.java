@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.opc.client;
 
+import com.enisco.flcos.server.dto.opcs.OPCVariableChangedDTO;
 import com.enisco.flcos.server.opc.AbstractOPCFactory;
 import com.enisco.flcos.server.opc.EmesModule;
 import com.enisco.flcos.server.opc.OPCNodeItem;
@@ -7,6 +8,7 @@ import com.enisco.flcos.server.opc.OPCNodeList;
 import com.enisco.flcos.server.opc.server.FLCosOPCException;
 import com.enisco.flcos.server.opc.server.OPCServerFactory;
 import com.enisco.flcos.server.repository.postgresql.OPCServerRepository;
+import com.enisco.flcos.server.services.NotificationServiceImpl;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaMonitoredItem;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
@@ -43,6 +45,9 @@ public class OPCClientFactory extends AbstractOPCFactory {
 
     @Autowired
     OPCServerFactory moduleFactory;
+
+    @Autowired
+    NotificationServiceImpl notificationService;
 
     private Map<String, OPCClientHandler> opcClientHandlers;
 
@@ -309,10 +314,16 @@ public class OPCClientFactory extends AbstractOPCFactory {
     }
 
     private void onSubscriptionValue(UaMonitoredItem item, DataValue value) {
+        var nodeIdStr = item.getReadValueId().getNodeId().toParseableString();
+        var valueObj = value.getValue().getValue();
         logger.info(
                 "subscription value received: item={}, value={}",
-                item.getReadValueId().getNodeId().toParseableString(), value.getValue().getValue());
-        variables.put(item.getReadValueId().getNodeId().toParseableString(), value.getValue().getValue());
+                nodeIdStr, valueObj);
+        variables.put(nodeIdStr, valueObj);
+        var nodeChanged = new OPCVariableChangedDTO();
+        nodeChanged.setNodeId(nodeIdStr);
+        nodeChanged.setNewValue(valueObj);
+        notificationService.sendSseEventsToUI(nodeChanged);
     }
 
 }

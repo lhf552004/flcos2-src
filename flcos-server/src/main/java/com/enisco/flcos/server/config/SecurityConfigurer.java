@@ -35,6 +35,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .includeSubDomains(true);
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/authenticate",
+                        "/stream",
+                        "/stream2/*",
                 		"/api/v1/files/**",
                 		"/v2/api-docs",
                         "/configuration/ui",

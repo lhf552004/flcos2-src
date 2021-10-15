@@ -11,32 +11,35 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class NotificationServiceImpl implements NotificationService {
+public class NotificationServiceImpl {
 
-    public static final List<SseEmitter> emitters = Collections.synchronizedList(new ArrayList<>());
+    private final List<SseEmitter> sseEmitters = Collections.synchronizedList(new ArrayList<>());
 
-    @Override
     public SseEmitter initSseEmitters() {
 
-        SseEmitter emitter = new SseEmitter();
-        emitters.add(emitter);
-        emitter.onCompletion(() -> emitters.remove(emitter));
-
-        return emitter;
+        SseEmitter sseEmitter = new SseEmitter();
+        synchronized (this.sseEmitters) {
+            this.sseEmitters.add(sseEmitter);
+            sseEmitter.onCompletion(() -> {
+                synchronized (this.sseEmitters) {
+                    this.sseEmitters.remove(sseEmitter);
+                }
+            });
+            sseEmitter.onTimeout(sseEmitter::complete);
+        }
+        return sseEmitter;
     }
 
-    @Override
     public void sendSseEventsToUI(OPCVariableChangedDTO notification) {
-        List<SseEmitter> sseEmitterListToRemove = new ArrayList<>();
-        this.emitters.forEach((SseEmitter emitter) -> {
-            try {
-                emitter.send(notification, MediaType.APPLICATION_JSON);
-            } catch (IOException e) {
-                emitter.complete();
-                sseEmitterListToRemove.add(emitter);
-                e.printStackTrace();
+        synchronized (this.sseEmitters) {
+            for (SseEmitter sseEmitter : this.sseEmitters) {
+                try {
+                    sseEmitter.send(notification, MediaType.APPLICATION_JSON);
+                    sseEmitter.complete();
+                } catch (Exception e) {
+                    //???
+                }
             }
-        });
-        this.emitters.removeAll(sseEmitterListToRemove);
+        }
     }
 }

@@ -47,9 +47,9 @@ public class OPCUAController {
         return opcClientFactory.getVariables();
     }
 
-    @PostMapping (path = "nodes")
-    public OPCNodeList getNodes(@RequestBody QueryNodesDto queryNodesDto) {
-        return opcClientFactory.getOpcNodeListMap().get(queryNodesDto.getEndpointUrl());
+    @GetMapping (path = "nodes")
+    public OPCNodeList getNodes() {
+        return (OPCNodeList)opcClientFactory.getOpcNodeListMap().values().toArray()[0];
     }
 
     @PostMapping (path = "node")
@@ -62,14 +62,6 @@ public class OPCUAController {
         return opcClientFactory.getEndpointUrls();
     }
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        var greeting = new Greeting();
-        greeting.setContent("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-        return greeting;
-    }
 
 
 }
