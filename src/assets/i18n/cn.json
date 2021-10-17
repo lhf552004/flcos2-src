@@ -39,6 +39,10 @@
     "Process": "工艺步骤",
     "OPC Servers": "OPC服务器",
     "Admin": "管理员",
-    "Schemes": "Schemes"
+    "Schemes": "Schemes",
+    "Diagnostics": "诊断"
+  },
+  "DIAG" : {
+    "Diagnostics": "诊断"
   }
 }
