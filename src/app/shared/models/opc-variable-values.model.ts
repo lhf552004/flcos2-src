@@ -1,3 +1,5 @@
 export interface OpcVariableValues {
-  [key: string]: object;
+  rollerBeds: {
+    [key: string]: object;
+  };
 }

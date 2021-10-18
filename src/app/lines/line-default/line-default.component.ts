@@ -16,6 +16,8 @@ import {SectionService} from '../../equipments/shared/section.service';
 import {Bin} from '../../bins/shared/models/bin.model';
 import {Equipment} from '../../equipments/shared/models/equipment.model';
 import {DynamicFormService} from 'dynamic-form';
+import {OpcServerService} from '../../shared/services/opc-server.service';
+import {OpcVariableValues} from '../../shared/models/opc-variable-values.model';
 
 @Component({
   selector: 'emes-line-default',
@@ -33,12 +35,15 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
   equipments: Equipment[];
   workflowSettings: WorkflowSettings = new WorkflowSettings();
 
+  variableValues: OpcVariableValues;
+
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private binService: BinService,
               private equipmentService: EquipmentService,
               private sectionService: SectionService,
+              private opcServerService: OpcServerService,
               private route: ActivatedRoute,
               private dynamicFormService: DynamicFormService) {
   }
@@ -130,7 +135,10 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
             capacity.setAttribute('height', height);
           });
         });
-
+        this.opcServerService.opcNodeVariableValues$.pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+          this.variableValues = x;
+          this.updateRollerBed();
+        });
         console.log(storages);
       }
 
@@ -219,5 +227,25 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  updateRollerBed() {
+    const icn = this.svgIcons.first;
+    console.log(icn);
+    if (icn) {
+      const svg = icn.nativeElement.firstChild;
+      console.log(svg);
+      const rollerBeds = svg.querySelectorAll('[devicetype=\'rollerBed\']');
+      rollerBeds.forEach(rollerBedEle => {
+        const deviceIdent = rollerBedEle.getAttribute('deviceident');
+        const ioBlock = this.variableValues.rollerBeds[deviceIdent];
+        const rollerBed = rollerBedEle.querySelector('.rollerBed');
+        if (Boolean(ioBlock) === true) {
+          rollerBed.setAttribute('fill', 'green');
+        }else {
+          rollerBed.setAttribute('fill', '#c0c0c0');
+        }
+      });
+    }
+
+  }
 
 }
