@@ -39,6 +39,9 @@ export class SideBarComponent implements OnInit, OnChanges {
   // The list of menu items
   @Input() menuItems: MenuItem[];
 
+  // Tree view nodes
+  @Input() treeViewNodes: TreeviewNode[];
+
   // Indicator to expand tree by default
   @Input() expandedOnStart = true;
 
@@ -62,9 +65,6 @@ export class SideBarComponent implements OnInit, OnChanges {
 
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
-
-  // Tree view nodes
-  treeviewNodes: TreeviewNode[];
 
   // The list of menu items to show sticky at bottom
   stickyMenuItems: MenuItem[];
@@ -94,7 +94,7 @@ export class SideBarComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // Clear the treeview
-    this.treeviewNodes = [];
+    // this.treeviewNodes = [];
     this.filteredMenuItems = this.menuItems.filter(x => !x.stickyBottom);
     // Extract the sticky menu items and ensure default click callback is set if not defined
     this.stickyMenuItems = this.menuItems.filter(x => x.stickyBottom);
@@ -105,7 +105,7 @@ export class SideBarComponent implements OnInit, OnChanges {
     });
 
     // Build the tree view
-    this.convertMenuItemsToTreeviewNodes(this.menuItems.filter(x => !x.stickyBottom), this.treeviewNodes, 1);
+    // this.convertMenuItemsToTreeviewNodes(this.menuItems.filter(x => !x.stickyBottom), this.treeviewNodes, 1);
   }
 
   toggleSideBar() {
@@ -139,13 +139,14 @@ export class SideBarComponent implements OnInit, OnChanges {
 
   // Item clicked, show the content on the right side
   showItem(selectedNode: TreeviewNode) {
+    console.log('Show item');
     const node = this.treeview.treeview.treeModel.getNodeById(selectedNode.id);
     node.expand();
 
     // Trigger the onClick callback if defined
     const onClick = selectedNode.data.data.onClick;
     if (onClick) {
-      onClick(selectedNode.data.data.menuItem);
+      onClick(selectedNode);
     }
 
     // Navigate to route if defined
@@ -212,6 +213,17 @@ export class SideBarComponent implements OnInit, OnChanges {
 
     if (m.onClick) {
       m.onClick(m);
+    }
+  }
+
+  onNodeExpended(expandedNode: TreeviewNode) {
+    const node = this.treeview.treeview.treeModel.getNodeById(expandedNode.id);
+    node.expand();
+
+    // Trigger the onClick callback if defined
+    const onExpand = expandedNode.data.data.onExpand;
+    if (onExpand) {
+      onExpand(expandedNode);
     }
   }
 }

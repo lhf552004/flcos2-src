@@ -6,6 +6,7 @@ import {OPCNodeList} from '../models/opc-node-list.model';
 import {tap} from 'rxjs/operators';
 import {OpcNodeItem} from '../models/opc-node-item.model';
 import {OpcVariableValues} from '../models/opc-variable-values.model';
+import {OpcNode} from '../models/opc-node.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,17 +39,25 @@ export class OpcServerService {
     }));
   }
 
-  getOPCNode(nodeId: string, nodeClass: string): Observable<OPCNodeList> {
+  getOPCNode(nodeId: string, nodeClass: string): Observable<OpcNode> {
     const url = `${this.opcServerUrl}/node`;
     // TODO: multi opc client
     const endpointUrl = this.endpointUrls$.getValue()[0];
     const payload = {nodeId, nodeClass, endpointUrl};
-    return this.http.post<OPCNodeList>(url, payload);
+    return this.http.post<OpcNode>(url, payload);
+  }
+
+  writeVariableNode(nodeId: string, newValue: string): Observable<any> {
+    const url = `${this.opcServerUrl}/write`;
+    // TODO: multi opc client
+    const endpointUrl = this.endpointUrls$.getValue()[0];
+    const payload = {nodeIds: [nodeId], values: [newValue], endpointUrl};
+    return this.http.post<any>(url, payload);
   }
 
   getOPCNodeItem(nodeId: string, opcNodeItem: OpcNodeItem) {
     let theNode: OpcNodeItem | null = null;
-    if (opcNodeItem.nodeId === nodeId) {
+    if (opcNodeItem.id === nodeId) {
       theNode = opcNodeItem;
     } else {
       let i = 0;

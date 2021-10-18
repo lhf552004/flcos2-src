@@ -10,7 +10,7 @@ import {OpcNodeResolverService} from './route-resolvers/opc-node-resolver.servic
 const routes: Routes = [
   {
     path: '', component: DiagnosticsComponent, resolve: {nodeList: OpcNodeListResolverService}, children: [
-      {path: 'opcNodeId', component: DiagnosticComponent, resolve: {node: OpcNodeResolverService}},
+      {path: ':opcNodeId', component: DiagnosticComponent, resolve: {node: OpcNodeResolverService}},
       {path: '', component: DiagnosticDefaultComponent}
     ]
   }];

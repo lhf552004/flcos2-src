@@ -18,7 +18,8 @@
     "COPY": "Copy",
     "CLOSE": "Close",
     "DELETE": "Delete",
-    "INTERNAL": "Internal"
+    "INTERNAL": "Internal",
+    "FRESH": "Frisch"
   },
   "OPC" : {
     "ENDPOINT URL":  "Endpoint url",
@@ -40,6 +41,9 @@
     "OPC Servers": "OPC Servers",
     "Admin": "Administrator",
     "Schemes": "Schemes",
-    "Diagnostics": "Diagnostics"
+    "Diagnostics": "Diagnostics",
+    "Attributes and References": "Attributes and References",
+    "NODE CLASS": "Node Class",
+    "VARIABLE VALUE": "Value"
   }
 }

@@ -4,6 +4,7 @@ import { faTasks } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
+import { TreeviewNode } from 'tree-view';
 
 @Component({
   selector: 'emes-line',
@@ -13,6 +14,9 @@ import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 export class LineComponent implements OnInit {
   // Menu items
   menuItems: MenuItem[];
+
+  // tree view nodes
+  treeViewNodes: TreeviewNode[] = [];
 
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
@@ -27,6 +31,15 @@ export class LineComponent implements OnInit {
       {id: '3', label: 'Line Detail', icon: faTasks, route: ['details'], children: []},
       {id: '4', label: 'Job Log', icon: faTasks, route: ['joblogs'], children: []}
     ];
+    this.treeViewNodes = this.menuItems.map(menuItem => {
+        const node = new TreeviewNode(menuItem.id, menuItem.label, 1, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
+          menuItem,
+          route: menuItem.route,
+          onClick: menuItem.onClick
+        });
+        return node;
+      }
+    );
   }
 
 }

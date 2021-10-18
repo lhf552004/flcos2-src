@@ -18,7 +18,8 @@
     "COPY": "复制",
     "CLOSE": "关闭",
     "DELETE": "删除",
-    "INTERNAL": "内部"
+    "INTERNAL": "内部",
+    "FRESH": "刷新"
   },
   "OPC" : {
     "ENDPOINT URL":  "终端地址",
@@ -43,6 +44,9 @@
     "Diagnostics": "诊断"
   },
   "DIAG" : {
-    "Diagnostics": "诊断"
+    "Diagnostics": "诊断",
+    "Attributes and References": "属性和引用",
+    "NODE CLASS": "节点类型",
+    "VARIABLE VALUE": "值"
   }
 }

@@ -2,7 +2,7 @@ export interface OpcNode {
   nodeId: string;
   name: string;
   nodeClass: string;
-  browseName: string;
+  browserName: string;
   displayName: string;
   description: string;
   writeMask: string;

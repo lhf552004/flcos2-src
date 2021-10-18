@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 import { Warehouse } from '../shared/models/warehouse.model';
+import { TreeviewNode } from 'tree-view';
 
 
 @Component({
@@ -15,6 +16,8 @@ import { Warehouse } from '../shared/models/warehouse.model';
 export class WarehousesComponent implements OnInit {
 
   menuItems: MenuItem[];
+  // tree view nodes
+  treeViewNodes: TreeviewNode[] = [];
 
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
@@ -30,6 +33,15 @@ export class WarehousesComponent implements OnInit {
         route: [w.id],
         children: []
       }));
+      this.treeViewNodes = this.menuItems.map(menuItem => {
+          const node = new TreeviewNode(menuItem.id, menuItem.label, 1, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
+            menuItem,
+            route: menuItem.route,
+            onClick: menuItem.onClick
+          });
+          return node;
+        }
+      );
     });
 
   }

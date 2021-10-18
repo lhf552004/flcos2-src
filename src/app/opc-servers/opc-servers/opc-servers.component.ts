@@ -12,6 +12,7 @@ import {OpcServerConfigService} from '../shared/opc-server-config.service';
 import {MenuItem} from '../../shared/side-bar/model/menu-item.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OPCServer} from '../shared/models/opc-server.model';
+import { TreeviewNode } from 'tree-view';
 
 @Component({
   selector: 'emes-opc-servers',
@@ -22,6 +23,9 @@ export class OpcServersComponent implements OnInit, OnDestroy {
 
   // Menu items
   menuItems: MenuItem[];
+
+  // tree view nodes
+  treeViewNodes: TreeviewNode[] = [];
 
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
@@ -47,7 +51,19 @@ export class OpcServersComponent implements OnInit, OnDestroy {
         stickyBottom: true,
         onClick: () => this.showCreateNewOpcServer('', '')
       };
+
+      this.treeViewNodes = this.menuItems.map(menuItem => {
+          const node = new TreeviewNode(menuItem.id, menuItem.label, 1, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
+            menuItem,
+            route: menuItem.route,
+            onClick: menuItem.onClick
+          });
+          return node;
+        }
+      );
+
       this.menuItems.push(newPageMenuItem);
+
     });
 
   }
