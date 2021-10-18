@@ -10,6 +10,7 @@ import {MenuItem} from '../../core/layout/menu/menu-item';
 import {Role} from '../../core/user/models/role.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {UserViewerComponent} from '../user-viewer/user-viewer.component';
+import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
 
 @Component({
   selector: 'emes-menus',
@@ -87,7 +88,7 @@ export class MenusComponent implements OnInit, OnDestroy {
       headerText: 'Create a menu',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: { name: string, url: string, role: Role }) => this.doCreateMenu(e),
+      onSubmit: (e: NewMenuItem) => this.doCreateMenu(e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -109,6 +110,24 @@ export class MenusComponent implements OnInit, OnDestroy {
             CustomValidators.required('Url required'),
           ]
         }, {
+          type: 'checkbox',
+          label: 'Is External',
+          name: 'external',
+          placeholder: '',
+          validation: []
+        }, {
+          type: 'input',
+          label: 'External Url',
+          name: 'externalUrl',
+          placeholder: 'Enter the external url',
+          validation: []
+        }, {
+          type: 'input',
+          label: 'Icon Name',
+          name: 'iconName',
+          placeholder: 'Enter the icon name',
+          validation: []
+        }, {
           type: 'select',
           label: 'Role',
           name: 'role',
@@ -121,7 +140,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  doCreateMenu(newMenu: { name: string, url: string, role: Role }): void {
+  doCreateMenu(newMenu: NewMenuItem): void {
     this.menuService.createMenu(newMenu).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 

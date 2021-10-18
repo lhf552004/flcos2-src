@@ -1,10 +1,6 @@
-import {Role} from '../../user/models/role.model';
+import {NewMenuItem} from './new-menu-item';
 
-export interface MenuItem {
+export interface MenuItem extends NewMenuItem{
   id: string;
-  name: string;
-  url: string;
-  role?: Role;
-  iconName: string;
   children: MenuItem[];
 }

@@ -9,7 +9,7 @@ import {UserService} from '../../user/user.service';
 import {AuthenticatedUser} from '../../user/authenticated-user';
 import {SearchService} from '../search/search.service';
 import {AuthenticationService} from '../../user/authentication.service';
-import {Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRoute, Router, RouterStateSnapshot} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '../../../../environments/environment';
 import {OpcServerService} from '../../../shared/services/opc-server.service';
@@ -51,7 +51,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   // Used for cleaning subscription
   private unsubscribe: Subject<void> = new Subject();
 
-  constructor(private router: Router,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
               private menuService: MenuService,
               private userService: AuthenticationService,
               private searchService: SearchService,
@@ -124,13 +125,23 @@ export class MenuComponent implements OnInit, OnDestroy {
     source.onopen = (event) => {
       this.sseConnected = true;
     };
-    source.onerror = (error ) => {
+    source.onerror = (error) => {
       this.sseConnected = false;
     };
     source.addEventListener('message', message => {
       console.log(message.data);
-      const changedNode: {nodeId: string, newValue: object} = JSON.parse(message.data);
+      const changedNode: { nodeId: string, newValue: object } = JSON.parse(message.data);
       this.opcServerService.updateVariableNodeValue(changedNode.nodeId, changedNode.newValue);
     });
+  }
+
+  navigateToExternal(menuItem: MenuItem) {
+    this.router.navigate(
+      ['external'],
+      {
+        relativeTo: this.route,
+        queryParams: {url: encodeURIComponent(menuItem.externalUrl)},
+        queryParamsHandling: 'merge'
+      });
   }
 }

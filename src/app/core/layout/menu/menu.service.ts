@@ -5,6 +5,7 @@ import {MenuItem} from './menu-item';
 import {environment} from '../../../../environments/environment';
 import {tap} from 'rxjs/operators';
 import {Role} from '../../user/models/role.model';
+import {NewMenuItem} from './new-menu-item';
 
 @Injectable({
   providedIn: 'root'
@@ -86,26 +87,40 @@ export class MenuService {
     }));
   }
 
-  createMenu(newMenu: { name: string, url: string, role: Role }): Observable<any> {
+  createMenu(newMenu: NewMenuItem): Observable<any> {
     const url = `${this.menuUrl}`;
     return this.http.post<any>(url, newMenu).pipe(tap(x => {
+      // Update the menus
       const menus = this.grantedMenus$.getValue();
       menus.push({children: [], iconName: '', ...newMenu, id: x});
       this.grantedMenus$.next(menus);
+      // Update the menu list
+      const allMenus = this.allMenus$.getValue();
+      allMenus.push({children: [], iconName: '', ...newMenu, id: x});
+      this.allMenus$.next(allMenus);
     }));
   }
 
   update(id: string, updatedMenu: { name: string, url: string, role: Role }): Observable<any> {
     const url = `${this.menuUrl}/${id}`;
     return this.http.put<any>(url, updatedMenu).pipe(tap(x => {
-      const menus = this.grantedMenus$.getValue();
-      const menu = menus.find(m => m.id === id);
+      const grantedMenus = this.grantedMenus$.getValue();
+      const menu = grantedMenus.find(m => m.id === id);
       if (menu) {
         menu.role = updatedMenu.role;
         menu.name = updatedMenu.name;
         menu.url = updatedMenu.url;
       }
-      this.grantedMenus$.next(menus);
+      this.grantedMenus$.next(grantedMenus);
+
+      const allMenus = this.allMenus$.getValue();
+      const menu2 = allMenus.find(m => m.id === id);
+      if (menu2) {
+        menu2.role = updatedMenu.role;
+        menu2.name = updatedMenu.name;
+        menu2.url = updatedMenu.url;
+      }
+      this.allMenus$.next(allMenus);
     }));
   }
 
@@ -130,6 +145,13 @@ export class MenuService {
         menus.splice(index, 1);
       }
       this.grantedMenus$.next(menus);
+
+      const allMenus = this.allMenus$.getValue();
+      const index2 = allMenus.findIndex(m => m.id === id);
+      if (index2 > 0) {
+        allMenus.splice(index2, 1);
+      }
+      this.allMenus$.next(allMenus);
     }));
   }
 }
