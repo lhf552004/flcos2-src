@@ -2,10 +2,7 @@ package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.Greeting;
 import com.enisco.flcos.server.dto.HelloMessage;
-import com.enisco.flcos.server.dto.opcs.QueryNodeDto;
-import com.enisco.flcos.server.dto.opcs.QueryNodesDto;
-import com.enisco.flcos.server.dto.opcs.ReadVariableDto;
-import com.enisco.flcos.server.dto.opcs.WriteVariableDto;
+import com.enisco.flcos.server.dto.opcs.*;
 import com.enisco.flcos.server.opc.OPCNodeList;
 import com.enisco.flcos.server.opc.client.OPCClientFactory;
 
@@ -35,7 +32,7 @@ public class OPCUAController {
 
     @PostMapping(path = "write")
     public ResponseEntity WriteVariable(@RequestBody WriteVariableDto readVariableDto) throws Exception {
-        opcClientFactory.WriteVariable(readVariableDto.getEndPointUrl(), readVariableDto.getNodeIds(), readVariableDto.getValues());
+        opcClientFactory.WriteVariable(readVariableDto.getEndpointUrl(), readVariableDto.getNodeIds(), readVariableDto.getValues());
         return ResponseEntity.ok().build();
     }
 
@@ -50,7 +47,7 @@ public class OPCUAController {
     }
 
     @PostMapping (path = "node")
-    public UaNode getNode(@RequestBody QueryNodeDto queryNodeDto) throws UaException {
+    public OpcNodeDto getNode(@RequestBody QueryNodeDto queryNodeDto) throws UaException {
         return opcClientFactory.readNode(queryNodeDto.getEndpointUrl(), queryNodeDto.getNodeId(), queryNodeDto.getNodeClass());
     }
 

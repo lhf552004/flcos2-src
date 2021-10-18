@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class WriteVariableDto {
-    private String endPointUrl;
+    private String endpointUrl;
     private List<String> nodeIds;
     private List<Object> values;
 }

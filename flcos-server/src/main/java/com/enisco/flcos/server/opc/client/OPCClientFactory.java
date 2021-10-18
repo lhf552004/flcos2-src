@@ -1,6 +1,7 @@
 package com.enisco.flcos.server.opc.client;
 
 import com.enisco.flcos.server.dto.opcs.OPCVariableChangedDTO;
+import com.enisco.flcos.server.dto.opcs.OpcNodeDto;
 import com.enisco.flcos.server.opc.AbstractOPCFactory;
 import com.enisco.flcos.server.opc.EmesModule;
 import com.enisco.flcos.server.opc.OPCNodeItem;
@@ -86,6 +87,7 @@ public class OPCClientFactory extends AbstractOPCFactory {
                 var parentIdentifiers = modules.stream().map(module -> module.getName()).collect(Collectors.toList());
                 var opcNodeList = new OPCNodeList();
                 var rootNodeDTO = new OPCNodeItem();
+                rootNodeDTO.setId(java.util.UUID.randomUUID());
                 rootNodeDTO.setNodeId(Identifiers.ObjectsFolder.toParseableString());
                 rootNodeDTO.setNodeClass(NodeClass.Object.name());
                 rootNodeDTO.setName("Objects");
@@ -150,6 +152,7 @@ public class OPCClientFactory extends AbstractOPCFactory {
                             var count = parentIdentifiers.stream().filter(identifier::contains).count();
                             if (identifier.equals("FLCos") || count > 0) {
                                 var nodeItem = new OPCNodeItem();
+                                nodeItem.setId(java.util.UUID.randomUUID());
                                 nodeItem.setNodeId(nodeId.toParseableString());
                                 nodeItem.setName(rd.getBrowseName().getName());
                                 nodeItem.setNodeClass(rd.getNodeClass().name());
@@ -202,15 +205,25 @@ public class OPCClientFactory extends AbstractOPCFactory {
         return null;
     }
 
-    public UaNode readNode(String endpointUrl, String nodeId, String nodeClassStr) throws UaException {
+    public OpcNodeDto readNode(String endpointUrl, String nodeId, String nodeClassStr) throws UaException {
+        var opcNodeDto = new OpcNodeDto();
+        opcNodeDto.setNodeId(nodeId);
+        opcNodeDto.setNodeClass(nodeClassStr);
         var clientHandler = opcClientHandlers.get(endpointUrl);
         if (clientHandler != null) {
             var nodeClass = NodeClass.valueOf(nodeClassStr);
             switch (nodeClass) {
                 case Variable:
-                    return clientHandler.getOpcUaClient().getAddressSpace().getVariableNode(NodeId.parse(nodeId));
+                    var uaVariableNode = clientHandler.getOpcUaClient().getAddressSpace().getVariableNode(NodeId.parse(nodeId));
+                    opcNodeDto.setBrowserName(uaVariableNode.getBrowseName().getName());
+                    opcNodeDto.setValue(uaVariableNode.getValue().getValue().getValue());
+                    opcNodeDto.setDescription(uaVariableNode.getDescription().getText());
+                    return opcNodeDto;
                 case Object:
-                    return clientHandler.getOpcUaClient().getAddressSpace().getObjectNode(NodeId.parse(nodeId));
+                    var uaObjectNode = clientHandler.getOpcUaClient().getAddressSpace().getObjectNode(NodeId.parse(nodeId));
+                    opcNodeDto.setBrowserName(uaObjectNode.getBrowseName().getName());
+                    opcNodeDto.setDescription(uaObjectNode.getDescription().getText());
+                    return opcNodeDto;
             }
         }
         return null;
@@ -228,6 +241,9 @@ public class OPCClientFactory extends AbstractOPCFactory {
     }
 
     public void WriteVariable(String endpointUrl, List<String> nodeIdStrings, List<Object> values) throws ExecutionException, InterruptedException {
+        if(endpointUrl == null || endpointUrl.isEmpty()) {
+            throw new FLCosOPCException("EndpointUrl should not null.");
+        }
         if(nodeIdStrings.size() != values.size()) {
             throw new FLCosOPCException("Write variables size not equal values size");
         }
