@@ -1,4 +1,6 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.menus;
+
+import com.enisco.flcos.server.dto.menus.MenuDto;
 
 import java.util.List;
 

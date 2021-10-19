@@ -16,12 +16,14 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/orders")
 public class OrderController extends ControllerBase {
     private OrderRepository orderRepository;
-    private ModelMapper modelMapper = new ModelMapper();
+
+    private ModelMapper modelMapper;
 
     OrderManagementBean orderManagementBean;
     @Autowired
-    public OrderController(OrderRepository orderRepository, OrderManagementBean orderManagementBean) {
+    public OrderController(OrderRepository orderRepository, ModelMapper modelMapper, OrderManagementBean orderManagementBean) {
         this.orderRepository = orderRepository;
+        this.modelMapper = modelMapper;
         this.orderManagementBean = orderManagementBean;
     }
 

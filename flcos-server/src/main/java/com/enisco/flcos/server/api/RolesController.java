@@ -25,7 +25,8 @@ public class RolesController {
     @Autowired
     private MenuRepository menuRepository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public Long createRole(@RequestBody NewRoleDto roleDto) {

@@ -1,10 +1,11 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.dto.MenuDto;
-import com.enisco.flcos.server.dto.NewMenuDto;
+import com.enisco.flcos.server.dto.menus.MenuDto;
+import com.enisco.flcos.server.dto.menus.NewMenuDto;
 import com.enisco.flcos.server.dto.RoleDto;
 import com.enisco.flcos.server.entities.MenuEntity;
 import com.enisco.flcos.server.entities.RoleEntity;
+import com.enisco.flcos.server.mapper.MenuMapperImpl;
 import com.enisco.flcos.server.repository.postgresql.MenuRepository;
 import com.enisco.flcos.server.repository.postgresql.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -32,7 +33,11 @@ public class MenusController {
     @Autowired
     private UserRepository userRepository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private MenuMapperImpl menuMapper;
 
     @PostMapping
     public Long createMenu(@RequestBody NewMenuDto menuDto) {
@@ -44,7 +49,7 @@ public class MenusController {
     @GetMapping
     public List<MenuDto> getMenus() {
         return menuRepository.findAll().stream()
-                .map(menuEntity -> modelMapper.map(menuEntity, MenuDto.class))
+                .map(menuEntity -> menuMapper.menuToDto(menuEntity))
                 .collect(Collectors.toList());
     }
 
@@ -55,8 +60,8 @@ public class MenusController {
             String currentUserName = authentication.getName();
             var roles = userRepository.findByUserName(currentUserName).get().getRoles();
             return menuRepository.findAll().stream()
-                    .filter(m -> roles.contains(m.getRole()))
-                    .map(menuEntity -> modelMapper.map(menuEntity, MenuDto.class))
+                    .filter(m -> roles.contains(m.getRole()) && m.getParent() == null)
+                    .map(menuEntity -> menuMapper.menuToDto(menuEntity))
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
@@ -81,6 +86,45 @@ public class MenusController {
             return ResponseEntity.notFound().build();
         }
     }
+
+//    @PutMapping(path = "{id}/add-children")
+//    public ResponseEntity addChildren(@PathVariable Long id, @RequestBody List<NewMenuDto> childrenDto) {
+//        var result = menuRepository.findById(id);
+//        if (result.isPresent()) {
+//            var menuEntity = result.get();
+//            List<MenuEntity> childrenEntity = new ArrayList<>();
+//            childrenDto.forEach(newMenuDto -> {
+//                var childEntity = modelMapper.map(newMenuDto, MenuEntity.class);
+//                menuRepository.save(childEntity);
+//                childrenEntity.add(childEntity);
+//            });
+//            menuEntity.getChildren().addAll(childrenEntity);
+//            menuRepository.save(menuEntity);
+//            return ResponseEntity.ok().build();
+//        } else {
+//            logger.error("Menu {} not found", id);
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @PutMapping(path = "{id}/remove-children")
+//    public ResponseEntity removeChildren(@PathVariable Long id, @RequestBody List<Long> childrenIdsToRemove) {
+//        var result = menuRepository.findById(id);
+//        if (result.isPresent()) {
+//            var menuEntity = result.get();
+//            var childrenToRemove = new ArrayList<MenuEntity>();
+//            menuEntity.getChildren().stream()
+//                    .filter(childrenMenu -> childrenIdsToRemove.contains(childrenMenu.getId()))
+//                    .forEach(childMenuItem -> {
+//                        childrenToRemove.add(childMenuItem);
+//                        menuRepository.delete(childMenuItem);});
+//            menuRepository.save(menuEntity);
+//            return ResponseEntity.ok().build();
+//        } else {
+//            logger.error("Menu {} not found", id);
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @PostMapping(path = "{id}/assign-role")
     public ResponseEntity assignRole(@PathVariable Long id, @RequestBody RoleDto roleDto) {

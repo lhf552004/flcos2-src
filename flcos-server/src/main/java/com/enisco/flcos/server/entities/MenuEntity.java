@@ -19,6 +19,9 @@ public class MenuEntity extends EntityBase {
     @Column
     private Boolean external;
 
+    @Column
+    private Integer index;
+
     @Column(name = "external_url")
     private String externalUrl;
 
@@ -29,7 +32,10 @@ public class MenuEntity extends EntityBase {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "parent_id")
+    private MenuEntity parent;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private List<MenuEntity> children;
 }

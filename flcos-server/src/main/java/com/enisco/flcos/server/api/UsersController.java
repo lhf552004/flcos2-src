@@ -30,7 +30,8 @@ public class UsersController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public long createUser(@RequestBody NewUserDTO userDto) {

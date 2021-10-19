@@ -29,7 +29,8 @@ public class OPCUAConfigController {
 
     @Autowired
     private OPCServerRepository opcServerRepository;
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public long createOPC(@RequestBody NewOpcServerDTO opcServerDTO){

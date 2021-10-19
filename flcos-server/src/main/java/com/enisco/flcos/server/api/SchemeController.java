@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/schemes")
 public class SchemeController extends ControllerBase {
     private SchemeRepository schemeRepository;
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private SchemeManager schemeManager;
 

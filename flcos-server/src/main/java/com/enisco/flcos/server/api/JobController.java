@@ -13,10 +13,11 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/jobs")
 public class JobController extends ControllerBase {
     private JobRepository jobRepository;
-    private ModelMapper modelMapper = new ModelMapper();
-
-    public JobController(@Autowired JobRepository jobRepository) {
+    private ModelMapper modelMapper;
+    @Autowired
+    public JobController(JobRepository jobRepository, ModelMapper modelMapper) {
         this.jobRepository = jobRepository;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping(path = "{id}")
