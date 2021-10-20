@@ -73,7 +73,10 @@ export class MenuComponent implements OnInit, OnDestroy {
         if (authenticatedUser !== null)
           // Subscribe to the menu service to retrieve the list of menus
         {
-          this.menuService.getMenusByRoles().pipe(take(1)).subscribe();
+          this.menuService.getMenusByRoles().pipe(take(1)).subscribe(x => {}, error => {
+            console.log(error);
+            this.userService.logout();
+          });
           this.opcServerService.getOPCVariableNodeValues().pipe(takeUntil(this.unsubscribe)).subscribe();
         } else {
           this.menu = [];

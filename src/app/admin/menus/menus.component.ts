@@ -11,6 +11,7 @@ import {Role} from '../../core/user/models/role.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {UserViewerComponent} from '../user-viewer/user-viewer.component';
 import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
+import {ItemsSelectorComponent} from '../../shared/items-selector/items-selector.component';
 
 @Component({
   selector: 'emes-menus',
@@ -22,6 +23,7 @@ export class MenusComponent implements OnInit, OnDestroy {
   // Indicator whether current user is admin
   isAdmin = true;
   closeResult = '';
+  columnDefinitions: DataTableColumnDefinition[];
   // Used for cleaning subscription
   private unsubscribe: Subject<void> = new Subject();
 
@@ -31,13 +33,14 @@ export class MenusComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const columnDefinition: DataTableColumnDefinition[] = [
+    this.columnDefinitions = [
       {id: '1', name: 'id', label: 'Id', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {id: '2', name: 'name', label: 'Name', type: 'text', visible: true, searchable: false, filterMode: 'text'},
       {id: '3', name: 'url', label: 'Url', type: 'text', visible: true, searchable: false, filterMode: 'text'},
-      {id: '4', name: 'roleName', label: 'Role', type: 'text', visible: true, searchable: false, filterMode: 'text'},
+      {id: '4', name: 'external', label: 'Is External', type: 'text', visible: true, searchable: false, filterMode: 'none'},
+      {id: '5', name: 'roleName', label: 'Role', type: 'text', visible: true, searchable: false, filterMode: 'text'},
       {
-        id: '4',
+        id: '6',
         name: 'view',
         label: 'View',
         type: 'icon',
@@ -47,7 +50,17 @@ export class MenusComponent implements OnInit, OnDestroy {
         click: this.viewMenu.bind(this)
       },
       {
-        id: '5',
+        id: '7',
+        name: 'viewChildren',
+        label: 'View children',
+        type: 'icon',
+        visible: true,
+        searchable: false,
+        filterMode: 'none',
+        click: this.viewChildren.bind(this)
+      },
+      {
+        id: '8',
         name: 'delete',
         label: 'Delete',
         type: 'icon',
@@ -57,11 +70,18 @@ export class MenusComponent implements OnInit, OnDestroy {
         click: this.deleteMenu.bind(this)
       },
     ];
-    this.menuService.allMenus$.pipe(takeUntil(this.unsubscribe)).subscribe(users => {
+    this.menuService.allMenus$.pipe(takeUntil(this.unsubscribe)).subscribe(menus => {
       this.settings = {
         selectableRows: false,
-        columnDefinitions: columnDefinition,
-        data: users.map(t => ({...t, roleName: t.role?.name, view: faExternalLinkAlt, delete: faTrash})),
+        columnDefinitions: this.columnDefinitions,
+        data: menus.map(m => ({
+          ...m,
+          external: m.external ? m.external : false,
+          roleName: m.role?.name,
+          view: faExternalLinkAlt,
+          viewChildren: faExternalLinkAlt,
+          delete: faTrash
+        })),
         toolBar: {
           right: [
             ...this.isAdmin ? [{
@@ -83,12 +103,12 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  createMenu() {
+  createMenu(parentMenu: MenuItem) {
     const config: ModalConfig = {
       headerText: 'Create a menu',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: NewMenuItem) => this.doCreateMenu(e),
+      onSubmit: (e: NewMenuItem) => parentMenu === null ? this.doCreateMenu(e) : this.doAddChildMenu(parentMenu, e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -108,6 +128,14 @@ export class MenusComponent implements OnInit, OnDestroy {
           placeholder: 'Enter the url',
           validation: [
             CustomValidators.required('Url required'),
+          ]
+        }, {
+          type: 'number',
+          label: 'Index',
+          name: 'index',
+          placeholder: 'Enter the index of the menu',
+          validation: [
+            CustomValidators.required('Index required'),
           ]
         }, {
           type: 'checkbox',
@@ -141,7 +169,28 @@ export class MenusComponent implements OnInit, OnDestroy {
   }
 
   doCreateMenu(newMenu: NewMenuItem): void {
+    newMenu = {...newMenu, isRoot: true};
     this.menuService.createMenu(newMenu).pipe(takeUntil(this.unsubscribe)).subscribe();
+  }
+
+  doAddChildMenu(parentMenu: MenuItem, newMenu: NewMenuItem) {
+    parentMenu.children.push({...newMenu, id: '', isRoot: false, children: []});
+    parentMenu = {...parentMenu};
+    console.log(parentMenu);
+    const updated = {
+      id: parentMenu.id,
+      name: parentMenu.name,
+      url: parentMenu.url,
+      index: parentMenu.index,
+      iconName: parentMenu.iconName,
+      children: parentMenu.children,
+      role: parentMenu.role,
+      external: parentMenu.external,
+      externalUrl: parentMenu.externalUrl,
+      isRoot: parentMenu.isRoot
+    };
+    console.log(updated);
+    this.menuService.update(parentMenu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
   viewMenu(menu: MenuItem) {
@@ -149,7 +198,7 @@ export class MenusComponent implements OnInit, OnDestroy {
       headerText: 'View a menu',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: { name: string, url: string, role: Role }) => this.doUpdateMenu(menu.id, e),
+      onSubmit: (e: MenuItem) => this.doUpdateMenu(menu, e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -173,6 +222,36 @@ export class MenusComponent implements OnInit, OnDestroy {
             CustomValidators.required('Url required'),
           ]
         }, {
+          type: 'number',
+          label: 'Index',
+          name: 'index',
+          placeholder: 'Enter the index of the menu',
+          value: menu.index,
+          validation: [
+            CustomValidators.required('Index required'),
+          ]
+        }, {
+          type: 'checkbox',
+          label: 'Is External',
+          name: 'external',
+          value: menu.external,
+          placeholder: '',
+          validation: []
+        }, {
+          type: 'input',
+          label: 'External Url',
+          name: 'externalUrl',
+          value: menu.externalUrl,
+          placeholder: 'Enter the external url',
+          validation: []
+        }, {
+          type: 'input',
+          label: 'Icon Name',
+          name: 'iconName',
+          value: menu.iconName,
+          placeholder: 'Enter the icon name',
+          validation: []
+        }, {
           type: 'select',
           label: 'Role',
           name: 'role',
@@ -186,8 +265,42 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  doUpdateMenu(id: string, menu: { name: string, url: string, role: Role }): void {
-    this.menuService.update(id, menu).pipe(takeUntil(this.unsubscribe)).subscribe();
+  viewChildren(menu: MenuItem) {
+    const right = [
+      ...this.isAdmin ? [{
+        name: 'New Menu',
+        type: 'button',
+        icon: faPlus,
+        callback: this.createMenu.bind(this, menu)
+      } as DataTableToolbarControl] : [],
+      {type: 'filter'} as DataTableToolbarControl
+    ];
+    const config = {
+      items: (menu.children ? menu.children : []).map(m => ({
+        ...m,
+        external: m.external ? m.external : false,
+        roleName: m.role?.name,
+        view: faExternalLinkAlt,
+        viewChildren: faExternalLinkAlt,
+        delete: faTrash
+      })),
+      columnDefinitions: this.columnDefinitions,
+      right,
+      onSubmit: (changes: any) => {
+      },
+      onDismiss: (e: string) => {
+      }
+    };
+
+    this.dynamicFormService.popModal(ItemsSelectorComponent, config);
+  }
+
+  doUpdateMenu(menu: MenuItem, e: MenuItem): void {
+    const updated = {id: menu.id, children: menu.children, ...e};
+    if (e.role) {
+      updated.role = e.role;
+    }
+    this.menuService.update(menu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
   deleteMenu(menu: MenuItem) {

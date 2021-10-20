@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "emes",
+      "prefix": "flcos",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",

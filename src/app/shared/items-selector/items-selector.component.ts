@@ -2,12 +2,12 @@ import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} fr
 import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} from 'data-table';
 
 @Component({
-  selector: 'emes-items-selector',
+  selector: 'flcos-items-selector',
   templateUrl: './items-selector.component.html',
   styleUrls: ['./items-selector.component.scss']
 })
 export class ItemsSelectorComponent implements OnInit, OnChanges {
-  @Input() config: { items: any[], name: string };
+  @Input() config: { items: any[], columnDefinitions: DataTableColumnDefinition[], right: any, name: string };
 
   @Output()
   submitted: EventEmitter<any> = new EventEmitter<any>();
@@ -41,18 +41,14 @@ export class ItemsSelectorComponent implements OnInit, OnChanges {
 
   buildTableSettings(): void {
     this.items = this.config.items;
-    const columnDefinition: DataTableColumnDefinition[] = [
-      {id: '1', name: 'id', label: 'Id', type: 'text', visible: true, searchable: true, filterMode: 'none'},
-      {id: '2', name: 'name', label: this.config.name, type: 'text', visible: true, searchable: true, filterMode: 'select'}
-    ];
 
     this.settings = {
       selectableRows: true,
-      columnDefinitions: columnDefinition,
+      columnDefinitions: this.config.columnDefinitions,
       data: this.items,
       toolBar: {
         left: [{name: 'Select', type: 'button', callback: this.selectItems.bind(this)} as DataTableToolbarControl],
-        right: [{type: 'search'} as DataTableToolbarControl]
+        right: this.config.right
       },
       groupBy: []
     };

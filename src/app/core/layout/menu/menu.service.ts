@@ -45,46 +45,18 @@ export class MenuService {
   getMenusByRoles(): Observable<MenuItem[]> {
     const url = `${this.menuUrl}/by-role`;
     return this.http.get<any>(url).pipe(tap((menuItems: MenuItem[]) => {
-      let index = menuItems.findIndex(m => m.name === 'Admin');
-      let adminMenu = null;
-      let dashboardMenu = null;
-      if (index > -1) {
-        adminMenu = menuItems.splice(index, 1);
-      }
-      index = menuItems.findIndex(m => m.name === 'Dashboard');
-      if (index > -1) {
-        dashboardMenu = menuItems.splice(index, 1);
-      }
-      menuItems.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      // Mock
-      menuItems.push({
-        children: [
-          {id: '4-1', iconName: 'person', name: 'Orders', url: 'orders', children: []},
-          {id: '4-2', iconName: 'person', name: 'Job', url: 'jobs', children: []},
-          {id: '4-3', iconName: 'person', name: 'Template', url: 'templates', children: []}
-          ],
-        iconName: '',
-        id: '4',
-        name: 'JMM',
-        url: ''
-      });
-      if (adminMenu && adminMenu.length > 0) {
-        menuItems.push(...adminMenu);
-      }
-      if (dashboardMenu && dashboardMenu.length > 0) {
-        menuItems = dashboardMenu.concat(menuItems);
-      }
-
+      this.sortMenu(menuItems);
       this.grantedMenus$.next(menuItems);
     }));
+  }
+
+  sorter = (a, b) => {
+    return a.index - b.index;
+  }
+
+  sortMenu(menuItems: MenuItem[]) {
+    menuItems.sort(this.sorter);
+    menuItems.forEach(m => this.sortMenu(m.children));
   }
 
   createMenu(newMenu: NewMenuItem): Observable<any> {
@@ -101,24 +73,20 @@ export class MenuService {
     }));
   }
 
-  update(id: string, updatedMenu: { name: string, url: string, role: Role }): Observable<any> {
+  update(id: string, updatedMenu: MenuItem): Observable<any> {
     const url = `${this.menuUrl}/${id}`;
     return this.http.put<any>(url, updatedMenu).pipe(tap(x => {
       const grantedMenus = this.grantedMenus$.getValue();
-      const menu = grantedMenus.find(m => m.id === id);
+      let menu = grantedMenus.find(m => m.id === id);
       if (menu) {
-        menu.role = updatedMenu.role;
-        menu.name = updatedMenu.name;
-        menu.url = updatedMenu.url;
+        menu = {...updatedMenu};
       }
       this.grantedMenus$.next(grantedMenus);
 
       const allMenus = this.allMenus$.getValue();
-      const menu2 = allMenus.find(m => m.id === id);
+      let menu2 = allMenus.find(m => m.id === id);
       if (menu2) {
-        menu2.role = updatedMenu.role;
-        menu2.name = updatedMenu.name;
-        menu2.url = updatedMenu.url;
+        menu2 = {...updatedMenu};
       }
       this.allMenus$.next(allMenus);
     }));
