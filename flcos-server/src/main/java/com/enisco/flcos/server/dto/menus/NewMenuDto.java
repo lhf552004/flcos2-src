@@ -14,4 +14,5 @@ public class NewMenuDto {
     private String externalUrl;
     private String iconName;
     private Integer index;
+    private Boolean isRoot;
 }

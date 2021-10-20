@@ -60,7 +60,7 @@ public class MenusController {
             String currentUserName = authentication.getName();
             var roles = userRepository.findByUserName(currentUserName).get().getRoles();
             return menuRepository.findAll().stream()
-                    .filter(m -> roles.contains(m.getRole()) && m.getParent() == null)
+                    .filter(m -> roles.contains(m.getRole()) && m.getIsRoot() == true)
                     .map(menuEntity -> menuMapper.menuToDto(menuEntity))
                     .collect(Collectors.toList());
         }

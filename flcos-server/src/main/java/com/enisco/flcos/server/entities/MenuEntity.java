@@ -32,10 +32,13 @@ public class MenuEntity extends EntityBase {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "parent_id")
-    private MenuEntity parent;
+    @Column(name = "is_root")
+    private Boolean isRoot;
+//    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "parent_id")
+//    private MenuEntity parent;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id")
     private List<MenuEntity> children;
 }

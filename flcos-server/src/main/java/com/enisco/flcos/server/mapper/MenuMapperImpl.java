@@ -35,16 +35,16 @@ public class MenuMapperImpl implements MenuMapper{
             menuDto.setRole(roleDto);
         }
 
-        if(menu.getParent() != null) {
-            var parentDto = new MenuDto();
-            parentDto.setId(menu.getParent().getId());
-            parentDto.setName(menu.getParent().getName());
-            parentDto.setExternal(menu.getParent().getExternal());
-            parentDto.setExternalUrl(menu.getParent().getExternalUrl());
-            parentDto.setIndex(menu.getParent().getIndex());
-            parentDto.setIconName(menu.getParent().getIconName());
-            menuDto.setParent(parentDto);
-        }
+//        if(menu.getParent() != null) {
+//            var parentDto = new MenuDto();
+//            parentDto.setId(menu.getParent().getId());
+//            parentDto.setName(menu.getParent().getName());
+//            parentDto.setExternal(menu.getParent().getExternal());
+//            parentDto.setExternalUrl(menu.getParent().getExternalUrl());
+//            parentDto.setIndex(menu.getParent().getIndex());
+//            parentDto.setIconName(menu.getParent().getIconName());
+//            menuDto.setParent(parentDto);
+//        }
 
         menuDto.setChildren(menu.getChildren().stream().map(this::menuToDto).collect(Collectors.toList()));
         return menuDto;

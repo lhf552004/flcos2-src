@@ -8,15 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class MenuDto {
+public class MenuDto extends NewMenuDto {
     private Long id;
-    private String name;
-    private String url;
-    private RoleDto role;
     private List<MenuDto> children;
-    private MenuDto parent;
-    private Boolean external;
-    private String externalUrl;
-    private String iconName;
-    private Integer index;
 }
