@@ -49,6 +49,7 @@ public class MenusController {
     @GetMapping
     public List<MenuDto> getMenus() {
         return menuRepository.findAll().stream()
+                .filter(MenuEntity::getIsRoot)
                 .map(menuEntity -> modelMapper.map(menuEntity, MenuDto.class))
                 .collect(Collectors.toList());
     }
@@ -60,7 +61,7 @@ public class MenusController {
             String currentUserName = authentication.getName();
             var roles = userRepository.findByUserName(currentUserName).get().getRoles();
             return menuRepository.findAll().stream()
-                    .filter(m -> roles.contains(m.getRole()) && m.getIsRoot() == true)
+                    .filter(m -> roles.contains(m.getRole()) && m.getIsRoot())
                     .map(menuEntity -> modelMapper.map(menuEntity, MenuDto.class))
                     .collect(Collectors.toList());
         }
