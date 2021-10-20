@@ -108,7 +108,7 @@ export class MenusComponent implements OnInit, OnDestroy {
       headerText: 'Create a menu',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: NewMenuItem) => parentMenu === null ? this.doCreateMenu(e) : this.doAddChildMenu(parentMenu, e),
+      onSubmit: (e: NewMenuItem) => !parentMenu ? this.doCreateMenu(e) : this.doAddChildMenu(parentMenu, e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
