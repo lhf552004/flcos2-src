@@ -4,16 +4,15 @@ import com.enisco.flcos.server.entities.EntityBase;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "template_template")
 public class TemplateEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Boolean complete;
+
+    @OneToMany
+    private List<TemplateItemEntity> items;
 }
