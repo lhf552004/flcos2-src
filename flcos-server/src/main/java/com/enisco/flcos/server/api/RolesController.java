@@ -2,8 +2,8 @@ package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.*;
 import com.enisco.flcos.server.entities.RoleEntity;
-import com.enisco.flcos.server.repository.postgresql.MenuRepository;
-import com.enisco.flcos.server.repository.postgresql.RoleRepository;
+import com.enisco.flcos.server.repository.relational.MenuRepository;
+import com.enisco.flcos.server.repository.relational.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

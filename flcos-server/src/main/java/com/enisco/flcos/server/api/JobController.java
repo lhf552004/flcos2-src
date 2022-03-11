@@ -1,7 +1,7 @@
 package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.JobDto;
-import com.enisco.flcos.server.repository.postgresql.JobRepository;
+import com.enisco.flcos.server.repository.relational.JobRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

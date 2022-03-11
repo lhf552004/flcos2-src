@@ -10,9 +10,9 @@ import java.util.Collection;
 @Getter
 @Entity(name="f_user")
 public class UserEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
     private String userName;
     private String firstName;
     private String lastName;

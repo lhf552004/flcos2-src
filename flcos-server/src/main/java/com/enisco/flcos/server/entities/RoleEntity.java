@@ -11,9 +11,9 @@ import java.util.Set;
 @Getter
 @Entity(name = "f_role")
 public class RoleEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     private String name;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)

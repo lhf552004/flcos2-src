@@ -1,23 +1,15 @@
 package com.enisco.flcos.server.dto;
 
-import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
-public class LineDto {
+public class WarehouseDto {
     private Long id;
 
     private String name;
-
-    private Boolean isProduction;
-
-    private LineStatus status;
-
-    private List<SectionDTO> sections;
 }

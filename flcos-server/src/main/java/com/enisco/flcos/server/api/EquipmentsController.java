@@ -1,7 +1,12 @@
 package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.documents.Equipment;
-import com.enisco.flcos.server.repository.mongodb.EquipmentRepository;
+import com.enisco.flcos.server.dto.EquipmentDTO;
+import com.enisco.flcos.server.dto.LineDto;
+import com.enisco.flcos.server.entities.EquipmentEntity;
+import com.enisco.flcos.server.entities.LineEntity;
+import com.enisco.flcos.server.repository.relational.EquipmentRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +19,17 @@ import java.util.UUID;
 public class EquipmentsController {
 
     private EquipmentRepository equipmentRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public EquipmentsController(@Autowired EquipmentRepository equipmentRepository) {
         this.equipmentRepository = equipmentRepository;
     }
 
     @PostMapping
-    public void createEquipment(@RequestBody Equipment equipment){
-        equipment.setId(UUID.randomUUID());
-        equipmentRepository.insert(equipment);
+    public void createEquipment(@RequestBody EquipmentDTO equipmentDto){
+        var equipmentEntity = modelMapper.map(equipmentDto, EquipmentEntity.class);
+        equipmentRepository.save(equipmentEntity);
     }
 
     @GetMapping
@@ -31,17 +38,19 @@ public class EquipmentsController {
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Equipment> getEquipment(@PathVariable UUID id){
-        return equipmentRepository.findById(id);
+    public EquipmentDTO getEquipment(@PathVariable Long id){
+        var result = equipmentRepository.findById(id);
+        return result.map(equipmentEntity -> modelMapper.map(equipmentEntity, EquipmentDTO.class)).orElse(null);
     }
 
     @PutMapping(path = "{id}")
-    public void updateEquipment(@PathVariable UUID id, @RequestBody Equipment equipment){
-        equipmentRepository.save(equipment);
+    public void updateEquipment(@PathVariable Long id, @RequestBody EquipmentDTO equipmentDto){
+        var equipmentEntity = modelMapper.map(equipmentDto, EquipmentEntity.class);
+        equipmentRepository.save(equipmentEntity);
     }
 
     @DeleteMapping(path = "{id}")
-    public void deleteEquipment(@PathVariable UUID id){
+    public void deleteEquipment(@PathVariable Long id){
         equipmentRepository.deleteById(id);
     }
 }

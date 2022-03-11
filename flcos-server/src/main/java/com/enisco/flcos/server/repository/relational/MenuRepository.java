@@ -1,10 +1,8 @@
-package com.enisco.flcos.server.repository.postgresql;
+package com.enisco.flcos.server.repository.relational;
 
 import com.enisco.flcos.server.entities.MenuEntity;
 import com.enisco.flcos.server.entities.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

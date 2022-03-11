@@ -1,10 +1,9 @@
 package com.enisco.flcos.server.runners;
 
-import com.enisco.flcos.server.api.UsersController;
 import com.enisco.flcos.server.entities.scheme.SchemeEntity;
 import com.enisco.flcos.server.entities.scheme.SchemeFieldEntity;
-import com.enisco.flcos.server.repository.postgresql.SchemeFieldRepository;
-import com.enisco.flcos.server.repository.postgresql.SchemeRepository;
+import com.enisco.flcos.server.repository.relational.SchemeFieldRepository;
+import com.enisco.flcos.server.repository.relational.SchemeRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

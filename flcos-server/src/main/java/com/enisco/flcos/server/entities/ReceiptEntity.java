@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Getter
 @Entity(name="receipt")
 public class ReceiptEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     @Column(name = "batch_number")
     private String batchNumber;

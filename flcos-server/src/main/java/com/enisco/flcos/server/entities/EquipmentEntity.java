@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Getter
 @Entity(name="equipment")
 public class EquipmentEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "equipment_type")

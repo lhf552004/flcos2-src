@@ -1,13 +1,9 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.documents.Line;
-import com.enisco.flcos.server.dto.UserDto;
 import com.enisco.flcos.server.dto.opcs.NewOpcServerDTO;
-import com.enisco.flcos.server.dto.opcs.OpcNodeDto;
 import com.enisco.flcos.server.dto.opcs.OpcServerDTO;
-import com.enisco.flcos.server.entities.UserEntity;
 import com.enisco.flcos.server.entities.opc.OPCServerEntity;
-import com.enisco.flcos.server.repository.postgresql.OPCServerRepository;
+import com.enisco.flcos.server.repository.relational.OPCServerRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -17,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/opc-configs")

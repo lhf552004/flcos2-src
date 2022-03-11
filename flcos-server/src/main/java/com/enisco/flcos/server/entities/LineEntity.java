@@ -11,12 +11,15 @@ import java.util.List;
 @Getter
 @Entity(name="line")
 public class LineEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     @Column
     private String name;
+
+    @Column(name = "is_production")
+    private Boolean isProduction;
 
     @Enumerated(EnumType.STRING)
     @Column

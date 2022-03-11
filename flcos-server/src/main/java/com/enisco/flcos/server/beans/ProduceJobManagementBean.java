@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.beans;
 
+import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import org.springframework.stereotype.Component;
@@ -32,5 +33,15 @@ public class ProduceJobManagementBean implements IJobManagement {
 
     public String startJob(JobEntity job, Object ...parameters) {
         return "";
+    }
+
+    @Override
+    public void changeJobStatus(JobEntity job, JobStatus newStatus) {
+
+    }
+
+    @Override
+    public void finishJob(JobEntity job) {
+
     }
 }

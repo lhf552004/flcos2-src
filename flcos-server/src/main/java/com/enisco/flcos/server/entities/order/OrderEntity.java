@@ -1,6 +1,7 @@
 package com.enisco.flcos.server.entities.order;
 
 import com.enisco.flcos.server.entities.EntityBase;
+import com.enisco.flcos.server.entities.ProductEntity;
 import com.enisco.flcos.server.entities.job.AttributeChangeConsumer;
 import com.enisco.flcos.server.entities.scheme.SchemeAttributeEntity;
 import com.enisco.flcos.server.entities.template.TemplateEntity;
@@ -23,6 +24,12 @@ public class OrderEntity extends EntityBase {
 
     @Column(name = "is_internal")
     private Boolean isInternal;
+
+    @ManyToOne
+    private ProductEntity product;
+
+    @Column
+    private double targetWeight;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEMPLATE_ID")

@@ -2,8 +2,7 @@ package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.AuthenticationRequest;
 import com.enisco.flcos.server.dto.AuthenticationResponse;
-import com.enisco.flcos.server.entities.UserEntity;
-import com.enisco.flcos.server.repository.postgresql.UserRepository;
+import com.enisco.flcos.server.repository.relational.UserRepository;
 import com.enisco.flcos.server.services.MyUserDetailService;
 import com.enisco.flcos.server.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

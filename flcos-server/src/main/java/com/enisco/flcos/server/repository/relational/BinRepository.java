@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.repository.postgresql;
+package com.enisco.flcos.server.repository.relational;
 
 import com.enisco.flcos.server.entities.BinEntity;
 import com.enisco.flcos.server.entities.ProductEntity;
@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BinRepository extends JpaRepository<BinEntity, Long> {
     List<BinEntity> findByProduct(ProductEntity product);
+    List<BinEntity> findByProductAndIsUsing(ProductEntity product, Boolean isUsing);
 }
