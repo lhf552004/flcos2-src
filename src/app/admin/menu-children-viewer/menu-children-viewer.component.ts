@@ -1,44 +1,56 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {DataTableColumnDefinition, DataTableSettings, DataTableToolbarControl} from 'data-table';
-import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
-import {MenuService} from '../../core/layout/menu/menu.service';
-import {RoleService} from '../../core/user/role.service';
-import {MenuItem} from '../../core/layout/menu/menu-item';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
+import {User} from '../../core/user/models/user.model';
 import {Role} from '../../core/user/models/role.model';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {UserViewerComponent} from '../user-viewer/user-viewer.component';
+import {Subject} from 'rxjs';
+import {UserService} from '../../core/user/user.service';
+import {RoleService} from '../../core/user/role.service';
+import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {takeUntil} from 'rxjs/operators';
+import {RolesSelectorComponent} from '../roles-selector/roles-selector.component';
+import {MenuItem} from '../../core/layout/menu/menu-item';
+import { DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl } from 'data-table';
+import { DynamicFormService, ModalConfig, CustomValidators } from 'dynamic-form';
 import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
-import {ItemsSelectorComponent} from '../../shared/items-selector/items-selector.component';
-import {MenuChildrenViewerComponent} from '../menu-children-viewer/menu-children-viewer.component';
+import {MenuService} from '../../core/layout/menu/menu.service';
 
 @Component({
-  selector: 'emes-menus',
-  templateUrl: './menus.component.html',
-  styleUrls: ['./menus.component.scss']
+  selector: 'flcos-menu-children-viewer',
+  templateUrl: './menu-children-viewer.component.html',
+  styleUrls: ['./menu-children-viewer.component.scss']
 })
-export class MenusComponent implements OnInit, OnDestroy {
-  settings: DataTableSettings;
-  // Indicator whether current user is admin
+export class MenuChildrenViewerComponent implements OnInit, OnChanges, OnDestroy {
+
+  @Input() config: {
+    menu: MenuItem
+  };
+
   isAdmin = true;
-  closeResult = '';
+
+  name: string;
+
+  @Output()
+  submitted: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  dismissed: EventEmitter<any> = new EventEmitter<any>();
+
+  // The datatable settings
+  settings: DataTableSettings;
+
   columnDefinitions: DataTableColumnDefinition[];
+
   // Used for cleaning subscription
   private unsubscribe: Subject<void> = new Subject();
 
-  constructor(private roleService: RoleService,
-              private menuService: MenuService,
-              private dynamicFormService: DynamicFormService) {
+  constructor(private dynamicFormService: DynamicFormService, private menuService: MenuService, private roleService: RoleService) {
   }
 
   ngOnInit(): void {
     this.columnDefinitions = [
       {id: '1', name: 'id', label: 'Id', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {id: '2', name: 'name', label: 'Name', type: 'text', visible: true, searchable: false, filterMode: 'text'},
-      {id: '2', name: 'index', label: 'Index', type: 'text', visible: true, searchable: false, filterMode: 'text'},
       {id: '3', name: 'url', label: 'Url', type: 'text', visible: true, searchable: false, filterMode: 'none'},
+      {id: '4', name: 'index', label: 'Index', type: 'text', visible: true, searchable: false, filterMode: 'text'},
       {id: '4', name: 'external', label: 'Is External', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {id: '5', name: 'roleName', label: 'Role', type: 'text', visible: true, searchable: false, filterMode: 'text'},
       {
@@ -49,7 +61,7 @@ export class MenusComponent implements OnInit, OnDestroy {
         visible: true,
         searchable: false,
         filterMode: 'none',
-        click: this.viewMenu.bind(this)
+        click: this.viewChildMenu.bind(this)
       },
       {
         id: '7',
@@ -59,7 +71,7 @@ export class MenusComponent implements OnInit, OnDestroy {
         visible: true,
         searchable: false,
         filterMode: 'none',
-        click: this.viewChildren.bind(this)
+        click: this.viewChildChildren.bind(this)
       },
       {
         id: '8',
@@ -72,32 +84,11 @@ export class MenusComponent implements OnInit, OnDestroy {
         click: this.deleteMenu.bind(this)
       },
     ];
-    this.menuService.allMenus$.pipe(takeUntil(this.unsubscribe)).subscribe(menus => {
-      this.settings = {
-        selectableRows: false,
-        columnDefinitions: this.columnDefinitions,
-        data: menus.map(m => ({
-          ...m,
-          external: m.external ? m.external : false,
-          roleName: m.role?.name,
-          view: faExternalLinkAlt,
-          viewChildren: faExternalLinkAlt,
-          delete: faTrash
-        })),
-        toolBar: {
-          right: [
-            ...this.isAdmin ? [{
-              name: 'New Menu',
-              type: 'button',
-              icon: faPlus,
-              callback: this.createMenu.bind(this)
-            } as DataTableToolbarControl] : [],
-            {type: 'filter'} as DataTableToolbarControl
-          ]
-        },
-        groupBy: []
-      };
-    });
+    this.buildTableSettings();
+  }
+
+  ngOnChanges(): void {
+    this.buildTableSettings();
   }
 
   ngOnDestroy(): void {
@@ -105,12 +96,54 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  createMenu(parentMenu: MenuItem) {
+  buildTableSettings(): void {
+    this.name = this.config.menu.name;
+
+    this.settings = {
+      selectableRows: true,
+      columnDefinitions: this.columnDefinitions,
+      data: this.config.menu.children.map(m => ({
+        ...m,
+        external: m.external ? m.external : false,
+        roleName: m.role?.name,
+        view: faExternalLinkAlt,
+        viewChildren: faExternalLinkAlt,
+        delete: faTrash
+      })),
+      toolBar: {
+        left: [
+          {name: 'Remove', type: 'button', callback: this.removeChildren.bind(this)} as DataTableToolbarControl
+        ],
+        right: [
+          ...this.isAdmin ? [{
+            name: 'New Menu',
+            type: 'button',
+            icon: faPlus,
+            callback: this.createChildMenu.bind(this, this.config.menu)
+          } as DataTableToolbarControl] : [],
+          {type: 'filter'} as DataTableToolbarControl
+        ]
+      },
+      groupBy: []
+    };
+  }
+
+  submitForm(method: string) {
+    this.submitted.emit({
+
+    });
+  }
+
+  dismissForm(method: string) {
+    this.dismissed.emit(method);
+  }
+
+  createChildMenu(parentMenu: MenuItem) {
     const config: ModalConfig = {
       headerText: 'Create a menu',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: NewMenuItem) => !parentMenu ? this.doCreateMenu(e) : this.doAddChildMenu(parentMenu, e),
+      onSubmit: (e: NewMenuItem) => this.doAddChildMenu(parentMenu, e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -170,11 +203,6 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  doCreateMenu(newMenu: NewMenuItem): void {
-    newMenu = {...newMenu, isRoot: true};
-    this.menuService.createMenu(newMenu).pipe(takeUntil(this.unsubscribe)).subscribe();
-  }
-
   doAddChildMenu(parentMenu: MenuItem, newMenu: NewMenuItem) {
     parentMenu.children.push({...newMenu, id: '', isRoot: false, children: []});
     const updated = {
@@ -190,10 +218,12 @@ export class MenusComponent implements OnInit, OnDestroy {
       isRoot: parentMenu.isRoot
     };
     console.log(updated);
-    this.menuService.update(parentMenu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe();
+    this.menuService.update(parentMenu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+      this.buildTableSettings();
+    });
   }
 
-  viewMenu(menu: MenuItem) {
+  viewChildMenu(menu: MenuItem) {
     const config: ModalConfig = {
       headerText: 'View a menu',
       submitText: 'OK',
@@ -265,7 +295,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  viewChildren(menu: MenuItem) {
+  viewChildChildren(menu: MenuItem) {
     const config = {
       menu,
       onSubmit: (changes: any) => {
@@ -273,7 +303,6 @@ export class MenusComponent implements OnInit, OnDestroy {
       onDismiss: (e: string) => {
       }
     };
-
     this.dynamicFormService.popModal(MenuChildrenViewerComponent, config);
   }
 
@@ -282,7 +311,13 @@ export class MenusComponent implements OnInit, OnDestroy {
     if (e.role) {
       updated.role = e.role;
     }
-    this.menuService.update(menu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe();
+    this.menuService.update(menu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+      const idx = this.config.menu.children.findIndex(m => m.id === menu.id);
+      if (idx > -1) {
+        this.config.menu.children.splice(idx, 1, updated);
+      }
+      this.buildTableSettings();
+    });
   }
 
   deleteMenu(menu: MenuItem) {
@@ -300,6 +335,15 @@ export class MenusComponent implements OnInit, OnDestroy {
 
   doDelete(menu: MenuItem) {
     this.menuService.delete(menu.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+      const idx = this.config.menu.children.findIndex(m => m.id === menu.id);
+      if (idx > -1) {
+        this.config.menu.children.splice(idx, 1);
+        this.buildTableSettings();
+      }
     });
+  }
+
+  removeChildren() {
+
   }
 }

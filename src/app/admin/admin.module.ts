@@ -7,9 +7,10 @@ import {MenusComponent} from './menus/menus.component';
 import {AdminComponent} from './admin/admin.component';
 import {UserViewerComponent} from './user-viewer/user-viewer.component';
 import {RolesSelectorComponent} from './roles-selector/roles-selector.component';
+import { MenuChildrenViewerComponent } from './menu-children-viewer/menu-children-viewer.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, MenusComponent, AdminComponent, UserViewerComponent, RolesSelectorComponent],
+  declarations: [UsersComponent, RolesComponent, MenusComponent, AdminComponent, UserViewerComponent, RolesSelectorComponent, MenuChildrenViewerComponent],
   imports: [
     SharedModule,
     AdminRoutingModule

@@ -41,7 +41,7 @@ export class ItemsSelectorComponent implements OnInit, OnChanges {
 
   buildTableSettings(): void {
     this.items = this.config.items;
-
+    console.log(this.items);
     this.settings = {
       selectableRows: true,
       columnDefinitions: this.config.columnDefinitions,

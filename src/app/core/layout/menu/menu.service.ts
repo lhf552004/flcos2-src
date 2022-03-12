@@ -22,6 +22,7 @@ export class MenuService {
   getMenus(): Observable<MenuItem[]> {
     const url = `${this.menuUrl}`;
     return this.http.get<any>(url).pipe(tap(m => {
+      this.sortMenu(m);
       this.allMenus$.next(m);
     }));
     // var mockedMenus: MenuItem[] = [
@@ -62,13 +63,15 @@ export class MenuService {
   createMenu(newMenu: NewMenuItem): Observable<any> {
     const url = `${this.menuUrl}`;
     return this.http.post<any>(url, newMenu).pipe(tap(x => {
-      // Update the menus
-      const menus = this.grantedMenus$.getValue();
-      menus.push({children: [], iconName: '', ...newMenu, id: x});
-      this.grantedMenus$.next(menus);
+      // Update the granted menus
+      const grantedMenus = this.grantedMenus$.getValue();
+      grantedMenus.push({children: [], iconName: '', ...newMenu, id: x});
+      this.sortMenu(grantedMenus);
+      this.grantedMenus$.next(grantedMenus);
       // Update the menu list
       const allMenus = this.allMenus$.getValue();
       allMenus.push({children: [], iconName: '', ...newMenu, id: x});
+      this.sortMenu(allMenus);
       this.allMenus$.next(allMenus);
     }));
   }
@@ -76,20 +79,39 @@ export class MenuService {
   update(id: string, updatedMenu: MenuItem): Observable<any> {
     const url = `${this.menuUrl}/${id}`;
     return this.http.put<any>(url, updatedMenu).pipe(tap(x => {
+      console.log(updatedMenu);
       const grantedMenus = this.grantedMenus$.getValue();
-      let menu = grantedMenus.find(m => m.id === id);
-      if (menu) {
-        menu = {...updatedMenu};
-      }
+      this.doUpdateMenu(id, updatedMenu, grantedMenus);
+      console.log(grantedMenus);
+      this.sortMenu(grantedMenus);
       this.grantedMenus$.next(grantedMenus);
 
       const allMenus = this.allMenus$.getValue();
-      let menu2 = allMenus.find(m => m.id === id);
-      if (menu2) {
-        menu2 = {...updatedMenu};
-      }
+      this.doUpdateMenu(id, updatedMenu, allMenus);
+      console.log(grantedMenus);
       this.allMenus$.next(allMenus);
     }));
+  }
+
+  doUpdateMenu(id: string, updated: MenuItem, menuItems: MenuItem[]) {
+    let isFound = false;
+    let i = 0;
+    const length = menuItems.length;
+    while (i < length) {
+      const curMenuItem = menuItems[i];
+      if (curMenuItem.id === id) {
+        menuItems.splice(i, 1, updated);
+        isFound = true;
+        break;
+      }else {
+        isFound = this.doUpdateMenu(id, updated, curMenuItem.children);
+        if (isFound) {
+          break;
+        }
+      }
+      i ++;
+    }
+    return isFound;
   }
 
   assignRole(id: string, role: Role): Observable<any> {
@@ -107,19 +129,34 @@ export class MenuService {
   delete(id: string): Observable<any> {
     const url = `${this.menuUrl}/${id}`;
     return this.http.delete<any>(url).pipe(tap(x => {
-      const menus = this.grantedMenus$.getValue();
-      const index = menus.findIndex(m => m.id === id);
-      if (index > 0) {
-        menus.splice(index, 1);
-      }
-      this.grantedMenus$.next(menus);
+      const grantedMenus = this.grantedMenus$.getValue();
+      this.doDeleteMenu(id, grantedMenus);
+      this.grantedMenus$.next(grantedMenus);
 
       const allMenus = this.allMenus$.getValue();
-      const index2 = allMenus.findIndex(m => m.id === id);
-      if (index2 > 0) {
-        allMenus.splice(index2, 1);
-      }
+      this.doDeleteMenu(id, allMenus);
       this.allMenus$.next(allMenus);
     }));
+  }
+
+  doDeleteMenu(id: string, menuItems: MenuItem[]) {
+    let isFound = false;
+    let i = 0;
+    const length = menuItems.length;
+    while (i < length) {
+      const curMenuItem = menuItems[i];
+      if (curMenuItem.id === id) {
+        menuItems.splice(i, 1);
+        isFound = true;
+        break;
+      }else {
+        isFound = this.doDeleteMenu(id, curMenuItem.children);
+        if (isFound) {
+          break;
+        }
+      }
+      i ++;
+    }
+    return isFound;
   }
 }
