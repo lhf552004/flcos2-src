@@ -6,6 +6,7 @@ import com.enisco.flcos.server.dto.opcs.*;
 import com.enisco.flcos.server.opc.OPCNodeList;
 import com.enisco.flcos.server.opc.client.OPCClientFactory;
 
+import com.enisco.flcos.server.services.ProcessValueServiceImpl;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/opc-ua")
 @RestController
@@ -24,6 +26,9 @@ public class OPCUAController {
 
     @Autowired
     OPCClientFactory opcClientFactory;
+
+    @Autowired
+    ProcessValueServiceImpl processValueService;
 
     @PostMapping(path = "read")
     public Object readVariable(@RequestBody ReadVariableDto readVariableDto) throws Exception {
@@ -41,12 +46,27 @@ public class OPCUAController {
         return opcClientFactory.getVariables();
     }
 
-    @GetMapping (path = "nodes")
-    public OPCNodeList getNodes() {
-        return (OPCNodeList)opcClientFactory.getOpcNodeListMap().values().toArray()[0];
+    @PostMapping(path = "variables")
+    public Map<String, OpcVariableValueDTO> getVariables(@RequestBody QueryVariablesDto queryVariablesDto) {
+        var maps = processValueService.getAllVariableDef();
+        return opcClientFactory.getVariables()
+                .entrySet().stream().filter(entry -> queryVariablesDto.getVariables().contains(entry.getKey()))
+                .map(entry -> {
+                    var variableDef = maps.get(entry.getKey());
+                    var variableValue = new OpcVariableValueDTO();
+                    variableValue.setValue(entry.getValue());
+                    variableValue.setType(variableDef.getType().name());
+                    return Map.entry(entry.getKey(), variableValue);
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    @PostMapping (path = "node")
+    @GetMapping(path = "nodes")
+    public OPCNodeList getNodes() {
+        return (OPCNodeList) opcClientFactory.getOpcNodeListMap().values().toArray()[0];
+    }
+
+    @PostMapping(path = "node")
     public OpcNodeDto getNode(@RequestBody QueryNodeDto queryNodeDto) throws UaException {
         return opcClientFactory.readNode(queryNodeDto.getEndpointUrl(), queryNodeDto.getNodeId(), queryNodeDto.getNodeClass());
     }
@@ -55,7 +75,6 @@ public class OPCUAController {
     public Set<String> getEndpointUrls() {
         return opcClientFactory.getEndpointUrls();
     }
-
 
 
 }

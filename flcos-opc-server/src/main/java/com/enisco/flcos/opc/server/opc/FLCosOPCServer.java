@@ -115,6 +115,7 @@ public class FLCosOPCServer {
         this.name = name;
         Path securityTempDir = Paths.get(System.getProperty("java.io.tmpdir"), "server", "security");
         Files.createDirectories(securityTempDir);
+        logger.info("Security temp dir: "+ securityTempDir);
         if (!Files.exists(securityTempDir)) {
             throw new FLCosOPCException("unable to create security temp dir: " + securityTempDir);
         }
