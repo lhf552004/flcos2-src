@@ -25,13 +25,13 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   // Indicates if the nav bar is collapsed
   isCollapsed = true;
-  sseConnected = false;
+
   // Indicates whether the user is authenticated
-  public isAuthenticated: boolean = true;
+  public isAuthenticated = true;
 
   // The authenticated user
   public authenticatedUser: AuthenticatedUser | null = null;
-  private sseUrl = environment.baseUrl + 'stream';
+
   // Preferences
   LOCAL_STORAGE_PREFERENCES = 'PREFERENCES';
 
@@ -45,8 +45,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   faUser: IconDefinition = faUser;
   faPowerOff: IconDefinition = faPowerOff;
   faSignInAlt: IconDefinition = faSignInAlt;
-  faPlug: IconDefinition = faPlug;
-  faHandshakeSlash: IconDefinition = faHandshakeSlash;
+
 
   // Used for cleaning subscription
   private unsubscribe: Subject<void> = new Subject();
@@ -64,7 +63,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.selectedLanguage = this.translateService.currentLang;
     // Retrieve languages from the translateService
     this.languages = this.translateService.getLangs();
-    this.connectSSE();
     this.searchService.init();
     this.menuService.grantedMenus$.pipe(takeUntil(this.unsubscribe)).subscribe(menu => this.menu = menu);
     this.userService.currentUser.pipe(
@@ -121,21 +119,6 @@ export class MenuComponent implements OnInit, OnDestroy {
         localStorage.setItem(this.LOCAL_STORAGE_PREFERENCES, JSON.stringify(preferences));
       }
     );
-  }
-
-  connectSSE(): void {
-    const source = new EventSource(this.sseUrl);
-    source.onopen = (event) => {
-      this.sseConnected = true;
-    };
-    source.onerror = (error) => {
-      this.sseConnected = false;
-    };
-    source.addEventListener('message', message => {
-      console.log(message.data);
-      const changedNode: { nodeId: string, newValue: object } = JSON.parse(message.data);
-      this.opcServerService.updateVariableNodeValue(changedNode.nodeId, changedNode.newValue);
-    });
   }
 
   navigateToExternal(menuItem: MenuItem) {

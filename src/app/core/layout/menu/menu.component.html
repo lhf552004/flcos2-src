@@ -32,8 +32,6 @@
 <!--        <a class="nav-link" [routerLink]="[menuItem.url]" [routerLinkActive]="'active'">{{menuItem.name}}</a>-->
       </li>
     </ul>
-    <span *ngIf="sseConnected" class="badge badge-danger mr-2 p-2 white-text font-weight-light"><fa-icon [icon]="faPlug" [fixedWidth]="true"></fa-icon></span>
-    <span *ngIf="!sseConnected" class="badge badge-danger mr-2 p-2 white-text font-weight-light"><fa-icon [icon]="faHandshakeSlash" [fixedWidth]="true"></fa-icon></span>
 
     <!-- Search -->
     <input class="form-control form-control-sm border-0 w-auto" type="search" placeholder="Search" (search)="triggerSearch($event.target.value)">

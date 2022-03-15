@@ -18,6 +18,8 @@ import {Equipment} from '../../engineerings/shared/models/equipment.model';
 import {DynamicFormService} from 'dynamic-form';
 import {OpcServerService} from '../../shared/services/opc-server.service';
 import {OpcVariableValues} from '../../shared/models/opc-variable-values.model';
+import {environment} from '../../../environments/environment';
+import {IconDefinition, faPlug, faHandshakeSlash} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'emes-line-default',
@@ -35,7 +37,13 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
   equipments: Equipment[];
   workflowSettings: WorkflowSettings = new WorkflowSettings();
 
+  faPlug: IconDefinition = faPlug;
+  faHandshakeSlash: IconDefinition = faHandshakeSlash;
+
   variableValues: OpcVariableValues;
+
+  private sseUrl = environment.baseUrl + 'stream';
+  sseConnected = false;
 
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
@@ -111,11 +119,13 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         });
         console.log(storages);
-        const variables = gcObjects.map(object => object.getAttribute('deviceident'));
-        this.opcServerService.getOPCVariableNodeValues(variables).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
-          this.variableValues = x;
-          gcObjects.forEach(element => this.renderElement(element));
-        });
+        if (gcObjects && gcObjects.length > 0) {
+          const variables = gcObjects.map(object => object.getAttribute('deviceident'));
+          this.opcServerService.getOPCVariableNodeValues(variables).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+            this.variableValues = x;
+            gcObjects.forEach(element => this.renderElement(element));
+          });
+        }
       }
     }, 250);  // An estimate of the time it takes for the svg to actually load.
   }
@@ -242,6 +252,21 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
         backgroundArea.setAttribute('fill', 'black');
       }
     }
+  }
+
+  connectSSE(): void {
+    const source = new EventSource(this.sseUrl);
+    source.onopen = (event) => {
+      this.sseConnected = true;
+    };
+    source.onerror = (error) => {
+      this.sseConnected = false;
+    };
+    source.addEventListener('message', message => {
+      console.log(message.data);
+      const changedNode: { nodeId: string, newValue: object } = JSON.parse(message.data);
+      this.opcServerService.updateVariableNodeValue(changedNode.nodeId, changedNode.newValue);
+    });
   }
 
 

@@ -50,7 +50,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         visible: true,
         searchable: false,
         filterMode: 'none',
-        click: this.deleteMenu.bind(this)
+        click: this.deleteLine.bind(this)
       },
     ];
     this.lineService.allLines$.pipe(takeUntil(this.unsubscribe)).subscribe(lines => {
@@ -66,7 +66,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         toolBar: {
           right: [
             ...this.isAdmin ? [{
-              name: 'New Menu',
+              name: 'New Line',
               type: 'button',
               icon: faPlus,
               callback: this.createLine.bind(this)
@@ -143,7 +143,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     this.lineService.update(line.id, line).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
-  deleteMenu(line: Line) {
+  deleteLine(line: Line) {
     const config = {
       headerText: 'Confirm Delete Line.',
       submitText: 'Ok',

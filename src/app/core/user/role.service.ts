@@ -36,7 +36,7 @@ export class RoleService {
   }
 
   rename(id: string, newName: string): Observable<any> {
-    const url = `${this.roleUrl}/${id}/add-menus`;
+    const url = `${this.roleUrl}/${id}/rename`;
     const payload = {name: newName};
     return this.http.put<any>(url, payload).pipe(tap(x => {
       const roles = this.roles$.getValue();

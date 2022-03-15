@@ -28,6 +28,7 @@ const routes: Routes = [
   {path: 'workflow', canActivate: [AuthGuardService], loadChildren: () => import('./workflow/workflow.module').then(m => m.WorkflowModule)},
   {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
   {path: 'alarms', loadChildren: () => import('./alarms/alarms.module').then(m => m.AlarmsModule)},
+  {path: 'trendings', loadChildren: () => import('./trendings/trendings.module').then(m => m.TrendingsModule)},
   {path: 'schemes', loadChildren: () => import('./schemes/schemes.module').then(m => m.SchemesModule)},
   {path: 'opc-servers', loadChildren: () => import('./opc-servers/opc-servers.module').then(m => m.OpcServersModule)},
   {path: 'diagnostics', loadChildren: () => import('./diagnostics/diagnostics.module').then(m => m.DiagnosticsModule)},

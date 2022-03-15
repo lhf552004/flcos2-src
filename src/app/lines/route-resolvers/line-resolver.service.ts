@@ -12,6 +12,6 @@ export class LineResolverService {
   constructor(private lineService: LineService, private router: Router) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Line> {
     const id = route.paramMap.get('lineId');
-    return this.lineService.getLine(id as string);
+    return this.lineService.get(id as string);
   }
 }

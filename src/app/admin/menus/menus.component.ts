@@ -162,7 +162,7 @@ export class MenusComponent implements OnInit, OnDestroy {
           label: 'Role',
           name: 'role',
           options: this.roleService.roles$.getValue().map(x => ({key: x, value: x.name})),
-          placeholder: 'Choose existed Sprint Scenario',
+          placeholder: 'Choose existed Role',
           validation: []
         }
       ]

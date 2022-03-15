@@ -104,7 +104,7 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   viewRole(role: Role) {
     const config: ModalConfig = {
-      headerText: 'Create a role',
+      headerText: 'View a role',
       submitText: 'OK',
       closeText: 'Cancel',
       onSubmit: (e: { name: string }) => this.doRename(role.id, e.name),

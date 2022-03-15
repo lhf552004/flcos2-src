@@ -11,6 +11,6 @@ export class LinesResolverService {
 
   constructor(private lineService: LineService, private router: Router) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Line[]> {
-    return this.lineService.getLines();
+    return this.lineService.getAll();
   }
 }
