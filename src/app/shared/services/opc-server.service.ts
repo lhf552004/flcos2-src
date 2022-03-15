@@ -16,7 +16,7 @@ export class OpcServerService {
   opcNodeList$: BehaviorSubject<OPCNodeList | null> = new BehaviorSubject<OPCNodeList | null>(null);
   endpointUrls$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   endpointUrl$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  opcNodeVariableValues$: BehaviorSubject<OpcVariableValues> = new BehaviorSubject<OpcVariableValues>({rollerBeds: {}});
+  opcNodeVariableValues$: BehaviorSubject<OpcVariableValues> = new BehaviorSubject<OpcVariableValues>({});
 
   constructor(private http: HttpClient) {
   }
@@ -75,13 +75,19 @@ export class OpcServerService {
     return theNode;
   }
 
-  getOPCVariableNodeValues(): Observable<OpcVariableValues> {
+  getAllOPCVariableNodeValues(): Observable<OpcVariableValues> {
     const url = `${this.opcServerUrl}/variables`;
     return this.http.get<any>(url).pipe(tap(x => {
       const variableValues = this.opcNodeVariableValues$.getValue();
       variableValues.rollerBeds = x;
       this.opcNodeVariableValues$.next(variableValues);
     }));
+  }
+
+  getOPCVariableNodeValues(variables: string[]): Observable<OpcVariableValues> {
+    const url = `${this.opcServerUrl}/variables`;
+    const payload = {variables};
+    return this.http.post<any>(url, payload);
   }
 
   updateVariableNodeValue(nodeId: string, newValue: object) {

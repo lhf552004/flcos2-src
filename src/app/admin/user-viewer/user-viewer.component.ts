@@ -88,6 +88,7 @@ export class UserViewerComponent implements OnInit, OnChanges, OnDestroy {
           {name: 'Remove', type: 'button', callback: this.removeRoles.bind(this)} as DataTableToolbarControl
         ],
         right: [
+          // @ts-ignore
           {name: 'Add Role', type: 'button', icon: faPlus, callback: this.addRole.bind(this)},
           {type: 'search'} as DataTableToolbarControl
         ]

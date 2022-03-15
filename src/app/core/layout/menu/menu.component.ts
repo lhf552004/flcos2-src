@@ -77,7 +77,7 @@ export class MenuComponent implements OnInit, OnDestroy {
             console.log(error);
             this.userService.logout();
           });
-          this.opcServerService.getOPCVariableNodeValues().pipe(takeUntil(this.unsubscribe)).subscribe();
+          this.opcServerService.getAllOPCVariableNodeValues().pipe(takeUntil(this.unsubscribe)).subscribe();
         } else {
           this.menu = [];
           this.router.navigate(['/login']);

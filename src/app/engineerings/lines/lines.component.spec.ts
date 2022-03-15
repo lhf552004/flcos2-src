@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EquipmentDefaultComponent } from './equipment-default.component';
+import { LinesComponent } from './lines.component';
 
-describe('EquipmentDefaultComponent', () => {
-  let component: EquipmentDefaultComponent;
-  let fixture: ComponentFixture<EquipmentDefaultComponent>;
+describe('LinesComponent', () => {
+  let component: LinesComponent;
+  let fixture: ComponentFixture<LinesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EquipmentDefaultComponent ]
+      declarations: [ LinesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EquipmentDefaultComponent);
+    fixture = TestBed.createComponent(LinesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,6 +6,7 @@ import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-ic
 import {RoleService} from '../../core/user/role.service';
 import {Role} from '../../core/user/models/role.model';
 import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
+import {MenuItem} from '../../core/layout/menu/menu-item';
 
 @Component({
   selector: 'emes-roles',
@@ -130,8 +131,22 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleService.rename(id, newName).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
-  deleteRole() {
+  deleteRole(role: Role) {
+    const config = {
+      headerText: 'Confirm Delete Role.',
+      submitText: 'Ok',
+      closeText: 'Cancel',
+      onSubmit: () => this.doDelete(role),
+      onDismiss: () => {
+      },
+      notifications: [`Are you Sure you want to delete role '${role.name}'?`]
+    };
+    this.dynamicFormService.popNotification(config);
+  }
 
+  doDelete(role: Role) {
+    this.roleService.delete(role.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+    });
   }
 
 }

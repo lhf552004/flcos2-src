@@ -173,6 +173,7 @@ export class SideBarComponent implements OnInit, OnChanges {
   convertMenuItemsToTreeviewNodes(menuItems: MenuItem[], treeNodes: TreeviewNode[], level: number) {
     if (menuItems) {
       menuItems.forEach(menuItem => {
+        // @ts-ignore
         const node = new TreeviewNode(menuItem.id, menuItem.label, level, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
           menuItem,
           route: menuItem.route,

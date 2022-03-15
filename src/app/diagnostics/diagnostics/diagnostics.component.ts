@@ -39,6 +39,7 @@ export class DiagnosticsComponent implements OnInit, OnDestroy {
         onClick: this.onMenuItemExpand.bind(this),
         children: []
       };
+      // @ts-ignore
       const node = new TreeviewNode(menuItem.id, menuItem.label, 1, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
         menuItem,
         route: menuItem.route,
@@ -63,6 +64,7 @@ export class DiagnosticsComponent implements OnInit, OnDestroy {
       route: [parentNode.id],
       children: []
     };
+    // @ts-ignore
     const node = new TreeviewNode(menuItem.id, menuItem.label, level, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
       menuItem,
       route: menuItem.route,
@@ -88,6 +90,7 @@ export class DiagnosticsComponent implements OnInit, OnDestroy {
         onClick: this.onMenuItemExpand.bind(this),
         children: []
       };
+      // @ts-ignore
       const node = new TreeviewNode(menuItem.id, menuItem.label, level, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
         menuItem,
         route: menuItem.route,

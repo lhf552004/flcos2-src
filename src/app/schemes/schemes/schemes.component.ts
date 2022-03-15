@@ -36,12 +36,13 @@ export class SchemesComponent implements OnInit, OnDestroy {
         children: []
       }));
       this.treeViewNodes = this.menuItems.map(menuItem => {
-          const node = new TreeviewNode(menuItem.id, menuItem.label, 1, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
+          // @ts-ignore
+        const node = new TreeviewNode(menuItem.id, menuItem.label, 1, null, menuItem.icon, menuItem.badges ? menuItem.badges : [], {
             menuItem,
             route: menuItem.route,
             onClick: menuItem.onClick
           });
-          return node;
+        return node;
         }
       );
 

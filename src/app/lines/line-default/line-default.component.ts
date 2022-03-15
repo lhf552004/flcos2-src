@@ -11,10 +11,10 @@ import {StorageComponent} from '../storage/storage.component';
 import {SvgIconComponent} from 'angular-svg-icon';
 import {icon} from '@fortawesome/fontawesome-svg-core';
 import {BinService} from '../../bins/shared/bin.service';
-import {EquipmentService} from '../../equipments/shared/equipment.service';
-import {SectionService} from '../../equipments/shared/section.service';
+import {EquipmentService} from '../../engineerings/shared/equipment.service';
+import {SectionService} from '../../engineerings/shared/section.service';
 import {Bin} from '../../bins/shared/models/bin.model';
-import {Equipment} from '../../equipments/shared/models/equipment.model';
+import {Equipment} from '../../engineerings/shared/models/equipment.model';
 import {DynamicFormService} from 'dynamic-form';
 import {OpcServerService} from '../../shared/services/opc-server.service';
 import {OpcVariableValues} from '../../shared/models/opc-variable-values.model';
@@ -53,6 +53,7 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.data.pipe(takeUntil(this.unsubscribe)).subscribe((data: { line: Line }) => {
       this.line = data.line;
       this.svg = 'assets/svgs/' + this.line.name + '.svg';
+      // Mock data
       this.sections = data.line.sections.map((section, index, array) => {
         return {
           id: section.id,
@@ -62,34 +63,6 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
         };
       });
 
-      // const workflow = new Workflow();
-      // let yAix = 0;
-      // const diff = 50;
-      // workflow.vertexes = this.line.sections.map(section => {
-      //   yAix = yAix + diff;
-      //   return {
-      //     id: section.id,
-      //     name: section.name,
-      //     width: 200,
-      //     height: 80,
-      //     x: 100,
-      //     y: yAix,
-      //     style: 'red'
-      //   };
-      // });
-      // workflow.edges = workflow.vertexes.map((vertex, index, array) => {
-      //   if (index + 1 < array.length) {
-      //     return {
-      //       id: index.toString(),
-      //       name: '',
-      //       source: vertex.id,
-      //       target: array[index + 1].id,
-      //       style: ''
-      //     };
-      //   }
-      // }).filter(edge => edge);
-      // this.workflowSettings.workflow = workflow;
-      // this.svg = 'assets/svgs/' + this.line.name + '.svg';
       console.log(this.line);
     });
   }
@@ -102,6 +75,8 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
       if (icn) {
         const svg = icn.nativeElement.firstChild;
         console.log(svg);
+        const gcObjects = svg.querySelectorAll('[devicetype=\'gcobject\']');
+
         const storages = svg.querySelectorAll('[devicetype=\'storage\']');
         const idsOfStorage = this.getIdsFromSvg(storages);
 
@@ -135,20 +110,13 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
             capacity.setAttribute('height', height);
           });
         });
-        this.opcServerService.opcNodeVariableValues$.pipe(takeUntil(this.unsubscribe)).subscribe(x => {
-          this.variableValues = x;
-          this.updateRollerBed();
-        });
         console.log(storages);
+        const variables = gcObjects.map(object => object.getAttribute('deviceident'));
+        this.opcServerService.getOPCVariableNodeValues(variables).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+          this.variableValues = x;
+          gcObjects.forEach(element => this.renderElement(element));
+        });
       }
-
-
-      // const observables: Observable<any>[] = [];
-      // observables.push(this.binService.getBins().pipe(takeUntil(this.unsubscribe)))
-      // observables.push(this.equipmentService.get().pipe(takeUntil(this.unsubscribe)))
-      // this.binService.getBins().pipe(takeUntil(this.unsubscribe)).subscribe(bins => {
-      //
-      // });
     }, 250);  // An estimate of the time it takes for the svg to actually load.
   }
 
@@ -236,16 +204,45 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
       const rollerBeds = svg.querySelectorAll('[devicetype=\'rollerBed\']');
       rollerBeds.forEach(rollerBedEle => {
         const deviceIdent = rollerBedEle.getAttribute('deviceident');
-        const ioBlock = this.variableValues.rollerBeds[deviceIdent];
+        const ioBlock = this.variableValues[deviceIdent];
         const rollerBed = rollerBedEle.querySelector('.rollerBed');
         if (Boolean(ioBlock) === true) {
           rollerBed.setAttribute('fill', 'green');
-        }else {
+        } else {
           rollerBed.setAttribute('fill', '#c0c0c0');
         }
       });
     }
 
   }
+
+  renderElement(element: any) {
+    const deviceIdent = element.getAttribute('deviceident');
+    const variableValue = this.variableValues[deviceIdent];
+    if (!variableValue) {
+      return;
+    }
+    const variableType = variableValue.type.toUpperCase();
+    if (variableType === 'VALUE') {
+      const valueText = element.querySelector('.value');
+      valueText.innerHTML = variableValue.value;
+    } else if (variableType === 'STATUS') {
+      const backgroundArea = element.querySelector('.status');
+      if (variableValue.value === 1) {
+        // Running status is OK
+        backgroundArea.setAttribute('fill', 'green');
+      } else if (variableValue.value === 2) {
+        // Running status is error
+        backgroundArea.setAttribute('fill', 'red');
+      } else if (variableValue.value === 0) {
+        // Running status is passive
+        backgroundArea.setAttribute('fill', 'gray');
+      } else {
+        // Running status is unknown
+        backgroundArea.setAttribute('fill', 'black');
+      }
+    }
+  }
+
 
 }

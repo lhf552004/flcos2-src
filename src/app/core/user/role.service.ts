@@ -75,4 +75,16 @@ export class RoleService {
   //     this.roles$.next(roles);
   //   }));
   // }
+
+  delete(id: string): Observable<any> {
+    const url = `${this.roleUrl}/${id}`;
+    return this.http.delete<any>(url).pipe(tap(x => {
+      const roles = this.roles$.getValue();
+      const idx = roles.findIndex(r => r.id === id);
+      if (idx > -1) {
+        roles.splice(idx, 1);
+      }
+      this.roles$.next(roles);
+    }));
+  }
 }

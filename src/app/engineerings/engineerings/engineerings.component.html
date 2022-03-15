@@ -1,0 +1,37 @@
+<div class="container-fluid h-100 d-flex pr-0">
+  <div class="row flex-fill">
+    <div class="col-2 border-right gray-200-background pt-2">
+
+      <ul class="nav flex-column">
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link">
+            <span class="text-capitalize font-weight-bold">Settings</span>
+          </a>
+        </li>
+
+        <li class="dropdown-divider gray-500-border-top mx-n3"></li>
+
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'users'" routerLinkActive="active">
+            <fa-icon [icon]="faUsers" [fixedWidth]="true"></fa-icon> Users
+          </a>
+        </li>
+
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'roles'" routerLinkActive="active">
+            <fa-icon [icon]="faUserTag" [fixedWidth]="true"></fa-icon> Roles
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'menus'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> Menus
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col d-flex">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

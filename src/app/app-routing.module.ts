@@ -19,9 +19,9 @@ const routes: Routes = [
     loadChildren: () => import('./warehouses/warehouses.module').then(m => m.WarehousesModule)
   },
   {
-    path: 'equipments',
+    path: 'engineerings',
     canActivate: [AuthGuardService],
-    loadChildren: () => import('./equipments/equipments.module').then(m => m.EquipmentsModule)
+    loadChildren: () => import('./engineerings/engineerings.module').then(m => m.EngineeringsModule)
   },
   {path: 'bins', canActivate: [AuthGuardService], loadChildren: () => import('./bins/bins.module').then(m => m.BinsModule)},
   {path: 'admin', canActivate: [AuthGuardService], loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
