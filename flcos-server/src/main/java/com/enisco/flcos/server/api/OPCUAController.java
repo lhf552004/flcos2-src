@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,18 +48,12 @@ public class OPCUAController {
     }
 
     @PostMapping(path = "variables")
-    public Map<String, OpcVariableValueDTO> getVariables(@RequestBody QueryVariablesDto queryVariablesDto) {
-        var maps = processValueService.getAllVariableDef();
-        return opcClientFactory.getVariables()
+    public Map<String, Object> getVariables(@RequestBody QueryVariablesDto queryVariablesDto) {
+        Map<String, Object> filtered = new HashMap<>();
+        opcClientFactory.getVariables()
                 .entrySet().stream().filter(entry -> queryVariablesDto.getVariables().contains(entry.getKey()))
-                .map(entry -> {
-                    var variableDef = maps.get(entry.getKey());
-                    var variableValue = new OpcVariableValueDTO();
-                    variableValue.setValue(entry.getValue());
-                    variableValue.setType(variableDef.getType().name());
-                    return Map.entry(entry.getKey(), variableValue);
-                })
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .forEach(entry -> filtered.put(entry.getKey(), entry.getValue()));
+        return filtered;
     }
 
     @GetMapping(path = "nodes")
