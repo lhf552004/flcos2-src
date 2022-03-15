@@ -21,8 +21,8 @@
     "INTERNAL": "Internal",
     "FRESH": "Fresh"
   },
-  "OPC" : {
-    "ENDPOINT URL":  "Endpoint url",
+  "OPC": {
+    "ENDPOINT URL": "Endpoint url",
     "OPC SERVER": "OPC Server",
     "OPC SERVERS": "OPC Servers",
     "TCP PORT": "TCP Port",
@@ -45,6 +45,10 @@
     "Attributes and References": "Attributes and References",
     "NODE CLASS": "Node Class",
     "VARIABLE VALUE": "Value",
-    "Engineerings": "Engineerings"
+    "Engineerings": "Engineerings",
+    "Trendings": "趋势"
+  },
+  "TRENDING": {
+    "PROCESS VARIABLES": "Process Variables"
   }
 }

@@ -42,12 +42,16 @@
     "Admin": "管理员",
     "Schemes": "Schemes",
     "Diagnostics": "诊断",
-    "Engineerings": "工程"
+    "Engineerings": "工程",
+    "Trendings": "趋势"
   },
   "DIAG" : {
     "Diagnostics": "诊断",
     "Attributes and References": "属性和引用",
     "NODE CLASS": "节点类型",
     "VARIABLE VALUE": "值"
+  },
+  "TRENDING": {
+    "PROCESS VARIABLES": "过程变量"
   }
 }

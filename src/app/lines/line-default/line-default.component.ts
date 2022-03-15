@@ -70,9 +70,9 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
           jobName: this.line.name + ':00000' + (index + 1)
         };
       });
-
       console.log(this.line);
     });
+    this.connectSSE();
   }
 
   ngAfterViewInit(): void {
@@ -120,10 +120,15 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         console.log(storages);
         if (gcObjects && gcObjects.length > 0) {
-          const variables = gcObjects.map(object => object.getAttribute('deviceident'));
-          this.opcServerService.getOPCVariableNodeValues(variables).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+          const variables: string[] = [];
+          gcObjects.forEach(object => {
+            variables.push(object.getAttribute('deviceident'));
+          });
+          this.opcServerService.opcNodeVariableValues$.pipe(takeUntil(this.unsubscribe)).subscribe(x => {
             this.variableValues = x;
             gcObjects.forEach(element => this.renderElement(element));
+          });
+          this.opcServerService.getOPCVariableNodeValues(variables).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
           });
         }
       }
@@ -238,30 +243,32 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
       valueText.innerHTML = variableValue.value;
     } else if (variableType === 'STATUS') {
       const backgroundArea = element.querySelector('.status');
-      if (variableValue.value === 1) {
-        // Running status is OK
-        backgroundArea.setAttribute('fill', 'green');
-      } else if (variableValue.value === 2) {
-        // Running status is error
-        backgroundArea.setAttribute('fill', 'red');
-      } else if (variableValue.value === 0) {
-        // Running status is passive
-        backgroundArea.setAttribute('fill', 'gray');
-      } else {
-        // Running status is unknown
-        backgroundArea.setAttribute('fill', 'black');
+      if (backgroundArea) {
+        if (variableValue.value === true) {
+          // Running status is OK
+          backgroundArea.setAttribute('fill', 'green');
+        } else if (variableValue.value === false) {
+          // Running status is error
+          backgroundArea.setAttribute('fill', 'red');
+        } else {
+          // Running status is passive
+          backgroundArea.setAttribute('fill', 'gray');
+        }
       }
     }
   }
 
   connectSSE(): void {
     const source = new EventSource(this.sseUrl);
-    source.onopen = (event) => {
+    source.addEventListener('open', e => {
+      console.log('SSE connected');
       this.sseConnected = true;
-    };
-    source.onerror = (error) => {
-      this.sseConnected = false;
-    };
+    });
+    source.addEventListener('error', e => {
+      console.log('SSE error ');
+      console.log(e);
+      // this.sseConnected = false;
+    });
     source.addEventListener('message', message => {
       console.log(message.data);
       const changedNode: { nodeId: string, newValue: object } = JSON.parse(message.data);

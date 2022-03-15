@@ -87,12 +87,14 @@ export class OpcServerService {
   getOPCVariableNodeValues(variables: string[]): Observable<OpcVariableValues> {
     const url = `${this.opcServerUrl}/variables`;
     const payload = {variables};
-    return this.http.post<any>(url, payload);
+    return this.http.post<any>(url, payload).pipe(tap(x => {
+      this.opcNodeVariableValues$.next(x);
+    }));
   }
 
   updateVariableNodeValue(nodeId: string, newValue: object) {
     const variableNodeValues = this.opcNodeVariableValues$.getValue();
-    variableNodeValues.rollerBeds[nodeId] = newValue;
+    variableNodeValues[nodeId].value = newValue;
     this.opcNodeVariableValues$.next(variableNodeValues);
   }
 

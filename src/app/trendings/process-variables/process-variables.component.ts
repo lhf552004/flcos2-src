@@ -75,7 +75,7 @@ export class ProcessVariablesComponent implements OnInit, OnDestroy {
         toolBar: {
           right: [
             ...this.isAdmin ? [{
-              name: 'New Line',
+              name: 'New Process Variable',
               type: 'button',
               icon: faPlus,
               callback: this.create.bind(this)
