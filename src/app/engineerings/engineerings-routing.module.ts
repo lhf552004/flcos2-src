@@ -7,6 +7,7 @@ import { SectionsComponent } from './sections/sections.component';
 import { AuthGuardService } from '../core/user/auth-guard.service';
 import { EngineeringsComponent } from './engineerings/engineerings.component';
 import { LinesComponent } from './lines/lines.component';
+import {LinesResolverService} from './route-resolvers/lines-resolver.service';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
         component: EquipmentsComponent,
         /*canActivate: [AuthGuardService],*/
       },
-      { path: 'lines', component: LinesComponent },
+      { path: 'lines', component: LinesComponent, resolve: {lines: LinesResolverService} },
     ],
   },
 ];

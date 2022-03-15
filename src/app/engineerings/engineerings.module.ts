@@ -6,9 +6,10 @@ import { EngineeringsRoutingModule } from './engineerings-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {SectionsComponent} from './sections/sections.component';
 import {EquipmentsComponent} from './equipments/equipments.component';
+import { LineViewerComponent } from './line-viewer/line-viewer.component';
 
 @NgModule({
-  declarations: [EngineeringsComponent, EquipmentsComponent, SectionsComponent, LinesComponent],
+  declarations: [EngineeringsComponent, EquipmentsComponent, SectionsComponent, LinesComponent, LineViewerComponent],
   imports: [SharedModule, EngineeringsRoutingModule],
 })
 export class EngineeringsModule {}

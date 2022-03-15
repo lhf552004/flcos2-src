@@ -1,14 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
-import {RoleService} from '../../core/user/role.service';
-import {MenuService} from '../../core/layout/menu/menu.service';
 import {takeUntil} from 'rxjs/operators';
 import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {MenuItem} from '../../core/layout/menu/menu-item';
-import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
-import {MenuChildrenViewerComponent} from '../../admin/menu-children-viewer/menu-children-viewer.component';
-import { DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl } from 'data-table';
-import { DynamicFormService, ModalConfig, CustomValidators } from 'dynamic-form';
+import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} from 'data-table';
+import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
 import {LineService} from '../shared/line.service';
 import {Line} from '../shared/models/line.model';
 
@@ -89,12 +84,12 @@ export class LinesComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  createLine(parentMenu: MenuItem) {
+  createLine() {
     const config: ModalConfig = {
       headerText: 'Create a line',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: {name: string}) => this.doCreateLine(e),
+      onSubmit: (e: { name: string }) => this.doCreateLine(e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -113,7 +108,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  doCreateLine(newLine: {name: string}): void {
+  doCreateLine(newLine: { name: string }): void {
     newLine = {...newLine};
     this.lineService.create(newLine).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
@@ -123,7 +118,7 @@ export class LinesComponent implements OnInit, OnDestroy {
       headerText: 'View a line',
       submitText: 'OK',
       closeText: 'Cancel',
-      onSubmit: (e: {name: string}) => this.doUpdateLine(line, e),
+      onSubmit: (e: { name: string }) => this.doUpdateLine(line, e),
       onDismiss: (e: string) => {
       },
       extraButtons: [],
@@ -143,41 +138,26 @@ export class LinesComponent implements OnInit, OnDestroy {
     this.dynamicFormService.popDynamicFormModal(config);
   }
 
-  viewChildren(menu: MenuItem) {
-    const config = {
-      menu,
-      onSubmit: (changes: any) => {
-      },
-      onDismiss: (e: string) => {
-      }
-    };
-
-    this.dynamicFormService.popModal(MenuChildrenViewerComponent, config);
+  doUpdateLine(line: Line, e: { name: string }): void {
+    line.name = e.name;
+    this.lineService.update(line.id, line).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
-  doUpdateLine(line: Line, e: {name: string}): void {
-    const updated = {id: menu.id, children: menu.children, ...e};
-    if (e.role) {
-      updated.role = e.role;
-    }
-    this.menuService.update(menu.id, updated).pipe(takeUntil(this.unsubscribe)).subscribe();
-  }
-
-  deleteMenu(menu: MenuItem) {
+  deleteMenu(line: Line) {
     const config = {
-      headerText: 'Confirm Delete Menu.',
+      headerText: 'Confirm Delete Line.',
       submitText: 'Ok',
       closeText: 'Cancel',
-      onSubmit: () => this.doDelete(menu),
+      onSubmit: () => this.doDelete(line),
       onDismiss: () => {
       },
-      notifications: [`Are you Sure you want to delete menu '${menu.name}'?`]
+      notifications: [`Are you Sure you want to delete line '${line.name}'?`]
     };
     this.dynamicFormService.popNotification(config);
   }
 
-  doDelete(menu: MenuItem) {
-    this.menuService.delete(menu.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+  doDelete(li: Line) {
+    this.lineService.delete(li.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
     });
   }
 
