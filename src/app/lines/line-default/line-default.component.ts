@@ -45,6 +45,8 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
   private sseUrl = environment.baseUrl + 'stream';
   sseConnected = false;
 
+  gcObjects = new Map<string, any>();
+
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
@@ -83,7 +85,7 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
       if (icn) {
         const svg = icn.nativeElement.firstChild;
         console.log(svg);
-        const gcObjects = svg.querySelectorAll('[devicetype=\'gcobject\']');
+        const gcObjectsList = svg.querySelectorAll('[devicetype=\'gcobject\']');
 
         const storages = svg.querySelectorAll('[devicetype=\'storage\']');
         const idsOfStorage = this.getIdsFromSvg(storages);
@@ -119,16 +121,17 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         });
         console.log(storages);
-        if (gcObjects && gcObjects.length > 0) {
+        if (gcObjectsList && gcObjectsList.length > 0) {
           const variables: string[] = [];
-          gcObjects.forEach(object => {
-            variables.push(object.getAttribute('deviceident'));
+          gcObjectsList.forEach(object => {
+            const deviceIdent = object.getAttribute('deviceident');
+            variables.push(deviceIdent);
+            this.gcObjects.set(deviceIdent, object);
           });
-          this.opcServerService.opcNodeVariableValues$.pipe(takeUntil(this.unsubscribe)).subscribe(x => {
-            this.variableValues = x;
-            gcObjects.forEach(element => this.renderElement(element));
-          });
+
           this.opcServerService.getOPCVariableNodeValues(variables).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+            this.variableValues = x;
+            gcObjectsList.forEach(element => this.renderElement(element));
           });
         }
       }
@@ -234,27 +237,33 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
   renderElement(element: any) {
     const deviceIdent = element.getAttribute('deviceident');
     const variableValue = this.variableValues[deviceIdent];
-    if (!variableValue) {
+    if (variableValue === null) {
       return;
     }
-    const variableType = variableValue.type.toUpperCase();
-    if (variableType === 'VALUE') {
-      const valueText = element.querySelector('.value');
+    const valueText = element.querySelector('.value');
+    if (valueText) {
       valueText.innerHTML = variableValue.value;
-    } else if (variableType === 'STATUS') {
-      const backgroundArea = element.querySelector('.status');
-      if (backgroundArea) {
-        if (variableValue.value === true) {
-          // Running status is OK
-          backgroundArea.setAttribute('fill', 'green');
-        } else if (variableValue.value === false) {
-          // Running status is error
-          backgroundArea.setAttribute('fill', 'red');
-        } else {
-          // Running status is passive
-          backgroundArea.setAttribute('fill', 'gray');
-        }
-      }
+    }
+    const statusElement = element.querySelector('.status');
+    const commandElement = element.querySelector('.command');
+    if (statusElement) {
+      this.setFill(variableValue, statusElement);
+    }
+    if (commandElement) {
+      this.setFill(variableValue, commandElement);
+    }
+  }
+
+  private setFill(variableValue: any, element: any): void {
+    if (variableValue === true) {
+      // Running status is OK
+      element.setAttribute('fill', 'green');
+    } else if (variableValue === false) {
+      // Running status is error
+      element.setAttribute('fill', 'red');
+    } else {
+      // Running status is passive
+      element.setAttribute('fill', 'gray');
     }
   }
 
@@ -272,6 +281,11 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
     source.addEventListener('message', message => {
       console.log(message.data);
       const changedNode: { nodeId: string, newValue: object } = JSON.parse(message.data);
+      this.variableValues[changedNode.nodeId] = changedNode.newValue;
+      if (this.gcObjects.has(changedNode.nodeId)) {
+        const object = this.gcObjects.get(changedNode.nodeId);
+        this.renderElement(object);
+      }
       this.opcServerService.updateVariableNodeValue(changedNode.nodeId, changedNode.newValue);
     });
   }

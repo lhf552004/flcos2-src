@@ -1,6 +1,3 @@
 export interface OpcVariableValues {
-  [key: string]: {
-    value: any;
-    type: string;
-  };
+  [key: string]: any;
 }
