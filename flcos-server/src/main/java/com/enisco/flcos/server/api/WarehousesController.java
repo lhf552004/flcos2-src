@@ -1,18 +1,12 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.documents.Warehouse;
-import com.enisco.flcos.server.dto.LineDto;
 import com.enisco.flcos.server.dto.WarehouseDto;
-import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.WarehouseEntity;
 import com.enisco.flcos.server.repository.relational.WarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @RequestMapping("api/v1/warehouses")
 @RestController

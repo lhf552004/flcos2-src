@@ -1,5 +1,6 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.line;
 
+import com.enisco.flcos.server.dto.SectionDTO;
 import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import lombok.Getter;
@@ -20,4 +21,6 @@ public class LineDto {
     private LineStatus status;
 
     private List<SectionDTO> sections;
+
+    private Boolean svgUploaded;
 }

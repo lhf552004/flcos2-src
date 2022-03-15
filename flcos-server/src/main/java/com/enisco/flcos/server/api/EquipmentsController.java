@@ -1,18 +1,12 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.documents.Equipment;
 import com.enisco.flcos.server.dto.EquipmentDTO;
-import com.enisco.flcos.server.dto.LineDto;
 import com.enisco.flcos.server.entities.EquipmentEntity;
-import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.repository.relational.EquipmentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @RequestMapping("api/v1/equipments")
 @RestController

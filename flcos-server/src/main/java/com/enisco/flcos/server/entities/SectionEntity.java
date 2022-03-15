@@ -14,6 +14,9 @@ public class SectionEntity extends GCObjectBase {
     @Column
     private Integer index;
 
+    @Column
+    private String name;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "section")
     private List<EquipmentEntity> equipments;

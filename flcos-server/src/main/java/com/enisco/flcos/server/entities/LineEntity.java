@@ -21,6 +21,9 @@ public class LineEntity extends EntityBase {
     @Column(name = "is_production")
     private Boolean isProduction;
 
+    @Column(name = "svg_up_loaded")
+    private Boolean svgUploaded;
+
     @Enumerated(EnumType.STRING)
     @Column
     private LineStatus status;

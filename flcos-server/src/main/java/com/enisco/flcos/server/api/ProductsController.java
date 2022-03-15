@@ -1,8 +1,6 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.dto.LineDto;
 import com.enisco.flcos.server.dto.ProductDTO;
-import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.ProductEntity;
 import com.enisco.flcos.server.repository.relational.ProductRepository;
 import org.modelmapper.ModelMapper;
