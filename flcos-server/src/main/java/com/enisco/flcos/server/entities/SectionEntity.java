@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.entities;
 
+import com.enisco.flcos.server.entities.enums.LineStatus;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,10 @@ public class SectionEntity extends GCObjectBase {
     @Column
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private LineStatus status;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "section")
     private List<EquipmentEntity> equipments;
@@ -29,4 +34,7 @@ public class SectionEntity extends GCObjectBase {
 
     @OneToOne
     private JobEntity job;
+
+    @ManyToOne
+    private LineEntity line;
 }

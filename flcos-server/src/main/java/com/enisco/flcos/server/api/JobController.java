@@ -1,12 +1,22 @@
 package com.enisco.flcos.server.api;
 
+import com.enisco.flcos.server.beans.IJobManagement;
+import com.enisco.flcos.server.beans.IntakeJobManagementBean;
+import com.enisco.flcos.server.beans.ProduceJobManagementBean;
 import com.enisco.flcos.server.dto.JobDto;
+import com.enisco.flcos.server.dto.NewJobDto;
+import com.enisco.flcos.server.dto.line.NewLineDto;
+import com.enisco.flcos.server.entities.LineEntity;
+import com.enisco.flcos.server.entities.job.JobEntity;
+import com.enisco.flcos.server.exceptions.FLCosException;
 import com.enisco.flcos.server.repository.relational.JobRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -14,16 +24,35 @@ import java.util.stream.Collectors;
 public class JobController extends ControllerBase {
     private JobRepository jobRepository;
     private ModelMapper modelMapper;
+    private IntakeJobManagementBean intakeJobManagementBean;
+    private ProduceJobManagementBean produceJobManagementBean;
+
     @Autowired
-    public JobController(JobRepository jobRepository, ModelMapper modelMapper) {
+    public JobController(JobRepository jobRepository,
+                         ModelMapper modelMapper,
+                         IntakeJobManagementBean intakeJobManagementBean,
+                         ProduceJobManagementBean produceJobManagementBean
+    ) {
         this.jobRepository = jobRepository;
         this.modelMapper = modelMapper;
+        this.intakeJobManagementBean = intakeJobManagementBean;
+        this.produceJobManagementBean = produceJobManagementBean;
     }
 
     @GetMapping(path = "{id}")
-    public JobDto getJob(@PathVariable Long id) {
+    public JobDto get(@PathVariable Long id) {
         var result = jobRepository.findById(id);
         return result.map(jobEntity -> modelMapper.map(jobEntity, JobDto.class)).orElse(null);
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> create(@RequestBody NewJobDto newJobDto) {
+        var jobEntity = modelMapper.map(newJobDto, JobEntity.class);
+        jobRepository.save(jobEntity);
+        if (jobEntity.getName() == null || jobEntity.getName().isEmpty()) {
+            jobEntity.setName(jobEntity.getLine().getName() + ":" + jobEntity.getId());
+        }
+        return ResponseEntity.ok(jobEntity.getId());
     }
 
     @GetMapping
@@ -35,7 +64,22 @@ public class JobController extends ControllerBase {
     }
 
     @PutMapping(path = "/start/{id}")
-    public void startJob() {
-
+    public ResponseEntity startJob(@PathVariable Long id) {
+        var result = jobRepository.findById(id);
+        if (result.isPresent()) {
+            var job = result.get();
+            IJobManagement jobManagement = job.getLine().isProduction()
+                    ? produceJobManagementBean
+                    : intakeJobManagementBean;
+            var errors = jobManagement.checkJob(job);
+            if (!errors.isEmpty()) {
+                return ResponseEntity.of(Optional.of(errors));
+            } else {
+                jobManagement.startJob(job);
+            }
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

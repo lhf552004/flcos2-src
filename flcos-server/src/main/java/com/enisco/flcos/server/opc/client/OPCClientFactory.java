@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.opc.client;
 
+import com.enisco.flcos.server.beans.GcObjectManagement;
 import com.enisco.flcos.server.dto.opcs.OPCVariableChangedDTO;
 import com.enisco.flcos.server.dto.opcs.OpcNodeDto;
 import com.enisco.flcos.server.opc.AbstractOPCFactory;
@@ -48,6 +49,9 @@ public class OPCClientFactory extends AbstractOPCFactory {
 
     @Autowired
     NotificationServiceImpl notificationService;
+
+    @Autowired
+    GcObjectManagement gcObjectManagement;
 
     private Map<String, OPCClientHandler> opcClientHandlers;
 
@@ -339,6 +343,7 @@ public class OPCClientFactory extends AbstractOPCFactory {
         nodeChanged.setNodeId(nodeIdStr);
         nodeChanged.setNewValue(valueObj);
         notificationService.sendSseEventsToUI(nodeChanged);
+        gcObjectManagement.checkGcObject(nodeIdStr, valueObj);
     }
 
 }

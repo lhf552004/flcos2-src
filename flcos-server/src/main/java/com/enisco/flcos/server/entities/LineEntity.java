@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity(name="line")
-public class LineEntity extends EntityBase {
+public class LineEntity extends GCObjectBase {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private Long id;
@@ -19,10 +19,10 @@ public class LineEntity extends EntityBase {
     private String name;
 
     @Column(name = "is_production")
-    private Boolean isProduction;
+    private boolean isProduction;
 
     @Column(name = "svg_up_loaded")
-    private Boolean svgUploaded;
+    private boolean svgUploaded;
 
     @Enumerated(EnumType.STRING)
     @Column

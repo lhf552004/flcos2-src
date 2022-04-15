@@ -14,10 +14,8 @@ import java.util.List;
 @Getter
 @Entity(name="job")
 public class JobEntity extends EntityBase {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID")
-//    private Long id;
 
+    @Column
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)

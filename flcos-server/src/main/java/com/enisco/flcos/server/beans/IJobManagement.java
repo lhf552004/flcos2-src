@@ -2,6 +2,7 @@ package com.enisco.flcos.server.beans;
 
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.job.JobEntity;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface IJobManagement {
     void changeJobStatus(JobEntity job, JobStatus newStatus);
 
     void finishJob(JobEntity job);
+
+    Logger getLogger();
 }
