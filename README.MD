@@ -7,5 +7,5 @@ This repository is the web API of FLCos. The framework is Spring boot.
 
 It has two instances, one is opc server, another is FLCos server.
 
-The demo is here [FLCos](https://lhf552004.github.io/emes)
+The demo is here [FLCos](https://lhf552004.github.io/flcos2)
 
