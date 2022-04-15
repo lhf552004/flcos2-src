@@ -11,8 +11,8 @@ import java.util.Date;
 @MappedSuperclass
 public class EntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     @Column(name = "modified_by")
     private String modifiedBy;

@@ -8,15 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
 @Entity(name="job")
 public class JobEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
+    @Column
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -28,10 +27,13 @@ public class JobEntity extends EntityBase {
     private RecipeEntity recipe;
 
     @Column(name = "target_weight")
-    private long targetWeight;
+    private double targetWeight;
 
     @Enumerated(EnumType.STRING)
     @Column
     private JobStatus status;
+
+    @OneToMany
+    private List<JobChangeLogEntity> changeLogs;
 
 }

@@ -9,13 +9,20 @@ import javax.persistence.*;
 @Getter
 @Entity(name="bin")
 public class BinEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     private ProductEntity product;
 
     @Column(name = "is_using")
     private boolean isUsing;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private GCObjectEntity sender;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private GCObjectEntity receiver;
+
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,8 +21,8 @@ public class IngredientEntity extends EntityBase {
     private int percentage;
 
     @Column(name = "target_weight")
-    private int targetWeight;
+    private double targetWeight;
 
     @Column(name = "actual_weight")
-    private int actualWeight;
+    private double actualWeight;
 }

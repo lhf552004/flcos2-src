@@ -3,7 +3,7 @@ package com.enisco.flcos.server.api;
 import com.enisco.flcos.server.beans.OrderManagementBean;
 import com.enisco.flcos.server.dto.orders.NewOrderDto;
 import com.enisco.flcos.server.dto.orders.OrderDto;
-import com.enisco.flcos.server.repository.postgresql.OrderRepository;
+import com.enisco.flcos.server.repository.relational.OrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,12 +1,9 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.dto.NewReceiptDto;
 import com.enisco.flcos.server.dto.NewSupplierDto;
-import com.enisco.flcos.server.dto.ReceiptDto;
 import com.enisco.flcos.server.dto.SupplierDto;
-import com.enisco.flcos.server.entities.ReceiptEntity;
 import com.enisco.flcos.server.entities.SupplierEntity;
-import com.enisco.flcos.server.repository.postgresql.SupplierRepository;
+import com.enisco.flcos.server.repository.relational.SupplierRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

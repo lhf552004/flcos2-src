@@ -1,28 +1,29 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.documents.Product;
-import com.enisco.flcos.server.repository.mongodb.ProductRepository;
+import com.enisco.flcos.server.dto.ProductDTO;
+import com.enisco.flcos.server.entities.ProductEntity;
+import com.enisco.flcos.server.repository.relational.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @RequestMapping("api/v1/products")
 @RestController
 public class ProductsController {
 
     private ProductRepository productRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public ProductsController(@Autowired ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @PostMapping
-    public void createProduct(@RequestBody Product product){
-        product.setId(UUID.randomUUID());
-        productRepository.insert(product);
+    public void createProduct(@RequestBody ProductDTO productDto){
+        var productEntity = modelMapper.map(productDto, ProductEntity.class);
+        productRepository.save(productEntity);
     }
 
     @GetMapping
@@ -31,17 +32,19 @@ public class ProductsController {
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Product> getProduct(@PathVariable UUID id){
-        return productRepository.findById(id);
+    public ProductDTO getProduct(@PathVariable Long id){
+        var result = productRepository.findById(id);
+        return result.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class)).orElse(null);
     }
 
     @PutMapping(path = "{id}")
-    public void updateProduct(@PathVariable UUID id, @RequestBody Product product){
-        productRepository.save(product);
+    public void updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDto){
+        var productEntity = modelMapper.map(productDto, ProductEntity.class);
+        productRepository.save(productEntity);
     }
 
     @DeleteMapping(path = "{id}")
-    public void deleteProduct(@PathVariable UUID id){
+    public void deleteProduct(@PathVariable Long id){
         productRepository.deleteById(id);
     }
 }

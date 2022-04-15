@@ -1,14 +1,10 @@
 package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.NewUserDTO;
-import com.enisco.flcos.server.entities.RoleEntity;
 import com.enisco.flcos.server.entities.UserEntity;
-import com.enisco.flcos.server.repository.postgresql.UserRepository;
-import com.enisco.flcos.server.dto.NewUserDTO;
+import com.enisco.flcos.server.repository.relational.UserRepository;
 import com.enisco.flcos.server.dto.UpdateUserDto;
 import com.enisco.flcos.server.dto.UserDto;
-import com.enisco.flcos.server.entities.UserEntity;
-import com.enisco.flcos.server.repository.postgresql.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

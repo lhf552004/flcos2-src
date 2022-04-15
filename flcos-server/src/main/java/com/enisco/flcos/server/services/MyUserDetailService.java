@@ -3,7 +3,7 @@ package com.enisco.flcos.server.services;
 import com.enisco.flcos.server.documents.MyUserDetails;
 import com.enisco.flcos.server.entities.UserEntity;
 import com.enisco.flcos.server.filters.JwtRequestFilter;
-import com.enisco.flcos.server.repository.postgresql.UserRepository;
+import com.enisco.flcos.server.repository.relational.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

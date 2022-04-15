@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.opc.client;
 
+import com.enisco.flcos.server.beans.GcObjectManagement;
 import com.enisco.flcos.server.dto.opcs.OPCVariableChangedDTO;
 import com.enisco.flcos.server.dto.opcs.OpcNodeDto;
 import com.enisco.flcos.server.opc.AbstractOPCFactory;
@@ -8,11 +9,10 @@ import com.enisco.flcos.server.opc.OPCNodeItem;
 import com.enisco.flcos.server.opc.OPCNodeList;
 import com.enisco.flcos.server.opc.server.FLCosOPCException;
 import com.enisco.flcos.server.opc.server.OPCServerFactory;
-import com.enisco.flcos.server.repository.postgresql.OPCServerRepository;
+import com.enisco.flcos.server.repository.relational.OPCServerRepository;
 import com.enisco.flcos.server.services.NotificationServiceImpl;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaMonitoredItem;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
-import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
 import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
@@ -49,6 +49,9 @@ public class OPCClientFactory extends AbstractOPCFactory {
 
     @Autowired
     NotificationServiceImpl notificationService;
+
+    @Autowired
+    GcObjectManagement gcObjectManagement;
 
     private Map<String, OPCClientHandler> opcClientHandlers;
 
@@ -340,6 +343,7 @@ public class OPCClientFactory extends AbstractOPCFactory {
         nodeChanged.setNodeId(nodeIdStr);
         nodeChanged.setNewValue(valueObj);
         notificationService.sendSseEventsToUI(nodeChanged);
+        gcObjectManagement.checkGcObject(nodeIdStr, valueObj);
     }
 
 }

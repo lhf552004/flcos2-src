@@ -1,18 +1,18 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.documents.Warehouse;
-import com.enisco.flcos.server.repository.mongodb.WarehouseRepository;
+import com.enisco.flcos.server.dto.WarehouseDto;
+import com.enisco.flcos.server.entities.WarehouseEntity;
+import com.enisco.flcos.server.repository.relational.WarehouseRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-import java.util.UUID;
-
 @RequestMapping("api/v1/warehouses")
 @RestController
 public class WarehousesController {
-
+    @Autowired
+    private ModelMapper modelMapper;
     private WarehouseRepository warehouseRepository;
 
     public WarehousesController(@Autowired WarehouseRepository warehouseRepository) {
@@ -20,9 +20,9 @@ public class WarehousesController {
     }
 
     @PostMapping
-    public void createWarehouse(@RequestBody Warehouse warehouse){
-        warehouse.setId(UUID.randomUUID());
-        warehouseRepository.insert(warehouse);
+    public void createWarehouse(@RequestBody WarehouseDto warehouseDto){
+        var warehouseEntity = modelMapper.map(warehouseDto, WarehouseEntity.class);
+        warehouseRepository.save(warehouseEntity);
     }
 
     @GetMapping
@@ -31,17 +31,19 @@ public class WarehousesController {
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Warehouse> getWarehouse(@PathVariable UUID id){
-        return warehouseRepository.findById(id);
+    public WarehouseDto getWarehouse(@PathVariable Long id){
+        var result = warehouseRepository.findById(id);
+        return result.map(warehouseEntity -> modelMapper.map(warehouseEntity, WarehouseDto.class)).orElse(null);
     }
 
     @PutMapping(path = "{id}")
-    public void updateWarehouse(@PathVariable UUID id, @RequestBody Warehouse warehouse){
-        warehouseRepository.save(warehouse);
+    public void updateWarehouse(@PathVariable Long id, @RequestBody WarehouseDto warehouseDto){
+        var warehouseEntity = modelMapper.map(warehouseDto, WarehouseEntity.class);
+        warehouseRepository.save(warehouseEntity);
     }
 
     @DeleteMapping(path = "{id}")
-    public void deleteWarehouse(@PathVariable UUID id){
+    public void deleteWarehouse(@PathVariable Long id){
         warehouseRepository.deleteById(id);
     }
 }
