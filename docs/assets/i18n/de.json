@@ -1,0 +1,42 @@
+{
+  "ALARM": {
+    "START": "Start",
+    "CURRENT ALARMS": "Aktuelle Alarme"
+  },
+  "ADMIN": {
+    "USERS": "Benutzer",
+    "ROLES": "Rollen",
+    "MENUS": "Menüs"
+  },
+  "ORDER": {
+    "ORDERS": "Orders"
+  },
+  "GENERAL": {
+    "STATUS": "Status",
+    "NAME": "Name",
+    "SAVE": "Save",
+    "COPY": "Copy",
+    "CLOSE": "Close",
+    "DELETE": "Delete",
+    "INTERNAL": "Internal"
+  },
+  "OPC" : {
+    "ENDPOINT URL":  "Endpoint url",
+    "OPC SERVER": "OPC Server",
+    "OPC SERVERS": "OPC Servers",
+    "TCP PORT": "TCP Port",
+    "HTTPS PORT": "Https Port",
+    "ADDRESS": "Address"
+  },
+  "MENU": {
+    "Dashboard": "Armaturenbrett",
+    "Warehouses": "Lager",
+    "Products": "Produkte",
+    "Lines": "Linien",
+    "Bins": "Behälter",
+    "Workflows": "Arbeitsabläufe",
+    "Process": "Verfahren",
+    "OPC Server": "OPC Server",
+    "Admin": "Administrator"
+  }
+}
