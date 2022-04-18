@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
-    List<AlarmEntity> findTop10ByActive(boolean active, Pageable pageable);
-    List<AlarmEntity> findTopByActiveByIdDesc(boolean active);
+    List<AlarmEntity> findTopByActive(boolean active);
 }

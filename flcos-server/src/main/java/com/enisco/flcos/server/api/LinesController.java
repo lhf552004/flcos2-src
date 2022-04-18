@@ -1,6 +1,7 @@
 package com.enisco.flcos.server.api;
 
 
+import com.enisco.flcos.server.beans.GcObjectManagement;
 import com.enisco.flcos.server.dto.line.LineDto;
 import com.enisco.flcos.server.dto.line.NewLineDto;
 import com.enisco.flcos.server.entities.LineEntity;
@@ -14,10 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RequestMapping("api/v1/lines")
@@ -25,19 +24,30 @@ import java.nio.file.Paths;
 public class LinesController {
 
     private LineRepository lineRepository;
-    @Autowired
+
     private ModelMapper modelMapper;
+
     @Value("${svg.location}")
     private String svgLocation;
 
-    public LinesController(@Autowired LineRepository lineRepository) {
+    GcObjectManagement gcObjectManagement;
+
+    @Autowired
+    public LinesController(LineRepository lineRepository,
+                           ModelMapper modelMapper,
+                           GcObjectManagement gcObjectManagement
+    ) {
         this.lineRepository = lineRepository;
+        this.modelMapper = modelMapper;
+        this.gcObjectManagement = gcObjectManagement;
     }
 
     @PostMapping
-    public void createLine(@RequestBody NewLineDto lineDto) {
+    public ResponseEntity<Long> create(@RequestBody NewLineDto lineDto) {
         var line = modelMapper.map(lineDto, LineEntity.class);
         lineRepository.save(line);
+        gcObjectManagement.updateLine(line);
+        return ResponseEntity.ok(line.getId());
     }
 
     @GetMapping
@@ -52,9 +62,11 @@ public class LinesController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateLine(@PathVariable Long id, @RequestBody LineDto lineDto) {
+    public ResponseEntity updateLine(@PathVariable Long id, @RequestBody LineDto lineDto) {
         var line = modelMapper.map(lineDto, LineEntity.class);
         lineRepository.save(line);
+        gcObjectManagement.updateLine(line);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "svg-upload/{id}")
@@ -67,7 +79,7 @@ public class LinesController {
         var line = result.get();
         try {
             var folderPath = Paths.get(svgLocation);
-            if(Files.notExists(folderPath)) {
+            if (Files.notExists(folderPath)) {
                 Files.createDirectory(folderPath);
             }
             var filePath = Paths.get(svgLocation, line.getName() + ".svg");
@@ -79,7 +91,9 @@ public class LinesController {
     }
 
     @DeleteMapping(path = "{id}")
-    public void deleteLine(@PathVariable Long id) {
+    public ResponseEntity deleteLine(@PathVariable Long id) {
         lineRepository.deleteById(id);
+        gcObjectManagement.deleteLine(id);
+        return ResponseEntity.ok().build();
     }
 }

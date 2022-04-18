@@ -26,11 +26,11 @@ public class SectionEntity extends GCObjectBase {
     @JoinColumn(name = "section")
     private List<EquipmentEntity> equipments;
 
-    @Column(name = "is_manual")
-    private Boolean isManual;
+    @Column(name = "is_manual", columnDefinition = "boolean default false")
+    private boolean isManual;
 
-    @Column(name = "is_hold")
-    private Boolean isHold;
+    @Column(name = "is_hold", columnDefinition = "boolean default false")
+    private boolean isHold;
 
     @OneToOne
     private JobEntity job;

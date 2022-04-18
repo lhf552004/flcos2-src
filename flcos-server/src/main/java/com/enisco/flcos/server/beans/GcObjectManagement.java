@@ -1,6 +1,5 @@
 package com.enisco.flcos.server.beans;
 
-import com.enisco.flcos.server.dto.opcs.OPCVariableChangedDTO;
 import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.entities.alarm.AlarmEntity;
@@ -19,41 +18,37 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Singleton
 @Startup
 @Component
 public class GcObjectManagement {
-    private Set<String> lineGcObjectIds;
-    private Set<LineEntity> lines;
-    private Set<String> sectionGcObjectIds;
-    private Set<SectionEntity> sections;
+    private final Map<Long, LineEntity> lines = new HashMap<>();
+    private final Map<Long, SectionEntity> sections = new HashMap<>();
 
-    private LineRepository lineRepository;
+    private final LineRepository lineRepository;
 
-    private SectionRepository sectionRepository;
+    private final SectionRepository sectionRepository;
 
-    private JobRepository jobRepository;
+    private final JobRepository jobRepository;
 
-    private AlarmRepository alarmRepository;
+    private final AlarmRepository alarmRepository;
 
-    private IntakeJobManagementBean intakeJobManagementBean;
-    private ProduceJobManagementBean produceJobManagementBean;
+    private final IntakeJobManagementBean intakeJobManagementBean;
+    private final ProduceJobManagementBean produceJobManagementBean;
 
     @Autowired
     public GcObjectManagement(LineRepository lineRepository,
                               SectionRepository sectionRepository,
+                              JobRepository jobRepository,
                               IntakeJobManagementBean intakeJobManagementBean,
                               ProduceJobManagementBean produceJobManagementBean,
                               AlarmRepository alarmRepository
     ) {
         this.lineRepository = lineRepository;
         this.sectionRepository = sectionRepository;
+        this.jobRepository = jobRepository;
         this.intakeJobManagementBean = intakeJobManagementBean;
         this.produceJobManagementBean = produceJobManagementBean;
         this.alarmRepository = alarmRepository;
@@ -61,41 +56,30 @@ public class GcObjectManagement {
 
     @PostConstruct
     public void initialize() {
-        lineGcObjectIds = lineRepository.findAll().stream().map(lineEntity -> {
-            var lineGcObjectId = lineEntity.getOpcVariableIdent();
-            List<String> lineGcObjects = new ArrayList<String>();
-            if (!lineGcObjectId.endsWith("/")) {
-                lineGcObjectId += "/";
-            }
-            lineGcObjects.add(lineGcObjectId + "status");
-            lines.add(lineEntity);
-            return lineGcObjects;
-        }).flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-        sectionGcObjectIds = sectionRepository.findAll().stream().map(sectionEntity -> {
-            var sectionObjectId = sectionEntity.getOpcVariableIdent();
-            List<String> sectionObjects = new ArrayList<String>();
-            if (!sectionObjectId.endsWith("/")) {
-                sectionObjectId += "/";
-            }
-            sectionObjects.add(sectionObjectId + "status");
-            sectionObjects.add(sectionObjectId + "jobId");
-            sections.add(sectionEntity);
-            return sectionObjects;
-        }).flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+        lineRepository.findAll().forEach(lineEntity -> lines.put(lineEntity.getId(), lineEntity));
+        sectionRepository.findAll().forEach(sectionEntity -> sections.put(sectionEntity.getId(), sectionEntity));
     }
 
-    public Set<String> getLineGcObjectIds() {
-        return lineGcObjectIds;
+    public void updateLine(LineEntity lineEntity) {
+        lines.put(lineEntity.getId(), lineEntity);
     }
 
-    public Set<String> getSectionGcObjectIds() {
-        return sectionGcObjectIds;
+    public void deleteLine(Long id) {
+        lines.remove(id);
     }
 
-    public void updateLine(String gcObjectId, Object value) {
-        var result = lines.stream().filter(lineEntity -> gcObjectId.startsWith(lineEntity.getOpcVariableIdent())).findFirst();
+    public void updateSection(SectionEntity sectionEntity) {
+        sections.put(sectionEntity.getId(), sectionEntity);
+    }
+
+    public void deleteSection(Long id) {
+        sections.remove(id);
+    }
+
+    public void checkLine(String gcObjectId, Object value) {
+        var result = lines.values().stream().filter(lineEntity ->
+                lineEntity.getOpcVariableIdent() != null &&
+                        gcObjectId.startsWith(lineEntity.getOpcVariableIdent())).findFirst();
         if (result.isPresent()) {
             var line = result.get();
             if (gcObjectId.endsWith("status")) {
@@ -108,11 +92,13 @@ public class GcObjectManagement {
         }
     }
 
-    public void updateSection(String gcObjectId, Object value) {
-        var result = sections.stream().filter(sectionEntity -> gcObjectId.startsWith(sectionEntity.getOpcVariableIdent())).findFirst();
+    public void checkSection(String gcObjectId, Object value) {
+        var result = sections.values()
+                .stream().filter(sectionEntity ->
+                        sectionEntity.getOpcVariableIdent() != null &&
+                                gcObjectId.startsWith(sectionEntity.getOpcVariableIdent())).findFirst();
         if (result.isPresent()) {
             var section = result.get();
-
             IJobManagement jobManagement = section.getLine().isProduction()
                     ? produceJobManagementBean
                     : intakeJobManagementBean;
@@ -143,7 +129,7 @@ public class GcObjectManagement {
                     } else {
                         section.setJob(job);
                         RepositoryUtil.update(sectionRepository, section);
-                        if(section.getIndex().equals(0)) {
+                        if (section.getIndex().equals(0)) {
                             jobManagement.changeJobStatus(job, JobStatus.Running);
                         }
                     }
@@ -153,10 +139,7 @@ public class GcObjectManagement {
     }
 
     public void checkGcObject(String gcObjectId, Object value) {
-        if(lineGcObjectIds.contains(gcObjectId)) {
-            updateLine(gcObjectId, value);
-        }else if(sectionGcObjectIds.contains(gcObjectId)) {
-            updateSection(gcObjectId, value);
-        }
+        checkLine(gcObjectId, value);
+        checkSection(gcObjectId, value);
     }
 }

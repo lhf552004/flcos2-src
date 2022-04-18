@@ -1,13 +1,10 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.dto.Greeting;
-import com.enisco.flcos.server.dto.HelloMessage;
 import com.enisco.flcos.server.dto.opcs.*;
 import com.enisco.flcos.server.opc.OPCNodeList;
 import com.enisco.flcos.server.opc.client.OPCClientFactory;
 
 import com.enisco.flcos.server.services.ProcessValueServiceImpl;
-import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/opc-ua")
 @RestController

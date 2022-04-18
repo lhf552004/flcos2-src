@@ -1,13 +1,8 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.beans.IJobManagement;
-import com.enisco.flcos.server.beans.IntakeJobManagementBean;
-import com.enisco.flcos.server.beans.ProduceJobManagementBean;
-import com.enisco.flcos.server.dto.JobDto;
 import com.enisco.flcos.server.dto.alarm.AlarmDto;
 import com.enisco.flcos.server.repository.mongodb.AlarmLogRepository;
 import com.enisco.flcos.server.repository.relational.AlarmRepository;
-import com.enisco.flcos.server.repository.relational.JobRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,6 +25,7 @@ public class AlarmController extends ControllerBase {
                            ModelMapper modelMapper
     ) {
         this.alarmRepository = alarmRepository;
+        this.alarmLogRepository = alarmLogRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -42,7 +37,7 @@ public class AlarmController extends ControllerBase {
 
     @GetMapping(path = "last")
     public List<AlarmDto> getLastAlarm() {
-        var result = alarmRepository.findTopByActiveByIdDesc(true);
+        var result = alarmRepository.findTopByActive(true);
         return result.stream()
                 .map(alarmEntity -> modelMapper.map(alarmEntity, AlarmDto.class))
                 .collect(Collectors.toList());
