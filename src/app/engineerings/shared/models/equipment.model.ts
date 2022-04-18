@@ -1,5 +1,5 @@
-export class Equipment {
-    id: string;
-    name: string;
-    type: string;
+export interface Equipment {
+  id: string;
+  name: string;
+  type: string;
 }
