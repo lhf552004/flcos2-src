@@ -14,4 +14,6 @@ public class GCObjectBase extends EntityBase {
 
     @Column(name = "opc_variable_ident")
     private String opcVariableIdent;
+    private String location;
+
 }

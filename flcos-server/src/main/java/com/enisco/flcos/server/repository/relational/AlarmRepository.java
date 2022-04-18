@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
     List<AlarmEntity> findTopByActive(boolean active);
+    List<AlarmEntity> findByActive(boolean active, Pageable pageable);
 }

@@ -18,6 +18,9 @@ public class SectionEntity extends GCObjectBase {
     @Column
     private String name;
 
+    @Column
+    private String plc;
+
     @Enumerated(EnumType.STRING)
     @Column
     private LineStatus status;
@@ -37,4 +40,18 @@ public class SectionEntity extends GCObjectBase {
 
     @ManyToOne
     private LineEntity line;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ScaleEntity> scales;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<RegistrationScaleEntity> registrationScales;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<MixerEntity> mixers;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ConveyingStationEntity> conveyingStations;
+
+
 }

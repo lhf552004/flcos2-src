@@ -43,6 +43,14 @@ public class AlarmController extends ControllerBase {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping(path = "active")
+    public List<AlarmDto> getActiveAlarms(@RequestParam int page, @RequestParam int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
+        var result = alarmRepository.findByActive(true, getPageable(page, size, direct, sortProperty));
+        return result.stream()
+                .map(alarmEntity -> modelMapper.map(alarmEntity, AlarmDto.class))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping
     public List<AlarmDto> getAlarms(@RequestParam int page, @RequestParam int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
         return alarmRepository.findAll(getPageable(page, size, direct, sortProperty))

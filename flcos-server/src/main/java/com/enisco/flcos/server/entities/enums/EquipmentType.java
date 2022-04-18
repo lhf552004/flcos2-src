@@ -4,5 +4,7 @@ public enum EquipmentType {
     Discharger,
     Filler,
     Mixer,
-    Switch
+    Switch,
+    Scale,
+    RegistrationScale
 }
