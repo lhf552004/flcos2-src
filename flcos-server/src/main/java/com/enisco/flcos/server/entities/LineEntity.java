@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity(name="line")
-public class LineEntity extends GCObjectBase {
+public class LineEntity extends GCObjectEntity {
 
     @Column
     private String name;

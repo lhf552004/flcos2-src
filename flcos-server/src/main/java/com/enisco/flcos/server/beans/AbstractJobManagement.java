@@ -62,8 +62,8 @@ public abstract class AbstractJobManagement implements IJobManagement {
         var recipe = job.getRecipe();
         var ingredient = recipe.getIngredients().get(0);
         var bins = binRepository.findByProductAndIsUsing(ingredient.getProduct(), false);
-        var sender = bins.get(0).getSender();
-        var receiver = bins.get(0).getReceiver();
+        var sender = bins.get(0).getDischarger();
+        var receiver = bins.get(0).getFiller();
         var targetWeight = ingredient.getTargetWeight();
         if(sectionResult.isPresent()) {
             var section = sectionResult.get();

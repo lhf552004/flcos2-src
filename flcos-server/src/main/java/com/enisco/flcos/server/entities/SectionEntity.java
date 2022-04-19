@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity(name="section")
-public class SectionEntity extends GCObjectBase {
+public class SectionEntity extends GCObjectEntity {
     @Column
     private Integer index;
 
@@ -26,7 +26,7 @@ public class SectionEntity extends GCObjectBase {
     private LineStatus status;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "section")
+    @JoinColumn(name = "section_id")
     private List<EquipmentEntity> equipments;
 
     @Column(name = "is_manual", columnDefinition = "boolean default false")
@@ -42,15 +42,19 @@ public class SectionEntity extends GCObjectBase {
     private LineEntity line;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "section_id")
     private List<ScaleEntity> scales;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "section_id")
     private List<RegistrationScaleEntity> registrationScales;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "section_id")
     private List<MixerEntity> mixers;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "section_id")
     private List<ConveyingStationEntity> conveyingStations;
 
 

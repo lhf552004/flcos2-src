@@ -5,13 +5,12 @@ import com.enisco.flcos.server.beans.IntakeJobManagementBean;
 import com.enisco.flcos.server.beans.ProduceJobManagementBean;
 import com.enisco.flcos.server.dto.JobDto;
 import com.enisco.flcos.server.dto.NewJobDto;
-import com.enisco.flcos.server.dto.line.NewLineDto;
-import com.enisco.flcos.server.entities.LineEntity;
+import com.enisco.flcos.server.dto.NewReceiptDto;
 import com.enisco.flcos.server.entities.job.JobEntity;
-import com.enisco.flcos.server.exceptions.FLCosException;
 import com.enisco.flcos.server.repository.relational.JobRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,18 +22,15 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/jobs")
 public class JobController extends ControllerBase {
     private JobRepository jobRepository;
-    private ModelMapper modelMapper;
     private IntakeJobManagementBean intakeJobManagementBean;
     private ProduceJobManagementBean produceJobManagementBean;
 
     @Autowired
     public JobController(JobRepository jobRepository,
-                         ModelMapper modelMapper,
                          IntakeJobManagementBean intakeJobManagementBean,
                          ProduceJobManagementBean produceJobManagementBean
     ) {
         this.jobRepository = jobRepository;
-        this.modelMapper = modelMapper;
         this.intakeJobManagementBean = intakeJobManagementBean;
         this.produceJobManagementBean = produceJobManagementBean;
     }
