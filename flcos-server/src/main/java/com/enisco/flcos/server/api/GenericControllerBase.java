@@ -37,7 +37,7 @@ public abstract class GenericControllerBase<Entity extends EntityBase, Dto exten
     }
 
     @GetMapping
-    public List<Dto> getAll(@RequestParam int page, @RequestParam int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
+    public List<Dto> getAll(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
         return getRepository().findAll(getPageable(page, size, direct, sortProperty))
                 .stream()
                 .map(entity -> modelMapper.map(entity, getDtoClass()))

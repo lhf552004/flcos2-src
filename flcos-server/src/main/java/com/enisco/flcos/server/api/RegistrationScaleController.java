@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/v1/registration-scale")
+@RequestMapping("api/v1/registration-scales")
 @RestController
 public class RegistrationScaleController extends GenericControllerBase<RegistrationScaleEntity, RegistrationScaleDto, NewRegistrationScaleDto> {
 
