@@ -50,5 +50,16 @@
   },
   "TRENDING": {
     "PROCESS VARIABLES": "Process Variables"
+  },
+  "ENGINEERINGS" : {
+    "LINE": "Line",
+    "SECTION": "Section",
+    "MIXER": "Mixer",
+    "FILLER": "Filler",
+    "DISCHARGER": "Discharger",
+    "SCALE": "Scale",
+    "REGISTRATION-SCALE": "Registration Scale",
+    "PROCESS-STATION": "Process Station",
+    "CONVEYING-STATION": "Conveying Station"
   }
 }

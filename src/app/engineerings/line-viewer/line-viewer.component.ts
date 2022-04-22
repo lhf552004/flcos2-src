@@ -143,7 +143,7 @@ export class LineViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   doAddSection(newSection: { index: number, name: string, opcVariableIdent: string }): void {
-    this.line.sections.push({...newSection, id: null, equipments: []});
+    this.line.sections.push({...newSection, line: this.line, job: null, id: null, equipments: []});
     this.lineService.update(this.line.id, this.line).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
       this.buildTableSettings();
     });

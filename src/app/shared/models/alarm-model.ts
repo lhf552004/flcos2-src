@@ -13,5 +13,5 @@ export interface Alarm {
   cabinet: string;
   deviceName: string;
   deviceDescription: string;
-  asset: string
+  asset: string;
 }

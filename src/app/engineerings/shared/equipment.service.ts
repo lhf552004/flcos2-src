@@ -1,77 +1,65 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Equipment} from './models/equipment.model';
-import {Section} from './models/section.model';
+import {HttpClient} from '@angular/common/http';
+import {tap} from 'rxjs/operators';
+import {GcObject} from './models/gc-object.model';
 
+export class EquipmentService<T extends GcObject> {
+  private readonly url: string;
+  public readonly equipments$: BehaviorSubject<T[]>;
+  private readonly http: HttpClient;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class EquipmentService {
-
-  sections: Section[] = [
-    {
-      id: '10ea3dfd-6e28-4b9e-9244-a2eba42bc15f', index: 1, name: 'INT1-Section1', equipments: [
-        {id: '1c2fbab8-80de-40a6-beba-418484eb2ef3', name: 'Discharger1', type: 'discharger'}]
-    },
-    {
-      id: 'f5c17700-75ac-4a21-a4a9-d1aa4b347b40',
-      index: 2,
-      name: 'INT2-Section1',
-      equipments: [{id: 'd763bcbe-39d7-44d4-81c3-390dfe899a81', name: 'Discharger2', type: 'discharger'}]
-    },
-    {
-      id: 'a61860c1-44a8-4cb3-b623-60dc2cf3a123',
-      index: 3,
-      name: 'MIX1-DISCHARGING',
-      equipments: []
-    },
-    {
-      id: 'a61860c1-44a8-4cb3-b623-60dc2cf3a0bf',
-      index: 4,
-      name: 'MIX1-MIXING',
-      equipments: [{id: '8e8e45cb-9dc3-493b-a729-73a23808df3e', name: 'Mixer1', type: 'mixer'}]
-    },
-    {
-      id: 'e15fa296-cae4-4c03-808d-68f9bdf53148',
-      index: 5,
-      name: 'MIX1-PACKING',
-      equipments: [{id: '6c713110-9748-45e5-b096-81530e292915', name: 'Packer2', type: 'packer'}]
-    }
-  ];
-
-  equipments: Equipment[] = [
-    {id: '1c2fbab8-80de-40a6-beba-418484eb2ef3', name: 'Discharger1', type: 'discharger'},
-    {id: 'd763bcbe-39d7-44d4-81c3-390dfe899a81', name: 'Discharger2', type: 'discharger'},
-    {id: '8e8e45cb-9dc3-493b-a729-73a23808df3e', name: 'Mixer1', type: 'mixer'},
-    {id: '1b1256f7-41b2-4707-889b-26d79ec25ebd', name: 'Packer1', type: 'packer'},
-    {id: '6c713110-9748-45e5-b096-81530e292915', name: 'Packer2', type: 'packer'}
-  ];
-
-  constructor() {
+  constructor(http: HttpClient, url: string, equipments$: BehaviorSubject<T[]>) {
+    this.http = http;
+    this.url = url;
+    this.equipments$ = equipments$;
   }
 
-  getEquipments(): Observable<Equipment[]> {
-    return of(this.equipments);
+  // Get the list of menu items
+  getAll(): Observable<T[]> {
+    const url = `${this.url}`;
+    return this.http.get<T[]>(url).pipe(tap(l => {
+      this.equipments$.next(l);
+    }));
   }
 
-  getEquipmentsByIds(ids: string[]): Observable<Equipment[]> {
-    return of(this.equipments.filter(eq => ids.includes(eq.id)));
+  get(id: string): Observable<T> {
+    const url = `${this.url}/${id}`;
+    return this.http.get<T>(url);
   }
 
-  getEquipment(id: string): Observable<Equipment> {
-    return of(this.equipments.find(e => e.id === id));
+  create(newEquipment: any, defaultParameter: any): Observable<any> {
+    const url = `${this.url}`;
+    return this.http.post<any>(url, newEquipment).pipe(tap(x => {
+      const equipments = this.equipments$.getValue();
+      equipments.push({...newEquipment, id: x, ...defaultParameter});
+      this.equipments$.next(equipments);
+    }));
   }
 
-  getSections(): Observable<Section[]> {
-    return of(this.sections);
+  update(id: string, updatedEquipment: T): Observable<any> {
+    const url = `${this.url}/${id}`;
+    return this.http.put<any>(url, updatedEquipment).pipe(tap(x => {
+      console.log(updatedEquipment);
+      const equipments = this.equipments$.getValue();
+      const idx = equipments.findIndex(l => l.id === id);
+      if (idx > -1) {
+        equipments.splice(idx, 1, updatedEquipment);
+      }
+      this.equipments$.next(equipments);
+    }));
   }
 
-  getSectionsByIds(ids: string[]): Observable<Section[]> {
-    return of(this.sections.filter(s => ids.includes(s.id)));
-  }
-
-  getSection(id: string): Observable<Section> {
-    return of(this.sections.find(s => s.id === id));
+  delete(id: string): Observable<any> {
+    const url = `${this.url}/${id}`;
+    return this.http.delete<any>(url).pipe(tap(x => {
+      const equipments = this.equipments$.getValue();
+      const idx = equipments.findIndex(l => l.id === id);
+      if (idx > -1) {
+        equipments.splice(idx, 1);
+      }
+      this.equipments$.next(equipments);
+    }));
   }
 }
