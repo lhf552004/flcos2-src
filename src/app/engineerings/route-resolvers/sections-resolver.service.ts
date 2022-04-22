@@ -3,15 +3,16 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/ro
 import { Observable } from 'rxjs';
 import { EquipmentService } from '../shared/equipment.service';
 import { Section } from '../shared/models/section.model';
+import {SectionService} from '../shared/section.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SectionsResolverService {
 
-  constructor(private equipmentService: EquipmentService, private router: Router) { }
-  
+  constructor(private sectionService: SectionService, private router: Router) { }
+
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Section[]> {
-    return this.equipmentService.getSections();
+    return this.sectionService.getAll();
   }
 }

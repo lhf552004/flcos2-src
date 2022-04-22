@@ -51,7 +51,6 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private binService: BinService,
-              private equipmentService: EquipmentService,
               private sectionService: SectionService,
               private opcServerService: OpcServerService,
               private route: ActivatedRoute,
@@ -97,12 +96,12 @@ export class LineDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
         const idsOfEquipments = this.getIdsFromSvg(equipments);
         const observables: Observable<any>[] = [];
         observables.push(this.binService.getBinsByIds(idsOfStorage).pipe(takeUntil(this.unsubscribe)));
-        observables.push(this.equipmentService.getSectionsByIds(idsOfSections).pipe(takeUntil(this.unsubscribe)));
-        observables.push(this.equipmentService.getEquipmentsByIds(idsOfEquipments).pipe(takeUntil(this.unsubscribe)));
+        // observables.push(this.equipmentService.getSectionsByIds(idsOfSections).pipe(takeUntil(this.unsubscribe)));
+        // observables.push(this.equipmentService.getEquipmentsByIds(idsOfEquipments).pipe(takeUntil(this.unsubscribe)));
         combineLatest(observables).subscribe(x => {
           this.storages = x[0];
-          this.sections = x[1];
-          this.equipments = x[2];
+          // this.sections = x[1];
+          // this.equipments = x[2];
           storages.forEach(storageElement => {
             const id = storageElement.getAttribute('deviceident');
             const storageData = x[0].find(s => s.id === id);
