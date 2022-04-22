@@ -18,7 +18,7 @@ public class OPCUAClientRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         logger.debug("OPCUA clients initializing");
-        clientFactory.initialize();
+//        clientFactory.initialize();
         logger.debug("OPCUA clients initialized");
     }
 }

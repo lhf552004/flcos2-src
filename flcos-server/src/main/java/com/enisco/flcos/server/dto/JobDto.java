@@ -6,8 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class JobDto {
-    private Long id;
+public class JobDto extends DTOBase {
 
     private String name;
 

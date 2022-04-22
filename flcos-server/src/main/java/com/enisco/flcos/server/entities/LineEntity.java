@@ -10,22 +10,19 @@ import java.util.List;
 @Setter
 @Getter
 @Entity(name="line")
-public class LineEntity extends GCObjectBase {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id;
+public class LineEntity extends GCObjectEntity {
 
     @Column
     private String name;
 
-    @Column(name = "is_production")
+    @Column(name = "is_production", columnDefinition = "boolean default false")
     private boolean isProduction;
 
-    @Column(name = "svg_up_loaded")
+    @Column(name = "svg_up_loaded", columnDefinition = "boolean default false")
     private boolean svgUploaded;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(columnDefinition = "varchar(255) default 'Passive'")
     private LineStatus status;
 
     @OneToMany(cascade = CascadeType.ALL)

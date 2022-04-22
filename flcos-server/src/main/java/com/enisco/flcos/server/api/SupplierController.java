@@ -1,11 +1,12 @@
 package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.NewSupplierDto;
-import com.enisco.flcos.server.dto.SupplierDto;
+import com.enisco.flcos.server.dto.supplier.SupplierDto;
 import com.enisco.flcos.server.entities.SupplierEntity;
 import com.enisco.flcos.server.repository.relational.SupplierRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,4 +49,5 @@ public class SupplierController extends ControllerBase {
             RepositoryUtil.update(supplierRepository, supplierEntity);
         }
     }
+
 }
