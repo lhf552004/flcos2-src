@@ -53,5 +53,16 @@
   },
   "TRENDING": {
     "PROCESS VARIABLES": "过程变量"
+  },
+  "ENGINEERINGS" : {
+    "LINE": "生产线",
+    "SECTION": "生产段",
+    "MIXER": "混合机",
+    "FILLER": "进料器",
+    "DISCHARGER": "卸料器",
+    "SCALE": "标准秤",
+    "REGISTRATION-SCALE": "流量秤",
+    "PROCESS-STATION": "工艺站",
+    "CONVEYING-STATION": "输送站"
   }
 }
