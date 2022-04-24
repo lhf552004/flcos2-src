@@ -252,7 +252,6 @@ export class MenusComponent implements OnInit, OnDestroy {
           type: 'select',
           label: 'Role',
           name: 'role',
-          value: menu.role?.name,
           options: this.roleService.roles$.getValue().map(x => ({key: x, value: x.name})),
           placeholder: 'Choose a role',
           validation: []
