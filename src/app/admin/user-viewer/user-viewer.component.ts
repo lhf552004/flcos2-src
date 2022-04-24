@@ -163,19 +163,14 @@ export class UserViewerComponent implements OnInit, OnChanges, OnDestroy {
   doRemoveRoles(roles: Role[]): void {
     // Members were removed if they are not in the list of addedMembers, otherwise they are un-added
     roles.forEach(u => {
-      const idx = this.addedRoles.findIndex(x => x.id === u.id);
-
+      const idx = this.config.user.roles.findIndex(x => x.id === u.id);
       if (idx > -1) {
-        this.addedRoles.splice(idx, 1);
-      } else {
-        this.removedRoles.push(u);
+        this.config.user.roles.splice(idx, 1);
       }
-
-      const idx2 = this.roles.findIndex(x => x.id === u.id);
-      this.roles.splice(idx2, 1);
     });
-
-    this.buildTableSettings();
+    this.userService.updateUser(this.config.user.id, this.config.user, false).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+      this.buildTableSettings();
+    });
   }
 
 }

@@ -45,8 +45,6 @@ export class MenuItemComponent implements OnInit {
   }
 
   isExpandable(item: MenuItem) {
-    console.log(item.name);
-    console.log(item.children);
     return item.children && item.children.length > 0;
   }
 
