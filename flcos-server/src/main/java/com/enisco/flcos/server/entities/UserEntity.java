@@ -8,9 +8,9 @@ import java.util.Collection;
 
 @Setter
 @Getter
-@Entity(name="f_user")
+@Entity(name = "f_user")
 public class UserEntity extends EntityBase {
-//    @Id
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private Long id;
     private String userName;
@@ -21,7 +21,7 @@ public class UserEntity extends EntityBase {
     private boolean enabled;
     private boolean tokenExpired;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
