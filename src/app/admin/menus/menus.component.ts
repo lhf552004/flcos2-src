@@ -8,10 +8,7 @@ import {MenuService} from '../../core/layout/menu/menu.service';
 import {RoleService} from '../../core/user/role.service';
 import {MenuItem} from '../../core/layout/menu/menu-item';
 import {Role} from '../../core/user/models/role.model';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {UserViewerComponent} from '../user-viewer/user-viewer.component';
 import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
-import {ItemsSelectorComponent} from '../../shared/items-selector/items-selector.component';
 import {MenuChildrenViewerComponent} from '../menu-children-viewer/menu-children-viewer.component';
 
 @Component({
@@ -278,7 +275,7 @@ export class MenusComponent implements OnInit, OnDestroy {
   }
 
   doUpdateMenu(menu: MenuItem, e: MenuItem): void {
-    const updated = {id: menu.id, children: menu.children, ...e};
+    const updated = {id: menu.id, isRoot: true, children: menu.children, ...e};
     if (e.role) {
       updated.role = e.role;
     }

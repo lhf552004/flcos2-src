@@ -50,6 +50,12 @@ export class UserService {
           this.authenticationService.currentUserValue.firstName = updatedUser.firstName;
           this.authenticationService.updateUser(this.authenticationService.currentUserValue);
         }
+        const users = this.users$.getValue();
+        const idx = users.findIndex(u => u.id === id);
+        if (idx > -1) {
+          users.splice(idx, 1, updatedUser);
+        }
+        this.users$.next(users);
       }));
   }
 

@@ -8,8 +8,8 @@ import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-ic
 import {takeUntil} from 'rxjs/operators';
 import {RolesSelectorComponent} from '../roles-selector/roles-selector.component';
 import {MenuItem} from '../../core/layout/menu/menu-item';
-import { DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl } from 'data-table';
-import { DynamicFormService, ModalConfig, CustomValidators } from 'dynamic-form';
+import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} from 'data-table';
+import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
 import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
 import {MenuService} from '../../core/layout/menu/menu.service';
 
@@ -129,9 +129,7 @@ export class MenuChildrenViewerComponent implements OnInit, OnChanges, OnDestroy
   }
 
   submitForm(method: string) {
-    this.submitted.emit({
-
-    });
+    this.submitted.emit({});
   }
 
   dismissForm(method: string) {
@@ -307,7 +305,7 @@ export class MenuChildrenViewerComponent implements OnInit, OnChanges, OnDestroy
   }
 
   doUpdateMenu(menu: MenuItem, e: MenuItem): void {
-    const updated = {id: menu.id, children: menu.children, ...e};
+    const updated = {id: menu.id, isRoot: false, children: menu.children, ...e};
     if (e.role) {
       updated.role = e.role;
     }
