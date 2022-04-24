@@ -13,23 +13,7 @@
     <!-- Top Menu links -->
     <ul class="navbar-nav mr-auto" *ngIf="isAuthenticated">
       <li *ngFor="let menuItem of menu" class="nav-item">
-        <a *ngIf="menuItem.children && menuItem.children.length > 0">
-          <button mat-raised-button color="primary" [matMenuTriggerFor]="menu.childMenu">
-            {{menuItem.name}}
-            <mat-icon>expand_more</mat-icon>
-          </button>
-          <emes-menu-item #menu [items]="menuItem.children"></emes-menu-item>
-        </a>
-        <!-- Leaf node buttons here -->
-        <span *ngIf="!menuItem.children || menuItem.children.length === 0">
-          <button *ngIf="!menuItem.external && menuItem.url !== 'external'" mat-button class="nav-link" [routerLink]="menuItem.url">
-             {{'MENU.' + menuItem.name | translate}}
-          </button>
-          <button *ngIf="menuItem.external" mat-button class="nav-link" (click)="navigateToExternal(menuItem)">
-             {{'MENU.' + menuItem.name | translate}}
-          </button>
-        </span>
-<!--        <a class="nav-link" [routerLink]="[menuItem.url]" [routerLinkActive]="'active'">{{menuItem.name}}</a>-->
+        <emes-menu-item [isRootNode]="true" [item]="menuItem"></emes-menu-item>
       </li>
     </ul>
 
