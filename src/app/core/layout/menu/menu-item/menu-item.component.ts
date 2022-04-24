@@ -9,14 +9,29 @@ import {MenuItem} from '../menu-item';
 })
 export class MenuItemComponent implements OnInit {
 
-  @Input() items: MenuItem[];
-  @ViewChild('childMenu') public childMenu;
+  @Input() isRootNode = false;
+  @Input() item: MenuItem;
+  children: MenuItem[] = [];
+  isLoading = false;
+  dataLoaded = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router) {
   }
 
   ngOnInit() {
+    if (this.isRootNode) {
+      this.getData();
+    }
+  }
+
+  getData() {
+    if (!this.dataLoaded) {
+      this.isLoading = true;
+      this.children = this.item.children;
+      this.isLoading = false;
+      this.dataLoaded = true;
+    }
   }
 
   navigateToExternal(menuItem: MenuItem) {
@@ -27,6 +42,12 @@ export class MenuItemComponent implements OnInit {
         queryParams: {url: encodeURIComponent(menuItem.externalUrl)},
         queryParamsHandling: 'merge'
       });
+  }
+
+  isExpandable(item: MenuItem) {
+    console.log(item.name);
+    console.log(item.children);
+    return item.children && item.children.length > 0;
   }
 
 }
