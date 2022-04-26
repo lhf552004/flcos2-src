@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {DataTableColumnDefinition} from 'data-table';
 
-import {CustomValidators} from 'dynamic-form';
+import {CustomValidators, DynamicFormService} from 'dynamic-form';
 import {BaseObjectsComponent} from '../../shared/base-objects.component';
 import {Job} from '../shared/models/job.model';
 import {FieldConfig} from 'dynamic-form/lib/models/field-config.interface';
+import {JobService} from '../shared/job.service';
 
 @Component({
   selector: 'flcos-jobs',
@@ -12,6 +13,11 @@ import {FieldConfig} from 'dynamic-form/lib/models/field-config.interface';
   styleUrls: ['./jobs.component.scss']
 })
 export class JobsComponent extends BaseObjectsComponent<Job> {
+
+  constructor(jobService: JobService, dynamicFormService: DynamicFormService) {
+    super(jobService, dynamicFormService);
+  }
+
   getColumnDefinitions(): DataTableColumnDefinition[] {
     return [
       {id: '1', name: 'id', label: 'Id', type: 'text', visible: true, searchable: false, filterMode: 'none'},
