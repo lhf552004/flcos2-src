@@ -1,6 +1,6 @@
 package com.enisco.flcos.server.mapper;
 
-import com.enisco.flcos.server.dto.RoleDto;
+import com.enisco.flcos.server.dto.role.RoleDto;
 import com.enisco.flcos.server.dto.menus.MenuDto;
 import com.enisco.flcos.server.entities.MenuEntity;
 import org.springframework.stereotype.Component;

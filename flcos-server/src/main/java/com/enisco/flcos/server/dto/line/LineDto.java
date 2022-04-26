@@ -1,18 +1,16 @@
 package com.enisco.flcos.server.dto.line;
 
-import com.enisco.flcos.server.dto.SectionDTO;
-import com.enisco.flcos.server.entities.SectionEntity;
+import com.enisco.flcos.server.dto.DTOBase;
+import com.enisco.flcos.server.dto.section.SectionDto;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
-public class LineDto {
-    private Long id;
+public class LineDto extends DTOBase {
 
     private String name;
 
@@ -20,7 +18,7 @@ public class LineDto {
 
     private LineStatus status;
 
-    private List<SectionDTO> sections;
+    private List<SectionDto> sections;
 
     private Boolean svgUploaded;
 }

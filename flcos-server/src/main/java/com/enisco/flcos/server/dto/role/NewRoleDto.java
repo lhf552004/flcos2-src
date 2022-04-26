@@ -1,11 +1,10 @@
-package com.enisco.flcos.server.dto.line;
+package com.enisco.flcos.server.dto.role;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class NewLineDto {
-
+public class NewRoleDto {
     private String name;
 }

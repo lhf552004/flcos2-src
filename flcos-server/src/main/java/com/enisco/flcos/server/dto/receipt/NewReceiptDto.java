@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.receipt;
 
 import com.enisco.flcos.server.dto.supplier.SupplierDto;
 import com.enisco.flcos.server.entities.enums.PackageType;

@@ -64,11 +64,11 @@ public class OrderManagementBean implements IOrderManagement {
     Scheme orderScheme;
 
     @Override
-    public void createOrder(Map<String, Serializable> attributes) {
-        create(false, attributes);
+    public OrderEntity createOrder(Map<String, Serializable> attributes) {
+        return create(false, attributes);
     }
 
-    private void create(boolean isInternal, Map<String, Serializable> attributes) {
+    private OrderEntity create(boolean isInternal, Map<String, Serializable> attributes) {
         var orderEntity = new OrderEntity();
         orderEntity.setStatus(OrderStatus.NEW);
         orderEntity.setIsInternal(isInternal);
@@ -103,6 +103,7 @@ public class OrderManagementBean implements IOrderManagement {
             // create job
             createJob(orderEntity);
         }
+        return orderEntity;
     }
 
     private Scheme getOrderScheme() {
@@ -171,8 +172,8 @@ public class OrderManagementBean implements IOrderManagement {
     }
 
     @Override
-    public void createInternal(Map<String, Serializable> attributes) {
-        create(true, attributes);
+    public OrderEntity createInternal(Map<String, Serializable> attributes) {
+        return create(true, attributes);
     }
 
     @Override

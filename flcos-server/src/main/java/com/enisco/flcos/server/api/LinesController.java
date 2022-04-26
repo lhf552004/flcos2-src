@@ -7,9 +7,11 @@ import com.enisco.flcos.server.dto.line.NewLineDto;
 import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.repository.relational.LineRepository;
 
+import com.enisco.flcos.server.util.RepositoryUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,16 +23,16 @@ import java.nio.file.Paths;
 
 @RequestMapping("api/v1/lines")
 @RestController
-public class LinesController {
+public class LinesController extends GenericControllerBase<LineEntity, LineDto, NewLineDto> {
 
-    private LineRepository lineRepository;
+    private final LineRepository lineRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Value("${svg.location}")
     private String svgLocation;
 
-    GcObjectManagement gcObjectManagement;
+    private final GcObjectManagement gcObjectManagement;
 
     @Autowired
     public LinesController(LineRepository lineRepository,
@@ -42,29 +44,25 @@ public class LinesController {
         this.gcObjectManagement = gcObjectManagement;
     }
 
+    @Override
+    JpaRepository<LineEntity, Long> getRepository() {
+        return lineRepository;
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<Long> create(@RequestBody NewLineDto lineDto) {
         var line = modelMapper.map(lineDto, LineEntity.class);
-        lineRepository.save(line);
+        RepositoryUtil.create(getRepository(), line);
         gcObjectManagement.updateLine(line);
         return ResponseEntity.ok(line.getId());
     }
 
-    @GetMapping
-    public ResponseEntity<?> getLines() {
-        return ResponseEntity.ok(lineRepository.findAll());
-    }
-
-    @GetMapping(path = "{id}")
-    public LineDto getLine(@PathVariable Long id) {
-        var line = lineRepository.findById(id);
-        return line.map(lineEntity -> modelMapper.map(lineEntity, LineDto.class)).orElse(null);
-    }
-
+    @Override
     @PutMapping(path = "{id}")
-    public ResponseEntity updateLine(@PathVariable Long id, @RequestBody LineDto lineDto) {
+    public ResponseEntity update(@PathVariable Long id, @RequestBody LineDto lineDto) {
         var line = modelMapper.map(lineDto, LineEntity.class);
-        lineRepository.save(line);
+        RepositoryUtil.update(getRepository(), line);
         gcObjectManagement.updateLine(line);
         return ResponseEntity.ok().build();
     }
@@ -90,8 +88,9 @@ public class LinesController {
         return ResponseEntity.ok().build();
     }
 
+    @Override
     @DeleteMapping(path = "{id}")
-    public ResponseEntity deleteLine(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable Long id) {
         lineRepository.deleteById(id);
         gcObjectManagement.deleteLine(id);
         return ResponseEntity.ok().build();

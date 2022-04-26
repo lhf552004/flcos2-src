@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.recipe;
 
 import lombok.Getter;
 import lombok.Setter;
