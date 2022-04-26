@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Entity(name="process_station")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class ProcessStationEntity extends GCObjectEntity {
+public class ProcessStationEntity extends EquipmentEntity {
 
     private String name;
 

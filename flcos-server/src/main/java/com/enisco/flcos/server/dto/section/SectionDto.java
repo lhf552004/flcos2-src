@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SectionDto extends DTOBase {
+public class SectionDto extends EquipmentDto {
     private Integer index;
     private String name;
     private LineStatus status;

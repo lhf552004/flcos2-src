@@ -1,17 +1,28 @@
 package com.enisco.flcos.server.entities;
 
-import com.enisco.flcos.server.entities.enums.EquipmentType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-@Setter
 @Getter
-@Entity(name="equipment")
+@Setter
+@Entity(name = "equipment")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class EquipmentEntity extends EntityBase {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "equipment_type")
-    private EquipmentType equipmentType;
+    @Column(columnDefinition = "boolean default false")
+    private boolean locked;
+
+    @Column(name = "opc_variable_ident")
+    private String opcVariableIdent;
+
+    @Column
+    private String location;
+
+    @Column
+    private String plc;
 }
