@@ -1,9 +1,8 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.repository.relational.SchemeRepository;
 import com.enisco.flcos.server.scheme.Scheme;
 import com.enisco.flcos.server.scheme.SchemeManager;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
