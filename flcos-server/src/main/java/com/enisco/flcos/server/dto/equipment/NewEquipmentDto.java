@@ -1,13 +1,11 @@
 package com.enisco.flcos.server.dto.equipment;
 
-import com.enisco.flcos.server.dto.DTOBase;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EquipmentDto extends DTOBase {
+public class NewEquipmentDto {
     private boolean locked;
 
     private String opcVariableIdent;

@@ -1,11 +1,12 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.dto.NewUserDTO;
+import com.enisco.flcos.server.dto.user.NewUserDTO;
 import com.enisco.flcos.server.entities.UserEntity;
 import com.enisco.flcos.server.repository.relational.UserRepository;
-import com.enisco.flcos.server.dto.UpdateUserDto;
-import com.enisco.flcos.server.dto.UserDto;
-import org.modelmapper.ModelMapper;
+import com.enisco.flcos.server.dto.user.UpdateUserDto;
+import com.enisco.flcos.server.dto.user.UserDto;
+
+import com.enisco.flcos.server.util.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +18,27 @@ import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/users")
 @RestController
-public class UsersController {
+public class UsersController extends ControllerBase {
     Logger logger = LoggerFactory.getLogger(UsersController.class);
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    public UsersController(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder
+    ) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping
     public long createUser(@RequestBody NewUserDTO userDto) {
         var userEntity = modelMapper.map(userDto, UserEntity.class);
         userEntity.setEnabled(true);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        userRepository.save(userEntity);
+        RepositoryUtil.create(userRepository, userEntity);
         return userEntity.getId();
     }
 
@@ -62,7 +66,7 @@ public class UsersController {
             } else {
                 userEntity.setPassword(result.get().getPassword());
             }
-            userRepository.save(userEntity);
+            RepositoryUtil.update(userRepository, userEntity);
         } else
             logger.error("User {} not found", id);
     }

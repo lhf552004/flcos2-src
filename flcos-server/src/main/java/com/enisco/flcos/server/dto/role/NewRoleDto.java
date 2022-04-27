@@ -1,10 +1,10 @@
-package com.enisco.flcos.server.dto.mixer;
+package com.enisco.flcos.server.dto.role;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class NewMixerDto {
+public class NewRoleDto {
     private String name;
 }

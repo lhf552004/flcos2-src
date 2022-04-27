@@ -1,5 +1,6 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.receipt;
 
+import com.enisco.flcos.server.dto.DTOBase;
 import com.enisco.flcos.server.dto.supplier.SupplierDto;
 import com.enisco.flcos.server.entities.enums.PackageType;
 import com.enisco.flcos.server.entities.enums.UnitType;
@@ -8,8 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReceiptDto {
-    private Long id;
+public class ReceiptDto extends DTOBase {
 
     private String batchNumber;
 

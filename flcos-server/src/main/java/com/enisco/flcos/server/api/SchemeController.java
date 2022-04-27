@@ -10,14 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/schemes")
 public class SchemeController extends ControllerBase {
-    private SchemeRepository schemeRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
+
     private SchemeManager schemeManager;
 
-    public SchemeController(@Autowired SchemeRepository schemeRepository) {
-        this.schemeRepository = schemeRepository;
+    public SchemeController(@Autowired SchemeManager schemeManager) {
+        this.schemeManager = schemeManager;
     }
 
     @GetMapping(path = "by-name/{name}")

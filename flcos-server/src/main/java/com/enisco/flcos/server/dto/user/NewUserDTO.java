@@ -1,5 +1,6 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.user;
 
+import com.enisco.flcos.server.dto.role.RoleDto;
 import lombok.Getter;
 import lombok.Setter;
 

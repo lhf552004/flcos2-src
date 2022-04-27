@@ -3,10 +3,7 @@ package com.enisco.flcos.server.api;
 import com.enisco.flcos.server.dto.DTOBase;
 import com.enisco.flcos.server.entities.EntityBase;
 import com.enisco.flcos.server.util.RepositoryUtil;
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +22,7 @@ public abstract class GenericControllerBase<Entity extends EntityBase, Dto exten
     }
 
     public Class<Dto> getDtoClass() {
-        Class<Dto> tClass = (Class<Dto>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Class<Dto> tClass = (Class<Dto>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         return tClass;
     }
 

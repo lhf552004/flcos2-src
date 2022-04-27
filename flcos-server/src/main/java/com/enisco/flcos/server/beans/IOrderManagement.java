@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 public interface IOrderManagement {
-    void createOrder(Map<String, Serializable> attributes);
-    void createInternal(Map<String, Serializable> attributes);
+    OrderEntity createOrder(Map<String, Serializable> attributes);
+    OrderEntity createInternal(Map<String, Serializable> attributes);
     void createJob(OrderEntity orderEntity);
 
     void releaseJob(OrderEntity orderEntity);

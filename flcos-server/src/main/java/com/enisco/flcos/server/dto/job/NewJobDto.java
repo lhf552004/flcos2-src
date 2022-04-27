@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.dto;
+package com.enisco.flcos.server.dto.job;
 
 import com.enisco.flcos.server.dto.line.LineDto;
 import lombok.Getter;

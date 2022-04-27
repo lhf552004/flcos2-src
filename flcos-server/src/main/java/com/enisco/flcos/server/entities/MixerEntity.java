@@ -1,6 +1,5 @@
 package com.enisco.flcos.server.entities;
 
-import jdk.jfr.Timespan;
 import lombok.Getter;
 import lombok.Setter;
 

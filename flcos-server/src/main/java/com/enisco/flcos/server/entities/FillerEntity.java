@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 @Entity(name="filler")
-public class FillerEntity extends GCObjectEntity{
+public class FillerEntity extends EquipmentEntity {
     @Column
     private String name;
 

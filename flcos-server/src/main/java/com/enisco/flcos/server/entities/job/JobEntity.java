@@ -12,13 +12,14 @@ import java.util.List;
 
 @Setter
 @Getter
-@Entity(name="job")
+@Entity(name = "job")
 public class JobEntity extends EntityBase {
 
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "line")
     private LineEntity line;
 

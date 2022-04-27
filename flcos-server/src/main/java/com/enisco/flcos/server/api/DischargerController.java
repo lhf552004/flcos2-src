@@ -1,14 +1,11 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.dto.EquipmentDTO;
 import com.enisco.flcos.server.dto.discharger.DischargerDto;
 import com.enisco.flcos.server.dto.discharger.NewDischargerDto;
 import com.enisco.flcos.server.entities.DischargerEntity;
-import com.enisco.flcos.server.entities.EquipmentEntity;
 import com.enisco.flcos.server.repository.relational.DischargerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/dischargers")

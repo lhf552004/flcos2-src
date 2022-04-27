@@ -4,7 +4,7 @@ import com.enisco.flcos.server.dto.alarm.AlarmDto;
 import com.enisco.flcos.server.repository.mongodb.AlarmLogRepository;
 import com.enisco.flcos.server.repository.relational.AlarmRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +15,15 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/alarms")
 public class AlarmController extends ControllerBase {
-    private AlarmRepository alarmRepository;
-    private AlarmLogRepository alarmLogRepository;
-    private ModelMapper modelMapper;
+    private final AlarmRepository alarmRepository;
+    private final AlarmLogRepository alarmLogRepository;
 
     @Autowired
     public AlarmController(AlarmRepository alarmRepository,
-                           AlarmLogRepository alarmLogRepository,
-                           ModelMapper modelMapper
+                           AlarmLogRepository alarmLogRepository
     ) {
         this.alarmRepository = alarmRepository;
         this.alarmLogRepository = alarmLogRepository;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping(path = "{id}")

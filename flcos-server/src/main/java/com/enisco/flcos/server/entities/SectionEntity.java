@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity(name="section")
-public class SectionEntity extends GCObjectEntity {
+public class SectionEntity extends EquipmentEntity {
     @Column
     private Integer index;
 
