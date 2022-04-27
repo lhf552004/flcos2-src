@@ -5,9 +5,9 @@ import {tap} from 'rxjs/operators';
 import {Base} from '../models/base.model';
 
 export class GenericBaseService<T extends Base> {
-  private readonly url: string;
+  protected readonly url: string;
   public readonly objects$: BehaviorSubject<T[]>;
-  private readonly http: HttpClient;
+  protected readonly http: HttpClient;
 
   constructor(http: HttpClient, url: string, objects$: BehaviorSubject<T[]>) {
     this.http = http;
