@@ -9,9 +9,6 @@ import javax.persistence.*;
 @Getter
 @Entity(name="supplier")
 public class SupplierEntity extends EntityBase {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id;
 
     @Column
     private String name;
