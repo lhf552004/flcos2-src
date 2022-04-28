@@ -11,17 +11,16 @@ import javax.persistence.*;
 @Getter
 @Entity(name="receipt")
 public class ReceiptEntity extends EntityBase {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id;
 
     @Column(name = "batch_number")
     private String batchNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH, CascadeType.DETACH})
     private SupplierEntity supplier;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH, CascadeType.DETACH})
     private ProductEntity product;
 
     @Column
@@ -31,8 +30,8 @@ public class ReceiptEntity extends EntityBase {
     @Column(name = "unit_type")
     private UnitType unitType;
 
-    @Column
-    private Long unit;
+    @Column(name = "per_weight")
+    private double perWeight;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "package_type")

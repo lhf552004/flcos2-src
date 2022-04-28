@@ -1,13 +1,16 @@
 package com.enisco.flcos.server.runners;
 
+import com.enisco.flcos.server.entities.WarehouseEntity;
 import com.enisco.flcos.server.entities.scheme.SchemeEntity;
 import com.enisco.flcos.server.entities.scheme.SchemeFieldEntity;
 import com.enisco.flcos.server.repository.relational.SchemeFieldRepository;
 import com.enisco.flcos.server.repository.relational.SchemeRepository;
+import com.enisco.flcos.server.repository.relational.WarehouseRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -19,16 +22,31 @@ import java.util.Optional;
 public class InitializeDataRunner implements CommandLineRunner {
     Logger logger = LoggerFactory.getLogger(InitializeDataRunner.class);
 
-    @Autowired
     SchemeRepository schemeRepository;
 
-    @Autowired
     SchemeFieldRepository schemeFieldRepository;
+
+    WarehouseRepository warehouseRepository;
+
+    @Value("${warehouse.raw}")
+    private String rawWarehouseName;
+
+    @Autowired
+    public InitializeDataRunner(
+            SchemeRepository schemeRepository,
+            SchemeFieldRepository schemeFieldRepository,
+            WarehouseRepository warehouseRepository) {
+        this.schemeRepository = schemeRepository;
+        this.schemeFieldRepository = schemeFieldRepository;
+        this.warehouseRepository = warehouseRepository;
+    }
 
     @Override
     public void run(String... args) {
         logger.info("Start to run initialize data runner...");
         createOrderScheme();
+        createWarehouse();
+        logger.info("Initialized data is loaded.");
     }
 
     private void createOrderScheme() {
@@ -194,5 +212,14 @@ public class InitializeDataRunner implements CommandLineRunner {
             bodyTypeSchemeFieldOptional = Optional.of(bodyTypeSchemeFieldEntity);
         }
 
+    }
+
+    private void createWarehouse() {
+        var rawWarehouseOptional = warehouseRepository.findByName(rawWarehouseName);
+        if(rawWarehouseOptional.isEmpty()) {
+            var rawWarehouse = new WarehouseEntity();
+            rawWarehouse.setName(rawWarehouseName);
+            RepositoryUtil.create(warehouseRepository, rawWarehouse);
+        }
     }
 }

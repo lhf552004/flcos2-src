@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/suppliers")
+@RestController
 public class SupplierController extends GenericControllerBase<SupplierEntity, SupplierDto, NewSupplierDto> {
     private final SupplierRepository supplierRepository;
 
@@ -27,7 +28,7 @@ public class SupplierController extends GenericControllerBase<SupplierEntity, Su
     }
 
     @GetMapping("all")
-    public List<SimpleSupplierDto> getAll() {
+    public List<SimpleSupplierDto> getSimpleAll() {
         return getRepository().findAll()
                 .stream()
                 .map(entity -> modelMapper.map(entity, SimpleSupplierDto.class))
