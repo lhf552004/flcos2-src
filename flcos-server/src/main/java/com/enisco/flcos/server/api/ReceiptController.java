@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequestMapping("api/v1/receipts")
 @RestController
 public class ReceiptController extends GenericControllerBase<ReceiptEntity, ReceiptDto, NewReceiptDto> {
@@ -50,10 +53,14 @@ public class ReceiptController extends GenericControllerBase<ReceiptEntity, Rece
     }
 
     @GetMapping(path = "/{id}/confirm")
-    public ResponseEntity confirm(@PathVariable Long id) {
+    public ResponseEntity<?> confirm(@PathVariable Long id) {
         var result = getRepository().findById(id);
         if (result.isPresent()) {
             var receipt = result.get();
+            var errors = checkReceipt(receipt);
+            if(!errors.isEmpty()) {
+                return ResponseEntity.ok(errors);
+            }
             var rawWarehouseOptional = warehouseRepository.findByName(rawWarehouseName);
             if (rawWarehouseOptional.isPresent()) {
                 var rawWarehouse = rawWarehouseOptional.get();
@@ -77,6 +84,32 @@ public class ReceiptController extends GenericControllerBase<ReceiptEntity, Rece
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private List<String> checkReceipt(ReceiptEntity receipt) {
+        List<String> errors = new ArrayList<>();
+        if(receipt.getQuantity() <= 0 ) {
+            errors.add("Quantity should not be zero");
+        }
+        if(receipt.getPackageType() == null) {
+            errors.add("Package type is not set.");
+        }
+        if(receipt.getBatchNumber() == null || receipt.getBatchNumber().isEmpty()) {
+            errors.add("Batch number is not set.");
+        }
+        if(receipt.getPerWeight()<= 0) {
+            errors.add("Per weight is not set.");
+        }
+        if(receipt.getUnitType() == null) {
+            errors.add("Unit type is not set.");
+        }
+        if(receipt.getProduct() == null) {
+            errors.add("Product is not set.");
+        }
+        if(receipt.getSupplier() == null) {
+            errors.add("Supplier is not set.");
+        }
+        return errors;
     }
 
     private void createLogisticUnit(ReceiptEntity receipt, String batchNumber, double weight, WarehouseEntity rawWarehouse) {

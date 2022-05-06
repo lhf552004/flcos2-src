@@ -15,12 +15,10 @@ public class ReceiptEntity extends EntityBase {
     @Column(name = "batch_number")
     private String batchNumber;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
-            CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne
     private SupplierEntity supplier;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
-            CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne
     private ProductEntity product;
 
     @Column

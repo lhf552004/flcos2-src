@@ -11,9 +11,9 @@ import java.util.List;
 @Getter
 @Entity(name="recipe")
 public class RecipeEntity extends EntityBase {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id;
+
+    @Column
+    private boolean name;
 
     @Column(name = "is_template")
     private boolean isTemplate;

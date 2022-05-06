@@ -10,8 +10,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Document(collection = "Logistic_Unit_Log" )
-public class LogisticUnitLogDocument {
-    @Id
-    private UUID id;
+public class LogisticUnitLogDocument extends DocumentBase {
 
+    private Long logisticUnitId;
+
+    private double actualWeight;
 }
