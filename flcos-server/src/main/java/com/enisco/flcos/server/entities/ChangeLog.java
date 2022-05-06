@@ -13,8 +13,8 @@ import java.util.Date;
 @Setter
 @MappedSuperclass
 public class ChangeLog extends EntityBase {
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date ts;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date ts;
 
     @Column(length = Consts.LENGTH_ATTRIBUTE_NAME)
     private String name;

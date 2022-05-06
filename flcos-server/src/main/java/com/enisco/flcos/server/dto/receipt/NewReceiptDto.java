@@ -1,7 +1,6 @@
 package com.enisco.flcos.server.dto.receipt;
 
-import com.enisco.flcos.server.dto.product.ProductDTO;
-import com.enisco.flcos.server.dto.supplier.SupplierDto;
+import com.enisco.flcos.server.dto.NameDto;
 import com.enisco.flcos.server.entities.enums.PackageType;
 import com.enisco.flcos.server.entities.enums.UnitType;
 import lombok.Getter;
@@ -12,9 +11,9 @@ import lombok.Setter;
 public class NewReceiptDto {
     private String batchNumber;
 
-    private SupplierDto supplier;
+    private NameDto supplier;
 
-    private ProductDTO product;
+    private NameDto product;
 
     private Long quantity;
 

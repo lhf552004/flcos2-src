@@ -30,11 +30,14 @@ public class JobEntity extends EntityBase {
     @Column(name = "target_weight")
     private double targetWeight;
 
+    @Column(name = "actual_weight")
+    private double actualWeight;
+
     @Enumerated(EnumType.STRING)
     @Column
     private JobStatus status;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<JobChangeLogEntity> changeLogs;
 
 }

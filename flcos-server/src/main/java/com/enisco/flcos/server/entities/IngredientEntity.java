@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.entities;
 
+import com.enisco.flcos.server.entities.bin.BinEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +11,6 @@ import java.util.List;
 @Getter
 @Entity(name="ingredient")
 public class IngredientEntity extends EntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private ProductEntity product;
@@ -25,4 +23,11 @@ public class IngredientEntity extends EntityBase {
 
     @Column(name = "actual_weight")
     private double actualWeight;
+
+    @ManyToOne
+    private BinEntity sender;
+
+    @ManyToOne
+    private BinEntity receiver;
+
 }
