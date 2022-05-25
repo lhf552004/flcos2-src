@@ -1,10 +1,6 @@
 package com.enisco.flcos.server.entities.bin;
 
-import com.enisco.flcos.server.entities.DischargerEntity;
-import com.enisco.flcos.server.entities.EntityBase;
-import com.enisco.flcos.server.entities.FillerEntity;
-import com.enisco.flcos.server.entities.ProductEntity;
-import com.enisco.flcos.server.entities.enums.LineStatus;
+import com.enisco.flcos.server.entities.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity(name="bin")
-public class BinEntity extends EntityBase {
+public class BinEntity extends EquipmentEntity {
 
     @Column
     private String name;
@@ -34,7 +30,7 @@ public class BinEntity extends EntityBase {
     @Column(columnDefinition = "varchar(255) default 'Storage'")
     private BinType type;
 
-    @Column(name = "line_name")
-    private String lineName;
+    @Column(name = "line_id")
+    private Long lineId;
 
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/roles")
 @RestController
-public class RolesController extends GenericControllerBase<RoleEntity, RoleDto, NewRoleDto> {
+public class RolesController extends GenericControllerBase<RoleEntity, RoleDto, RoleDto, NewRoleDto> {
     Logger logger = LoggerFactory.getLogger(RolesController.class);
 
     private final RoleRepository roleRepository;

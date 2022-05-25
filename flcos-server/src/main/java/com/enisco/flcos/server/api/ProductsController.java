@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/products")
 @RestController
-public class ProductsController extends GenericControllerBase<ProductEntity, ProductDTO, NewProductDTO> {
+public class ProductsController extends GenericControllerBase<ProductEntity, ProductDTO, ProductDTO, NewProductDTO> {
 
     private final ProductRepository productRepository;
 

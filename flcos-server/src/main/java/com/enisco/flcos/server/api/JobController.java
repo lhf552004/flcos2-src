@@ -4,13 +4,14 @@ import com.enisco.flcos.server.beans.IJobManagement;
 import com.enisco.flcos.server.beans.IntakeJobManagementBean;
 import com.enisco.flcos.server.beans.ProduceJobManagementBean;
 import com.enisco.flcos.server.dto.job.JobDto;
+import com.enisco.flcos.server.dto.job.JobListDto;
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.dto.job.NewJobDto;
-import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.job.JobEntity;
+import com.enisco.flcos.server.mapper.JobMapper;
 import com.enisco.flcos.server.repository.relational.JobRepository;
 import com.enisco.flcos.server.repository.relational.LineRepository;
-import com.enisco.flcos.server.util.RepositoryUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/jobs")
-public class JobController extends GenericControllerBase<JobEntity, JobDto, NewJobDto> {
+public class JobController extends GenericControllerBase<JobEntity, JobDto, JobListDto, NewJobDto> {
     private final JobRepository jobRepository;
     private final LineRepository lineRepository;
     private final IntakeJobManagementBean intakeJobManagementBean;
     private final ProduceJobManagementBean produceJobManagementBean;
-
+    private final JobMapper jobMapper = new JobMapper();
     @Autowired
     public JobController(JobRepository jobRepository,
                          LineRepository lineRepository,
@@ -47,13 +47,13 @@ public class JobController extends GenericControllerBase<JobEntity, JobDto, NewJ
     }
 
     @GetMapping(path = "/line/{lineId}")
-    public ResponseEntity<List<JobDto>> getAllByLine(@PathVariable Long lineId, @RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
+    public ResponseEntity<List<JobListDto>> getAllByLine(@PathVariable Long lineId, @RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
         var lineOptional = lineRepository.findById(lineId);
         if (lineOptional.isPresent()) {
             var line = lineOptional.get();
             return ResponseEntity.ok(jobRepository.findByLine(line, getPageable(page, size, direct, sortProperty))
                     .stream()
-                    .map(entity -> modelMapper.map(entity, getDtoClass()))
+                    .map(entity -> modelMapper.map(entity, getListDtoClass()))
                     .collect(Collectors.toList()));
         } else {
             return ResponseEntity.notFound().build();
@@ -77,6 +77,13 @@ public class JobController extends GenericControllerBase<JobEntity, JobDto, NewJ
             }
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    @GetMapping(path = "{id}")
+    public JobDto get(@PathVariable Long id) {
+        var result = getRepository().findById(id);
+        return result.map(jobMapper::map).orElse(null);
     }
 
     @Override

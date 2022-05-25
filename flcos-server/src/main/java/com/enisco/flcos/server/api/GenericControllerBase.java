@@ -12,17 +12,22 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class GenericControllerBase<Entity extends EntityBase, Dto extends DTOBase, NewDto> extends ControllerBase {
+public abstract class GenericControllerBase<Entity extends EntityBase, Dto extends DTOBase, ListDto extends DTOBase, NewDto> extends ControllerBase {
 
     abstract JpaRepository<Entity, Long> getRepository();
 
-    public Class<Entity> getEntityClass() {
+    protected Class<Entity> getEntityClass() {
         Class<Entity> tClass = (Class<Entity>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return tClass;
     }
 
-    public Class<Dto> getDtoClass() {
+    protected Class<Dto> getDtoClass() {
         Class<Dto> tClass = (Class<Dto>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        return tClass;
+    }
+
+    protected Class<ListDto> getListDtoClass() {
+        Class<ListDto> tClass = (Class<ListDto>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
         return tClass;
     }
 
@@ -34,10 +39,10 @@ public abstract class GenericControllerBase<Entity extends EntityBase, Dto exten
     }
 
     @GetMapping
-    public List<Dto> getAll(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
+    public List<ListDto> getAll(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
         return getRepository().findAll(getPageable(page, size, direct, sortProperty))
                 .stream()
-                .map(entity -> modelMapper.map(entity, getDtoClass()))
+                .map(entity -> modelMapper.map(entity, getListDtoClass()))
                 .collect(Collectors.toList());
     }
 

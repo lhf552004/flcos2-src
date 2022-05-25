@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/warehouses")
 @RestController
-public class WarehousesController extends GenericControllerBase<WarehouseEntity, WarehouseDto, NewWarehouseDto> {
+public class WarehousesController extends GenericControllerBase<WarehouseEntity, WarehouseDto, WarehouseDto, NewWarehouseDto> {
 
     private final WarehouseRepository warehouseRepository;
 

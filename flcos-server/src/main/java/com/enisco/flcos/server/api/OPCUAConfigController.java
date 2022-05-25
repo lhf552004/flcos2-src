@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/opc-configs")
 @RestController
-public class OPCUAConfigController extends GenericControllerBase<OPCServerEntity, OpcServerDTO, NewOpcServerDTO> {
+public class OPCUAConfigController extends GenericControllerBase<OPCServerEntity, OpcServerDTO, OpcServerDTO, NewOpcServerDTO> {
 
     Logger logger = LoggerFactory.getLogger(OPCUAConfigController.class);
 

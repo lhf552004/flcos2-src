@@ -26,6 +26,6 @@ public class LineEntity extends EquipmentEntity {
     private LineStatus status;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "line")
+    @JoinColumn(name = "line_id")
     private List<SectionEntity> sections;
 }

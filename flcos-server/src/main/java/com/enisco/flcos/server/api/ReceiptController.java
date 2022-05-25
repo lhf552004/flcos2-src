@@ -27,7 +27,7 @@ import java.util.List;
 
 @RequestMapping("api/v1/receipts")
 @RestController
-public class ReceiptController extends GenericControllerBase<ReceiptEntity, ReceiptDto, NewReceiptDto> {
+public class ReceiptController extends GenericControllerBase<ReceiptEntity, ReceiptDto, ReceiptDto, NewReceiptDto> {
     Logger logger = LoggerFactory.getLogger(ReceiptController.class);
 
     private final ReceiptRepository receiptRepository;
@@ -58,7 +58,7 @@ public class ReceiptController extends GenericControllerBase<ReceiptEntity, Rece
         if (result.isPresent()) {
             var receipt = result.get();
             var errors = checkReceipt(receipt);
-            if(!errors.isEmpty()) {
+            if (!errors.isEmpty()) {
                 return ResponseEntity.ok(errors);
             }
             var rawWarehouseOptional = warehouseRepository.findByName(rawWarehouseName);
@@ -71,7 +71,7 @@ public class ReceiptController extends GenericControllerBase<ReceiptEntity, Rece
                 } else {
                     for (var i = 0; i < quantity; i++) {
                         var weight = receipt.getPerWeight();
-                        var batchNumber = receipt.getBatchNumber() + "-" + (i+1);
+                        var batchNumber = receipt.getBatchNumber() + "-" + (i + 1);
                         createLogisticUnit(receipt, batchNumber, weight, rawWarehouse);
                     }
                 }
@@ -88,25 +88,25 @@ public class ReceiptController extends GenericControllerBase<ReceiptEntity, Rece
 
     private List<String> checkReceipt(ReceiptEntity receipt) {
         List<String> errors = new ArrayList<>();
-        if(receipt.getQuantity() <= 0 ) {
+        if (receipt.getQuantity() <= 0) {
             errors.add("Quantity should not be zero");
         }
-        if(receipt.getPackageType() == null) {
+        if (receipt.getPackageType() == null) {
             errors.add("Package type is not set.");
         }
-        if(receipt.getBatchNumber() == null || receipt.getBatchNumber().isEmpty()) {
+        if (receipt.getBatchNumber() == null || receipt.getBatchNumber().isEmpty()) {
             errors.add("Batch number is not set.");
         }
-        if(receipt.getPerWeight()<= 0) {
+        if (receipt.getPerWeight() <= 0) {
             errors.add("Per weight is not set.");
         }
-        if(receipt.getUnitType() == null) {
+        if (receipt.getUnitType() == null) {
             errors.add("Unit type is not set.");
         }
-        if(receipt.getProduct() == null) {
+        if (receipt.getProduct() == null) {
             errors.add("Product is not set.");
         }
-        if(receipt.getSupplier() == null) {
+        if (receipt.getSupplier() == null) {
             errors.add("Supplier is not set.");
         }
         return errors;

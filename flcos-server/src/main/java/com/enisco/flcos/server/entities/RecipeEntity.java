@@ -13,21 +13,21 @@ import java.util.List;
 public class RecipeEntity extends EntityBase {
 
     @Column
-    private boolean name;
+    private String name;
 
     @Column(name = "is_template")
     private boolean isTemplate;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "recipe")
+    @JoinColumn(name = "recipe_id")
     private List<IngredientEntity> ingredients;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private LineEntity line;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private JobEntity job;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private ProductEntity product;
 }

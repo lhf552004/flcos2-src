@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/mixers")
 @RestController
-public class MixerController extends GenericControllerBase<MixerEntity, MixerDto, NewMixerDto> {
+public class MixerController extends GenericControllerBase<MixerEntity, MixerDto, MixerDto, NewMixerDto> {
 
     private final MixerRepository mixerRepository;
 

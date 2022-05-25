@@ -3,6 +3,7 @@ package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.beans.GcObjectManagement;
 import com.enisco.flcos.server.dto.line.LineDto;
+import com.enisco.flcos.server.dto.line.LineListDto;
 import com.enisco.flcos.server.dto.line.NewLineDto;
 import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.repository.relational.LineRepository;
@@ -23,7 +24,7 @@ import java.nio.file.Paths;
 
 @RequestMapping("api/v1/lines")
 @RestController
-public class LinesController extends GenericControllerBase<LineEntity, LineDto, NewLineDto> {
+public class LinesController extends GenericControllerBase<LineEntity, LineDto, LineListDto, NewLineDto> {
 
     private final LineRepository lineRepository;
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/orders")
-public class OrderController extends GenericControllerBase<OrderEntity, OrderDto, NewOrderDto>{
+public class OrderController extends GenericControllerBase<OrderEntity, OrderDto, OrderDto, NewOrderDto> {
     private final OrderRepository orderRepository;
 
     private final OrderManagementBean orderManagementBean;

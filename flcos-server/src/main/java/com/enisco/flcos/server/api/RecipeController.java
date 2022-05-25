@@ -2,6 +2,7 @@ package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.recipe.NewRecipeDto;
 import com.enisco.flcos.server.dto.recipe.RecipeDto;
+import com.enisco.flcos.server.dto.recipe.RecipeListDto;
 import com.enisco.flcos.server.entities.LogisticUnitEntity;
 import com.enisco.flcos.server.entities.ReceiptEntity;
 import com.enisco.flcos.server.entities.RecipeEntity;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("api/v1/recipes")
 @RestController
-public class RecipeController extends GenericControllerBase<RecipeEntity, RecipeDto, NewRecipeDto> {
+public class RecipeController extends GenericControllerBase<RecipeEntity, RecipeDto, RecipeListDto, NewRecipeDto> {
     Logger logger = LoggerFactory.getLogger(RecipeController.class);
 
     private final RecipeRepository recipeRepository;

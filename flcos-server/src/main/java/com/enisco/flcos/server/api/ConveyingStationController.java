@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/conveying-stations")
 @RestController
-public class ConveyingStationController extends GenericControllerBase<ConveyingStationEntity, ConveyingStationDto, NewConveyingStationDto> {
+public class ConveyingStationController extends GenericControllerBase<ConveyingStationEntity, ConveyingStationDto, ConveyingStationDto, NewConveyingStationDto> {
 
     private final ConveyingStationRepository conveyingStationRepository;
 

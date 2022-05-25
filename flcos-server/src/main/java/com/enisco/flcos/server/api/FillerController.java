@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/fillers")
 @RestController
-public class FillerController extends GenericControllerBase<FillerEntity, FillerDto, NewFillerDto> {
+public class FillerController extends GenericControllerBase<FillerEntity, FillerDto, FillerDto, NewFillerDto> {
 
     private final FillerRepository fillerRepository;
 

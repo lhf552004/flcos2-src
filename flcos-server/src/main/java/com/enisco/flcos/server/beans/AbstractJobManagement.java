@@ -11,6 +11,7 @@ import com.enisco.flcos.server.repository.relational.*;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,9 @@ public abstract class AbstractJobManagement implements IJobManagement {
 
     @Autowired
     OPCClientFactory opcClientFactory;
+
+    @Value("${online.mode}")
+    private boolean onLineMode;
 
     protected ModelMapper modelMapper = new ModelMapper();
 
@@ -75,29 +79,37 @@ public abstract class AbstractJobManagement implements IJobManagement {
         }
         try{
             changeJobStatus(job, JobStatus.Starting);
-            var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
+
+
             var sectionResult = job.getLine().getSections().stream().filter(s -> s.getIndex() == 0).findFirst();
             var recipe = job.getRecipe();
-            var ingredient = recipe.getIngredients().get(0);
-            var bins = binRepository.findByProductAndIsUsing(ingredient.getProduct(), false);
-            var sender = bins.get(0).getDischarger();
-            var receiver = bins.get(0).getFiller();
-            var targetWeight = ingredient.getTargetWeight();
+            var ingredients = recipe.getIngredients();
+            ingredients.forEach(ingredient -> {
+                ingredient.getSender().setUsing(true);
+                ingredient.getReceiver().setUsing(true);
+                RepositoryUtil.update(binRepository, ingredient.getSender());
+                RepositoryUtil.update(binRepository, ingredient.getReceiver());
+            });
+
             if(sectionResult.isPresent()) {
                 var section = sectionResult.get();
-                var variableNames = new ArrayList<String>();
-                var variableValues = new ArrayList<>();
-                var jobIdVariable = section.getOpcVariableIdent() + "/";
-                variableNames.add(jobIdVariable);
-                variableValues.add(job.getId().toString());
-                var jobTargetWeightVariable = section.getOpcVariableIdent() + "/";
-                variableNames.add(jobTargetWeightVariable);
-                variableValues.add(targetWeight);
-                variableNames.add(sender.getOpcVariableIdent());
-                variableValues.add(sender.getId());
-                variableNames.add(receiver.getOpcVariableIdent());
-                variableValues.add(receiver.getId());
-                opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
+                if(onLineMode) {
+                    var variableNames = new ArrayList<String>();
+                    var variableValues = new ArrayList<>();
+                    var jobIdVariable = section.getOpcVariableIdent() + "/jobId";
+                    variableNames.add(jobIdVariable);
+                    variableValues.add(job.getId().toString());
+                    var jobTargetWeightVariable = section.getOpcVariableIdent() + "/";
+                    variableNames.add(jobTargetWeightVariable);
+                    variableValues.add(job.getTargetWeight());
+                    ingredients.forEach(ingredient -> {
+                        var bin = ingredient.getReceiver();
+                        variableNames.add(bin.getOpcVariableIdent() + "/target");
+                        variableValues.add(ingredient.getTargetWeight());
+                    });
+                    var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
+                    opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
+                }
                 changeJobStatus(job, JobStatus.Running);
                 messageDto.getInfos().add("Job start successfully.");
             }
@@ -119,13 +131,19 @@ public abstract class AbstractJobManagement implements IJobManagement {
             newChangeLog.setNewValue(newStatus.name());
             newChangeLog.setJob(job);
             RepositoryUtil.assignCreator(newChangeLog);
-            job.getChangeLogs().add(newChangeLog);
+//            job.getChangeLogs().add(newChangeLog);
             RepositoryUtil.update(jobRepository, job);
         }
     }
 
     @Override
     public void finishJob(JobEntity job) {
+        job.getRecipe().getIngredients().forEach(ingredient -> {
+            ingredient.getSender().setUsing(false);
+            ingredient.getReceiver().setUsing(false);
+            RepositoryUtil.update(binRepository, ingredient.getSender());
+            RepositoryUtil.update(binRepository, ingredient.getReceiver());
+        });
         job.setStatus(JobStatus.Done);
         var newChangeLog = new JobChangeLogEntity();
         newChangeLog.setName("Status");
@@ -133,7 +151,7 @@ public abstract class AbstractJobManagement implements IJobManagement {
         newChangeLog.setNewValue(JobStatus.Done.name());
         newChangeLog.setJob(job);
         RepositoryUtil.assignCreator(newChangeLog);
-        job.getChangeLogs().add(newChangeLog);
+//        job.getChangeLogs().add(newChangeLog);
         RepositoryUtil.update(jobRepository, job);
     }
 }

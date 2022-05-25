@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/suppliers")
 @RestController
-public class SupplierController extends GenericControllerBase<SupplierEntity, SupplierDto, NewSupplierDto> {
+public class SupplierController extends GenericControllerBase<SupplierEntity, SupplierDto, SupplierDto, NewSupplierDto> {
     private final SupplierRepository supplierRepository;
 
 
