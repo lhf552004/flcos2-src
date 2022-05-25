@@ -189,13 +189,13 @@ public class OrderManagementBean implements IOrderManagement {
         }
         var lines =lineRepository.findByIsProduction(true);
         job.setLine(lines.get(0));
-        job.setChangeLogs(new ArrayList<>());
+//        job.setChangeLogs(new ArrayList<>());
         RepositoryUtil.create(jobRepository, job);
         var changeLog = new JobChangeLogEntity();
         changeLog.setJob(job);
         changeLog.setName("Create Job");
         changeLog.setNewValue(job.getId().toString());
-        job.getChangeLogs().add(changeLog);
+//        job.getChangeLogs().add(changeLog);
         RepositoryUtil.update(jobRepository, job);
     }
 

@@ -3,6 +3,7 @@ package com.enisco.flcos.server.api;
 import com.enisco.flcos.server.beans.GcObjectManagement;
 import com.enisco.flcos.server.dto.section.NewSectionDto;
 import com.enisco.flcos.server.dto.section.SectionDto;
+import com.enisco.flcos.server.dto.section.SectionListDto;
 import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.repository.relational.SectionRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/sections")
 @RestController
-public class SectionController extends GenericControllerBase<SectionEntity, SectionDto, NewSectionDto> {
+
+public class SectionController extends GenericControllerBase<SectionEntity, SectionDto, SectionListDto, NewSectionDto> {
 
     private final SectionRepository sectionRepository;
 
@@ -50,5 +52,5 @@ public class SectionController extends GenericControllerBase<SectionEntity, Sect
         gcObjectManagement.updateSection(sectionEntity);
         return ResponseEntity.ok().build();
     }
-    
+
 }

@@ -25,7 +25,8 @@ import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/menus")
 @RestController
-public class MenusController extends GenericControllerBase<MenuEntity, MenuDto, NewMenuDto> {
+
+public class MenusController extends GenericControllerBase<MenuEntity, MenuDto, MenuDto, NewMenuDto> {
     Logger logger = LoggerFactory.getLogger(MenusController.class);
 
     private final MenuRepository menuRepository;

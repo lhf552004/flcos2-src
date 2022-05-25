@@ -20,11 +20,11 @@ public class JobEntity extends EntityBase {
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
             CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "line")
+    @JoinColumn(name = "line_id")
     private LineEntity line;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "recipe")
+    @JoinColumn(name = "recipe_id")
     private RecipeEntity recipe;
 
     @Column(name = "target_weight")
@@ -36,8 +36,5 @@ public class JobEntity extends EntityBase {
     @Enumerated(EnumType.STRING)
     @Column
     private JobStatus status;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<JobChangeLogEntity> changeLogs;
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/dischargers")
 @RestController
-public class DischargerController extends GenericControllerBase<DischargerEntity, DischargerDto, NewDischargerDto> {
+public class DischargerController extends GenericControllerBase<DischargerEntity, DischargerDto, DischargerDto, NewDischargerDto> {
 
     private final DischargerRepository dischargerRepository;
 

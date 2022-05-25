@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/process-stations")
 @RestController
-public class ProcessStationController extends GenericControllerBase<ProcessStationEntity, ProcessStationDto, NewProcessStationDto> {
+public class ProcessStationController extends GenericControllerBase<ProcessStationEntity, ProcessStationDto, ProcessStationDto, NewProcessStationDto> {
 
     private final ProcessStationRepository processStationRepository;
 

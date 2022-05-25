@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -69,7 +70,7 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
         if (jobEntity.getRecipe() == null) {
             if (newJobDto.getProduct() != null) {
                 var productEntity = modelMapper.map(newJobDto.getProduct(), ProductEntity.class);
-                var availableSenders = binRepository.findByLineNameAndType(line.getName(), BinType.Virtual);
+                var availableSenders = binRepository.findByLineIdAndType(line.getId(), BinType.Virtual);
                 var availableReceivers = binRepository.findByProductAndIsUsing(productEntity, false);
                 if (availableSenders.isEmpty()) {
                     throw new FLCosException("No available senders.");
@@ -82,12 +83,14 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
                 newIngredient.setProduct(productEntity);
                 newIngredient.setPercentage(1);
                 newIngredient.setReceiver(availableReceivers.get(0));
+                RepositoryUtil.assignCreator(newIngredient);
                 var newRecipe = new RecipeEntity();
                 newRecipe.setJob(jobEntity);
                 newRecipe.setTemplate(false);
                 newRecipe.setProduct(productEntity);
                 newRecipe.setLine(jobEntity.getLine());
                 newRecipe.setIngredients(List.of(newIngredient));
+                RepositoryUtil.assignCreator(newRecipe);
                 jobEntity.setRecipe(newRecipe);
             } else {
                 throw new FLCosException("Recipe and Product are not set.");
@@ -137,25 +140,23 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
      */
     public MessageDto intake(JobEntity job, String batchNumber) {
         var logisticUnits = logisticUnitRepository.findByBatchNumber(batchNumber);
-        var messageDto = new MessageDto();
-        var errors = new ArrayList<String>();
-        var infos = new ArrayList<String>();
-        messageDto.setErrors(errors);
-        messageDto.setInfos(infos);
+        var messageDto = getNewMessage();
         // Find existed logistic units
         if (!logisticUnits.isEmpty()) {
             var logisticUnit = logisticUnits.get(0);
             // If remain is less than deviation, consider it is empty, remove it
             if (logisticUnit.isOpened() && logisticUnit.getActualWeight() <= deviation) {
                 logisticUnitRepository.delete(logisticUnit);
-                errors.add("Bag is empty with batch number: " + batchNumber);
+                messageDto.getErrors().add("Bag is empty with batch number: " + batchNumber);
                 return messageDto;
             }
             if (job.getStatus().equals(JobStatus.Done)) {
-                errors.add("Job has finished.");
+                messageDto.getErrors().add("Job has finished.");
                 return messageDto;
             } else if (job.getStatus() == JobStatus.Created) {
-                startJob(job);
+                var temp = startJob(job);
+                messageDto.getErrors().addAll(temp.getErrors());
+                messageDto.getInfos().addAll(temp.getInfos());
                 return messageDto;
             }
             job.setActualWeight(job.getActualWeight() + logisticUnit.getActualWeight());
@@ -164,7 +165,7 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
             createLogisticUnitLog(logisticUnit);
             logisticUnitRepository.delete(logisticUnit);
         } else {
-            errors.add("Bag is not found with batch number: " + batchNumber);
+            messageDto.getErrors().add("Bag is not found with batch number: " + batchNumber);
             return messageDto;
         }
         return messageDto;
@@ -172,6 +173,7 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
 
     private void createLogisticUnitLog(LogisticUnitEntity logisticUnitEntity) {
         var logisticUnitDocument = new LogisticUnitLogDocument();
+        logisticUnitDocument.setId(UUID.randomUUID());
         logisticUnitDocument.setLogisticUnitId(logisticUnitEntity.getId());
         logisticUnitDocument.setActualWeight(logisticUnitEntity.getActualWeight());
         RepositoryUtil.create(logisticUnitLogRepository, logisticUnitDocument);

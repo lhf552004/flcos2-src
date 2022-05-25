@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/scales")
 @RestController
-public class ScaleController extends GenericControllerBase<ScaleEntity, ScaleDto, NewScaleDto> {
+public class ScaleController extends GenericControllerBase<ScaleEntity, ScaleDto, ScaleDto, NewScaleDto> {
 
     private final ScaleRepository scaleRepository;
 

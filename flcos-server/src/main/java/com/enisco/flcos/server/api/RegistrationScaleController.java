@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/registration-scales")
 @RestController
-public class RegistrationScaleController extends GenericControllerBase<RegistrationScaleEntity, RegistrationScaleDto, NewRegistrationScaleDto> {
+public class RegistrationScaleController extends GenericControllerBase<RegistrationScaleEntity, RegistrationScaleDto, RegistrationScaleDto, NewRegistrationScaleDto> {
 
     private final RegistrationScaleRepository registrationScaleRepository;
 

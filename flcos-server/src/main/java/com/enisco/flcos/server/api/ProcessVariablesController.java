@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/process-variables")
 @RestController
-public class ProcessVariablesController extends GenericControllerBase<ProcessVariableDefEntity, ProcessVariableDTO, NewProcessVariableDTO> {
+public class ProcessVariablesController extends GenericControllerBase<ProcessVariableDefEntity, ProcessVariableDTO, ProcessVariableDTO, NewProcessVariableDTO> {
 
     private final ProcessVariableDefRepository processVariableDefRepository;
 

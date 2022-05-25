@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
@@ -15,7 +12,6 @@ import java.util.UUID;
 @Setter
 public class DocumentBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private UUID id;
 
     @Field(name = "modified_by")

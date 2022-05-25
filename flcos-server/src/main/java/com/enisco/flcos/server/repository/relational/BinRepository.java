@@ -9,5 +9,5 @@ import java.util.List;
 public interface BinRepository extends JpaRepository<BinEntity, Long> {
     List<BinEntity> findByProduct(ProductEntity product);
     List<BinEntity> findByProductAndIsUsing(ProductEntity product, Boolean isUsing);
-    List<BinEntity> findByLineNameAndType(String lineName, BinType type);
+    List<BinEntity> findByLineIdAndType(Long lineId, BinType type);
 }

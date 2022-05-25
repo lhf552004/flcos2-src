@@ -1,6 +1,6 @@
 package com.enisco.flcos.server.dto.discharger;
 
-import com.enisco.flcos.server.dto.bin.BinDto;
+import com.enisco.flcos.server.dto.NameDto;
 import com.enisco.flcos.server.dto.equipment.EquipmentDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +14,5 @@ public class DischargerDto extends EquipmentDto {
 
     private int priority;
 
-    private BinDto bin;
+    private NameDto bin;
 }
