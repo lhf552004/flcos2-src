@@ -62,7 +62,7 @@ export abstract class BaseObjectsComponent<T extends Base> implements OnInit, On
 
   abstract getHeaderForDelete(): string;
 
-  abstract getFields(): FieldConfig[];
+  abstract getFields(object: T): FieldConfig[];
 
   abstract getDefaultProperties(): any;
 
@@ -77,7 +77,7 @@ export abstract class BaseObjectsComponent<T extends Base> implements OnInit, On
       onDismiss: (e: string) => {
       },
       extraButtons: [],
-      fields: this.getFields()
+      fields: this.getFields(null)
     };
     this.dynamicFormService.popDynamicFormModal(config);
   }
@@ -95,7 +95,7 @@ export abstract class BaseObjectsComponent<T extends Base> implements OnInit, On
       onDismiss: (e: string) => {
       },
       extraButtons: [],
-      fields: this.getFields()
+      fields: this.getFields(object)
     };
     this.dynamicFormService.popDynamicFormModal(config);
   }

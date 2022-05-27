@@ -57,12 +57,13 @@ export class ReceiptsComponent extends BaseObjectsComponent<Receipt> {
     return {};
   }
 
-  getFields(): FieldConfig[] {
+  getFields(object: Receipt): FieldConfig[] {
     return [
       {
         type: 'input',
         label: 'Batch Number',
         name: 'batchNumber',
+        value: object !== null ? object.batchNumber : null,
         placeholder: 'Enter the batch number',
         validation: [
           CustomValidators.required('Batch number required'),
@@ -72,9 +73,20 @@ export class ReceiptsComponent extends BaseObjectsComponent<Receipt> {
         type: 'number',
         label: 'Quantity',
         name: 'quantity',
+        value: object !== null ? object.quantity : null,
         placeholder: 'Enter the quantity',
         validation: [
           CustomValidators.required('Quantity required'),
+        ]
+      },
+      {
+        type: 'number',
+        label: 'Unit',
+        name: 'unit',
+        value: object !== null ? object.unit : null,
+        placeholder: 'Set the unit',
+        validation: [
+          CustomValidators.required('Unit type required'),
         ]
       },
       {
