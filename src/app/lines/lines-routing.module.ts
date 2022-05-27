@@ -6,8 +6,9 @@ import { LineComponent } from './line/line.component';
 import { LinesComponent } from './lines/lines.component';
 import { LineResolverService } from './route-resolvers/line-resolver.service';
 import { LinesResolverService } from './route-resolvers/lines-resolver.service';
-import {JobsComponent} from '../jobs/jobs/jobs.component';
+
 import {JobsResolverService} from './route-resolvers/jobs-resolver.service';
+import {JobsComponent} from './jobs/jobs.component';
 
 const routes: Routes = [
     {

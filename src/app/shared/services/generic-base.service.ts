@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
@@ -6,13 +5,13 @@ import {Base} from '../models/base.model';
 
 export class GenericBaseService<T extends Base> {
   protected readonly url: string;
-  public readonly objects$: BehaviorSubject<T[]>;
+  public readonly objects$: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
+  public readonly object$: BehaviorSubject<T | null> = new BehaviorSubject<T | null>(null);
   protected readonly http: HttpClient;
 
-  constructor(http: HttpClient, url: string, objects$: BehaviorSubject<T[]>) {
+  constructor(http: HttpClient, url: string) {
     this.http = http;
     this.url = url;
-    this.objects$ = objects$;
   }
 
   // Get the list of menu items
@@ -25,7 +24,9 @@ export class GenericBaseService<T extends Base> {
 
   get(id: string): Observable<T> {
     const url = `${this.url}/${id}`;
-    return this.http.get<T>(url);
+    return this.http.get<T>(url).pipe(tap(o => {
+      this.object$.next(o);
+    }));
   }
 
   create(newEquipment: any, defaultParameter: any): Observable<any> {

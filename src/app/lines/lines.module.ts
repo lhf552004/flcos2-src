@@ -10,9 +10,10 @@ import { LineDetailsComponent } from './line-details/line-details.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import { StorageComponent } from './storage/storage.component';
 import {JobsModule} from '../jobs/jobs.module';
+import {JobsComponent} from './jobs/jobs.component';
 
 @NgModule({
-  declarations: [LinesComponent, LineComponent, LineDefaultComponent, LineDetailsComponent, StorageComponent],
+  declarations: [LinesComponent, LineComponent, LineDefaultComponent, LineDetailsComponent, StorageComponent, JobsComponent],
   imports: [
     SharedModule,
     LinesRoutingModule,
