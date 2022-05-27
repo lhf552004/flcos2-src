@@ -9,7 +9,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { LineDetailsComponent } from './line-details/line-details.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import { StorageComponent } from './storage/storage.component';
-
+import {JobsModule} from '../jobs/jobs.module';
 
 @NgModule({
   declarations: [LinesComponent, LineComponent, LineDefaultComponent, LineDetailsComponent, StorageComponent],

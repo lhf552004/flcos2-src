@@ -6,6 +6,8 @@ import { LineComponent } from './line/line.component';
 import { LinesComponent } from './lines/lines.component';
 import { LineResolverService } from './route-resolvers/line-resolver.service';
 import { LinesResolverService } from './route-resolvers/lines-resolver.service';
+import {JobsComponent} from '../jobs/jobs/jobs.component';
+import {JobsResolverService} from './route-resolvers/jobs-resolver.service';
 
 const routes: Routes = [
     {
@@ -13,7 +15,7 @@ const routes: Routes = [
     },
     {
         path: ':lineId', resolve: { line: LineResolverService }, component: LineComponent, children: [
-            { path: 'jobs', loadChildren: () => import('./jobs/jobs.module').then(m => m.JobsModule) },
+            { path: 'jobs', component: JobsComponent, resolve: {jobs: JobsResolverService}},
             { path: 'joblogs', loadChildren: () => import('./job-logs/job-logs.module').then(m => m.JobLogsModule) },
             { path: 'details', component: LineDetailsComponent},
             { path: '', component: LineDefaultComponent }

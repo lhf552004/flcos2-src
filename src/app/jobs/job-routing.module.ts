@@ -1,10 +1,10 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {JobsComponent} from './jobs/jobs.component';
+import {JobsResolverService} from './route-resolvers/jobs-resolver.service';
 
 const routes: Routes = [{
-  path: '', component: JobsComponent, children: [
-  ]
+  path: ':lineId', component: JobsComponent, resolve: {jobs: JobsResolverService}, children: []
 }];
 
 @NgModule({

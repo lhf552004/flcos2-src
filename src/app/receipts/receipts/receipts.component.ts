@@ -84,6 +84,7 @@ export class ReceiptsComponent extends BaseObjectsComponent<Receipt> {
         label: 'Unit',
         name: 'unit',
         value: object !== null ? object.unit : null,
+        append: object !== null ? object.unit : null,
         placeholder: 'Set the unit',
         validation: [
           CustomValidators.required('Unit type required'),

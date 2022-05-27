@@ -64,5 +64,8 @@
     "REGISTRATION-SCALE": "流量秤",
     "PROCESS-STATION": "工艺站",
     "CONVEYING-STATION": "输送站"
+  },
+  "JOB" : {
+    "JOBS": "任务"
   }
 }

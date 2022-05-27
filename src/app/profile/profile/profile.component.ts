@@ -8,7 +8,6 @@ import {User} from '../../core/user/models/user.model';
 import {UserService} from '../../core/user/user.service';
 import {NotificatorService} from '../../core/notificator/notificator.service';
 import {Notification} from '../../core/notificator/notification.model';
-import {Job} from '../../lines/jobs/shared/models/job.model';
 
 @Component({
   selector: 'emes-profile',
