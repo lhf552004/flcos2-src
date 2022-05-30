@@ -1,5 +1,8 @@
-package com.enisco.flcos.server.entities;
+package com.enisco.flcos.server.entities.recipe;
 
+import com.enisco.flcos.server.entities.EntityBase;
+import com.enisco.flcos.server.entities.EquipmentEntity;
+import com.enisco.flcos.server.entities.ProductEntity;
 import com.enisco.flcos.server.entities.bin.BinEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +12,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@Entity(name="ingredient")
+@Entity(name = "ingredient")
 public class IngredientEntity extends EntityBase {
 
     @ManyToOne(cascade = CascadeType.ALL)

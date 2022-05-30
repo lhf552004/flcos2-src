@@ -1,5 +1,8 @@
-package com.enisco.flcos.server.entities;
+package com.enisco.flcos.server.entities.recipe;
 
+import com.enisco.flcos.server.entities.EntityBase;
+import com.enisco.flcos.server.entities.LineEntity;
+import com.enisco.flcos.server.entities.ProductEntity;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import lombok.Getter;
 import lombok.Setter;

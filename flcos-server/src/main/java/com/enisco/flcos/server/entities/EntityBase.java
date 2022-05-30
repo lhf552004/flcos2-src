@@ -22,4 +22,7 @@ public class EntityBase {
 
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
+
+    @Column(name = "created_date")
+    private Date createdDate;
 }

@@ -3,32 +3,26 @@ package com.enisco.flcos.server.beans;
 import com.enisco.flcos.server.documents.LogisticUnitLogDocument;
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.dto.job.NewJobDto;
-import com.enisco.flcos.server.entities.IngredientEntity;
-import com.enisco.flcos.server.entities.LogisticUnitEntity;
-import com.enisco.flcos.server.entities.ProductEntity;
-import com.enisco.flcos.server.entities.RecipeEntity;
+import com.enisco.flcos.server.entities.*;
 import com.enisco.flcos.server.entities.bin.BinType;
 import com.enisco.flcos.server.entities.bin.LayerEntity;
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.job.JobEntity;
+import com.enisco.flcos.server.entities.recipe.IngredientEntity;
+import com.enisco.flcos.server.entities.recipe.RecipeEntity;
 import com.enisco.flcos.server.exceptions.FLCosException;
 import com.enisco.flcos.server.repository.mongodb.LogisticUnitLogRepository;
-import com.enisco.flcos.server.repository.relational.BinRepository;
 import com.enisco.flcos.server.repository.relational.LayerRepository;
 import com.enisco.flcos.server.repository.relational.LogisticUnitRepository;
-import com.enisco.flcos.server.repository.relational.RecipeRepository;
 import com.enisco.flcos.server.util.RepositoryUtil;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Component
 public class IntakeJobManagementBean extends AbstractJobManagement {
@@ -37,22 +31,17 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
 
     private final LogisticUnitRepository logisticUnitRepository;
     private final LogisticUnitLogRepository logisticUnitLogRepository;
-    private final BinRepository binRepository;
     private final LayerRepository layerRepository;
-    private final RecipeRepository recipeRepository;
+
 
     @Autowired
     public IntakeJobManagementBean(LogisticUnitRepository logisticUnitRepository,
                                    LogisticUnitLogRepository logisticUnitLogRepository,
-                                   BinRepository binRepository,
-                                   LayerRepository layerRepository,
-                                   RecipeRepository recipeRepository
+                                   LayerRepository layerRepository
     ) {
         this.logisticUnitLogRepository = logisticUnitLogRepository;
         this.logisticUnitRepository = logisticUnitRepository;
-        this.binRepository = binRepository;
         this.layerRepository = layerRepository;
-        this.recipeRepository = recipeRepository;
     }
 
     @Override

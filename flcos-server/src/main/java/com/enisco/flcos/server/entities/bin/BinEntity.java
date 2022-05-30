@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Setter
 @Getter
-@Entity(name="bin")
+@Entity(name = "bin")
 public class BinEntity extends EquipmentEntity {
 
     @Column

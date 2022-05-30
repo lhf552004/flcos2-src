@@ -1,11 +1,14 @@
 package com.enisco.flcos.server.beans;
 
 import com.enisco.flcos.server.dto.job.MessageDto;
-import com.enisco.flcos.server.dto.job.NewJobDto;
+import com.enisco.flcos.server.entities.recipe.IngredientEntity;
+import com.enisco.flcos.server.entities.LineEntity;
+import com.enisco.flcos.server.entities.recipe.RecipeEntity;
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.enums.LineStatus;
 import com.enisco.flcos.server.entities.job.JobChangeLogEntity;
 import com.enisco.flcos.server.entities.job.JobEntity;
+import com.enisco.flcos.server.exceptions.FLCosException;
 import com.enisco.flcos.server.opc.client.OPCClientFactory;
 import com.enisco.flcos.server.repository.relational.*;
 import com.enisco.flcos.server.util.RepositoryUtil;
@@ -14,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public abstract class AbstractJobManagement implements IJobManagement {
     @Autowired
@@ -33,8 +36,14 @@ public abstract class AbstractJobManagement implements IJobManagement {
     @Autowired
     OPCClientFactory opcClientFactory;
 
+    @Autowired
+    LineRepository lineRepository;
+
+    @Autowired
+    RecipeRepository recipeRepository;
+
     @Value("${online.mode}")
-    private boolean onLineMode;
+    private boolean onlineMode;
 
     protected ModelMapper modelMapper = new ModelMapper();
 
@@ -49,23 +58,22 @@ public abstract class AbstractJobManagement implements IJobManagement {
 
     @Override
     public MessageDto checkJob(JobEntity job) {
-       var message = getNewMessage();
-        if(job != null){
-            if(job.getTargetWeight() <= 0){
+        var message = getNewMessage();
+        if (job != null) {
+            if (job.getTargetWeight() <= 0) {
                 message.getErrors().add("Job target weight should be positive.");
             }
-            if(job.getLine() == null) {
+            if (job.getLine() == null) {
                 message.getErrors().add("job line is not set.");
-            }
-            else if (job.getLine().getStatus() != LineStatus.Passive) {
+            } else if (job.getLine().getStatus() != LineStatus.Passive) {
                 message.getErrors().add("Line is not passive.");
             }
-            if(job.getRecipe() == null || job.getRecipe().getIngredients() == null || job.getRecipe().getIngredients().isEmpty()) {
+            if (job.getRecipe() == null || job.getRecipe().getIngredients() == null || job.getRecipe().getIngredients().isEmpty()) {
                 message.getErrors().add("Recipe is not set.");
-            }else if(job.getRecipe().getProduct() == null) {
+            } else if (job.getRecipe().getProduct() == null) {
                 message.getErrors().add("Product is not set in recipe");
             }
-        }else {
+        } else {
             message.getErrors().add("Job is empty.");
         }
         return message;
@@ -74,10 +82,10 @@ public abstract class AbstractJobManagement implements IJobManagement {
     @Override
     public MessageDto startJob(JobEntity job, Object... parameters) {
         var messageDto = checkJob(job);
-        if(!messageDto.getErrors().isEmpty()) {
+        if (!messageDto.getErrors().isEmpty()) {
             return messageDto;
         }
-        try{
+        try {
             changeJobStatus(job, JobStatus.Starting);
 
 
@@ -91,9 +99,9 @@ public abstract class AbstractJobManagement implements IJobManagement {
                 RepositoryUtil.update(binRepository, ingredient.getReceiver());
             });
 
-            if(sectionResult.isPresent()) {
+            if (sectionResult.isPresent()) {
                 var section = sectionResult.get();
-                if(onLineMode) {
+                if (onlineMode) {
                     var variableNames = new ArrayList<String>();
                     var variableValues = new ArrayList<>();
                     var jobIdVariable = section.getOpcVariableIdent() + "/jobId";
@@ -110,10 +118,13 @@ public abstract class AbstractJobManagement implements IJobManagement {
                     var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
                     opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
                 }
+                section.setStatus(LineStatus.Running);
+                section.setJob(job);
+                RepositoryUtil.update(sectionRepository, section);
                 changeJobStatus(job, JobStatus.Running);
                 messageDto.getInfos().add("Job start successfully.");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             changeJobStatus(job, JobStatus.Error);
             getLogger().error(e.getMessage(), e);
             messageDto.getErrors().add(e.getMessage());
@@ -123,7 +134,7 @@ public abstract class AbstractJobManagement implements IJobManagement {
 
     @Override
     public void changeJobStatus(JobEntity job, JobStatus newStatus) {
-        if(job.getStatus() != newStatus) {
+        if (job.getStatus() != newStatus) {
             job.setStatus(newStatus);
             var newChangeLog = new JobChangeLogEntity();
             newChangeLog.setName("Status");
@@ -153,5 +164,78 @@ public abstract class AbstractJobManagement implements IJobManagement {
         RepositoryUtil.assignCreator(newChangeLog);
 //        job.getChangeLogs().add(newChangeLog);
         RepositoryUtil.update(jobRepository, job);
+    }
+
+    protected RecipeEntity cloneRecipe(RecipeEntity template, JobEntity jobEntity) {
+        var newRecipe = new RecipeEntity();
+        newRecipe.setLine(template.getLine());
+        newRecipe.setProduct(template.getProduct());
+        newRecipe.setJob(jobEntity);
+        newRecipe.setName(template.getName());
+        newRecipe.setTemplate(false);
+        newRecipe.setIngredients(template.getIngredients().stream().map(ingredientEntity -> {
+            var newIngredient = new IngredientEntity();
+            newIngredient.setReceiver(ingredientEntity.getReceiver());
+            newIngredient.setSender(ingredientEntity.getSender());
+            newIngredient.setProduct(ingredientEntity.getProduct());
+            newIngredient.setPercentage(ingredientEntity.getPercentage());
+            newIngredient.setTargetWeight(ingredientEntity.getTargetWeight());
+            return newIngredient;
+        }).collect(Collectors.toList()));
+        return newRecipe;
+    }
+
+
+    @Override
+    public void moveToNextSection(LineEntity lineEntity) {
+        if (lineEntity.getStatus().equals(LineStatus.Running)) {
+            var activeSections = lineEntity
+                    .getSections()
+                    .stream()
+                    .filter(sectionEntity ->
+                            sectionEntity.
+                                    getStatus()
+                                    .equals(LineStatus.Running))
+                    .collect(Collectors.toList());
+            if (!activeSections.isEmpty()) {
+                var activeSection = activeSections.get(0);
+                var job = activeSection.getJob();
+                if (job == null) {
+                    throw new FLCosException("Job is empty for running section");
+                }
+                var nextSections = lineEntity
+                        .getSections()
+                        .stream()
+                        .filter(sectionEntity ->
+                                sectionEntity.
+                                        getIndex().equals(activeSection.getIndex() + 1))
+                        .collect(Collectors.toList());
+                if (!nextSections.isEmpty()) {
+                    var nextSection = nextSections.get(0);
+                    if(!nextSection.getStatus().equals(LineStatus.Passive)) {
+                        return;
+                    }
+                    nextSection.setStatus(LineStatus.Running);
+                    if (onlineMode) {
+                        try {
+                            var variableNames = new ArrayList<String>();
+                            var variableValues = new ArrayList<>();
+                            var jobIdVariable = nextSection.getOpcVariableIdent() + "/jobId";
+                            variableNames.add(jobIdVariable);
+                            variableValues.add(job.getId().toString());
+                            var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
+                            opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
+                        } catch (InterruptedException | ExecutionException ex) {
+                            nextSection.setStatus(LineStatus.Error);
+                            getLogger().error(ex.getMessage());
+                        }
+                    }else {
+                        activeSection.setStatus(LineStatus.Passive);
+                        RepositoryUtil.update(sectionRepository, activeSection);
+                    }
+                    RepositoryUtil.update(sectionRepository, nextSection);
+                }
+            }
+        }
     }
 }

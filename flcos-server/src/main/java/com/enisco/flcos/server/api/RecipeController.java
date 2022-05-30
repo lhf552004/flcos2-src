@@ -3,22 +3,19 @@ package com.enisco.flcos.server.api;
 import com.enisco.flcos.server.dto.recipe.NewRecipeDto;
 import com.enisco.flcos.server.dto.recipe.RecipeDto;
 import com.enisco.flcos.server.dto.recipe.RecipeListDto;
-import com.enisco.flcos.server.entities.LogisticUnitEntity;
-import com.enisco.flcos.server.entities.ReceiptEntity;
-import com.enisco.flcos.server.entities.RecipeEntity;
-import com.enisco.flcos.server.entities.WarehouseEntity;
-import com.enisco.flcos.server.entities.enums.PackageType;
-import com.enisco.flcos.server.repository.relational.LogisticUnitRepository;
-import com.enisco.flcos.server.repository.relational.ReceiptRepository;
+import com.enisco.flcos.server.entities.recipe.RecipeEntity;
 import com.enisco.flcos.server.repository.relational.RecipeRepository;
-import com.enisco.flcos.server.repository.relational.WarehouseRepository;
-import com.enisco.flcos.server.util.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/recipes")
 @RestController
@@ -35,6 +32,14 @@ public class RecipeController extends GenericControllerBase<RecipeEntity, Recipe
     @Override
     JpaRepository<RecipeEntity, Long> getRepository() {
         return recipeRepository;
+    }
+
+    @GetMapping(path = "templates")
+    public List<RecipeListDto> getTemplates(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
+        return recipeRepository.findAllByIsTemplate(getPageable(page, size, direct, sortProperty), true)
+                .stream()
+                .map(entity -> modelMapper.map(entity, getListDtoClass()))
+                .collect(Collectors.toList());
     }
 
 }
