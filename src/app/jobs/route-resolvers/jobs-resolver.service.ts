@@ -4,7 +4,7 @@ import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/rout
 import {Observable} from 'rxjs';
 import {Bin} from '../../bins/shared/models/bin.model';
 import {JobService} from '../shared/job.service';
-import {Job} from '../shared/models/job.model';
+import {Job} from '../../shared/models/job.model';
 
 @Injectable({
   providedIn: 'root'

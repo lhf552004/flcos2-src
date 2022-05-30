@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {faEllipsisV, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {Job} from '../shared/models/job.model';
+import {Job} from '../../shared/models/job.model';
 import {JobService} from '../shared/job.service';
 
 @Component({

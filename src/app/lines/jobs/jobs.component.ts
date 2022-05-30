@@ -3,9 +3,13 @@ import {DataTableColumnDefinition} from 'data-table';
 
 import {CustomValidators, DynamicFormService} from 'dynamic-form';
 import {BaseObjectsComponent} from '../../shared/base-objects.component';
-import {Job} from '../shared/models/job.model';
+import {Job} from '../../shared/models/job.model';
 import {FieldConfig} from 'dynamic-form/lib/models/field-config.interface';
 import {JobService} from '../shared/job.service';
+import {RecipeService} from '../shared/recipe.service';
+import {Recipe} from '../../shared/models/recipe.model';
+import {LineService} from '../shared/line.service';
+import {ProductsService} from '../../shared/services/products.service';
 
 @Component({
   selector: 'flcos-jobs',
@@ -13,9 +17,19 @@ import {JobService} from '../shared/job.service';
   styleUrls: ['./jobs.component.scss']
 })
 export class JobsComponent extends BaseObjectsComponent<Job> {
+  private productService: ProductsService;
+  private recipeService: RecipeService;
+  private lineService: LineService;
 
-  constructor(jobService: JobService, dynamicFormService: DynamicFormService) {
+  constructor(productService: ProductsService,
+              lineService: LineService,
+              recipeService: RecipeService,
+              jobService: JobService,
+              dynamicFormService: DynamicFormService) {
     super(jobService, dynamicFormService);
+    this.productService = productService;
+    this.recipeService = recipeService;
+    this.lineService = lineService;
   }
 
   getColumnDefinitions(): DataTableColumnDefinition[] {
@@ -52,37 +66,18 @@ export class JobsComponent extends BaseObjectsComponent<Job> {
   }
 
   getFields(): FieldConfig[] {
+    const recipes = this.recipeService.allTemplates$.getValue() as Recipe[];
     return [
       {
         type: 'select',
-        label: 'Category',
-        name: 'category',
-        placeholder: 'Select the category',
-        options: ['Category1', 'Category2', 'Category3'].map(c => ({
+        label: 'Recipe',
+        name: 'recipe',
+        placeholder: 'Select a recipe',
+        options: recipes.map(c => ({
           key: c,
-          value: c
+          value: c.name + '-' + c.line?.name
         })),
-        validation: [
-          CustomValidators.required('Category required'),
-        ]
-      },
-      {
-        type: 'input',
-        label: 'Name',
-        name: 'name',
-        placeholder: 'Enter the name',
-        validation: [
-          CustomValidators.required('Name required'),
-        ]
-      },
-      {
-        type: 'number',
-        label: 'Index',
-        name: 'index',
-        placeholder: 'Set the index',
-        validation: [
-          CustomValidators.required('Index required'),
-        ]
+        validation: []
       }
     ];
   }
@@ -103,5 +98,8 @@ export class JobsComponent extends BaseObjectsComponent<Job> {
     return 'Job';
   }
 
-
+  doCreate(newObject: any): void {
+    newObject.line = this.lineService.line$.getValue();
+    super.doCreate(newObject);
+  }
 }

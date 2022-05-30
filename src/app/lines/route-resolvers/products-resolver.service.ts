@@ -1,18 +1,17 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {SuppliersService} from '../shared/suppliers.service';
 import {SimpleBase} from '../../shared/models/simple-base.model';
+import {ProductsService} from '../../shared/services/products.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SuppliersResolverService {
+export class ProductsResolverService {
 
-  constructor(private suppliersService: SuppliersService, private router: Router) {
-  }
+  constructor(private productService: ProductsService, private router: Router) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<SimpleBase[]> {
-    return this.suppliersService.getSimpleAll();
+    return this.productService.getSimpleAll();
   }
 }

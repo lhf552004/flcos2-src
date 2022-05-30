@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {JobService} from '../shared/job.service';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {Job} from '../shared/models/job.model';
+import {Job} from '../../shared/models/job.model';
 
 @Injectable({
   providedIn: 'root'

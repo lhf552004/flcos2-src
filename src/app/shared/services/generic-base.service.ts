@@ -2,16 +2,18 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {Base} from '../models/base.model';
+import {environment} from '../../../environments/environment';
 
-export class GenericBaseService<T extends Base> {
+export abstract class GenericBaseService<T extends Base> {
+  private baseUrl = environment.baseUrl;
   protected readonly url: string;
   public readonly objects$: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
   public readonly object$: BehaviorSubject<T | null> = new BehaviorSubject<T | null>(null);
   protected readonly http: HttpClient;
 
-  constructor(http: HttpClient, url: string) {
+  protected constructor(http: HttpClient, relativeUrl: string) {
     this.http = http;
-    this.url = url;
+    this.url = this.baseUrl + relativeUrl;
   }
 
   // Get the list of menu items

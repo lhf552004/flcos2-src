@@ -1,9 +1,10 @@
-import {Base} from '../../../shared/models/base.model';
+import {Base} from './base.model';
 import {Recipe} from './recipe.model';
+import {SimpleBase} from './simple-base.model';
 
 export interface Job extends Base {
   name: string;
-  line: any;
+  line: SimpleBase;
   targetWeight: number;
   actualWeight: number;
   status: string;
