@@ -1,6 +1,7 @@
 package com.enisco.flcos.server.api;
 
 import com.enisco.flcos.server.dto.DTOBase;
+import com.enisco.flcos.server.dto.NameDto;
 import com.enisco.flcos.server.entities.EntityBase;
 import com.enisco.flcos.server.util.RepositoryUtil;
 
@@ -43,6 +44,14 @@ public abstract class GenericControllerBase<Entity extends EntityBase, Dto exten
         return getRepository().findAll(getPageable(page, size, direct, sortProperty))
                 .stream()
                 .map(entity -> modelMapper.map(entity, getListDtoClass()))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("simple-all")
+    public List<NameDto> getSimpleAll() {
+        return getRepository().findAll()
+                .stream()
+                .map(entity -> modelMapper.map(entity, NameDto.class))
                 .collect(Collectors.toList());
     }
 
