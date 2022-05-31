@@ -3,17 +3,17 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/ro
 import { Observable } from 'rxjs';
 import { LogisticUnit } from '../shared/models/logistic-unit.model';
 import { WarehouseService } from '../shared/warehouse.service';
+import {LogisticUnitsService} from '../shared/logistic-units.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogisticUnitResolverService {
 
-  constructor(private warehouseService: WarehouseService, private router: Router) { }
-  
+  constructor(private logisticUnitsService: LogisticUnitsService, private router: Router) { }
+
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<LogisticUnit> {
     const id = route.paramMap.get('luId');
-    console.log(id)
-    return this.warehouseService.getLogiticUnit(id);
+    return this.logisticUnitsService.get(id);
   }
 }

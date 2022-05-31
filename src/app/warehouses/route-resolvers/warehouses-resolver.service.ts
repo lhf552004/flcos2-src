@@ -13,6 +13,6 @@ export class WarehousesResolverService {
   constructor(private warehouseService: WarehouseService, private router: Router) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Warehouse[]> {
-    return this.warehouseService.getWarehouses();
+    return this.warehouseService.getAll();
   }
 }
