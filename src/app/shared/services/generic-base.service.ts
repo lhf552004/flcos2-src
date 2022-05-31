@@ -31,25 +31,25 @@ export abstract class GenericBaseService<T extends Base> {
     }));
   }
 
-  create(newEquipment: any, defaultParameter: any): Observable<any> {
+  create(newObject: any, defaultParameter: any): Observable<any> {
     const url = `${this.url}`;
-    return this.http.post<any>(url, newEquipment).pipe(tap(x => {
-      const equipments = this.objects$.getValue();
-      equipments.push({...newEquipment, id: x, ...defaultParameter});
-      this.objects$.next(equipments);
+    return this.http.post<any>(url, newObject).pipe(tap(x => {
+      const objects = this.objects$.getValue();
+      objects.push({...newObject, id: x, ...defaultParameter});
+      this.objects$.next(objects);
     }));
   }
 
-  update(id: string, updatedEquipment: T): Observable<any> {
+  update(id: string, updatedObject: T): Observable<any> {
     const url = `${this.url}/${id}`;
-    return this.http.put<any>(url, updatedEquipment).pipe(tap(x => {
-      console.log(updatedEquipment);
-      const equipments = this.objects$.getValue();
-      const idx = equipments.findIndex(l => l.id === id);
+    return this.http.put<any>(url, updatedObject).pipe(tap(x => {
+      console.log(updatedObject);
+      const objects = this.objects$.getValue();
+      const idx = objects.findIndex(l => l.id === id);
       if (idx > -1) {
-        equipments.splice(idx, 1, updatedEquipment);
+        objects.splice(idx, 1, updatedObject);
       }
-      this.objects$.next(equipments);
+      this.objects$.next(objects);
     }));
   }
 

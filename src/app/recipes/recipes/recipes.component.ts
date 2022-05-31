@@ -120,7 +120,7 @@ export class RecipesComponent extends BaseObjectsComponent<Recipe> {
   }
 
   doCreate(newObject: Recipe): void {
-    newObject.isTemplate = true;
+    newObject.template = true;
     newObject.line = {id: newObject.line.id, name: newObject.line.name};
     super.doCreate(newObject);
   }

@@ -98,8 +98,9 @@ export class JobsComponent extends BaseObjectsComponent<Job> {
     return 'Job';
   }
 
-  doCreate(newObject: any): void {
+  doCreate(newObject: Job): void {
     newObject.line = this.lineService.line$.getValue();
+    newObject.recipe = {... newObject.recipe, id: null, template: false};
     super.doCreate(newObject);
   }
 }

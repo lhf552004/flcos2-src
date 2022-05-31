@@ -21,4 +21,13 @@ export class JobService extends GenericBaseService<Job> {
       this.objects$.next(l);
     }));
   }
+
+  create(newObject: Job, defaultParameter: any): Observable<any> {
+    const url = `${this.url}`;
+    return this.http.post<any>(url, newObject).pipe(tap(x => {
+      const objects = this.objects$.getValue();
+      objects.push({...newObject, id: x, name: newObject.line.name + ':' + x, ...defaultParameter});
+      this.objects$.next(objects);
+    }));
+  }
 }

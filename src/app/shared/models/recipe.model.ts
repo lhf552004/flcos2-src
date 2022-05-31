@@ -4,7 +4,7 @@ import {SimpleBase} from './simple-base.model';
 
 export interface Recipe extends Base {
   name: string;
-  isTemplate: boolean;
+  template: boolean;
   job: SimpleBase;
   product: SimpleBase;
   line: SimpleBase;
