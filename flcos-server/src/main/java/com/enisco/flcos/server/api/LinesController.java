@@ -101,7 +101,7 @@ public class LinesController extends GenericControllerBase<LineEntity, LineDto, 
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "reset/{id}")
     public ResponseEntity reset(@PathVariable Long id) {
         var result = lineRepository.findById(id);
         if(result.isPresent()) {
