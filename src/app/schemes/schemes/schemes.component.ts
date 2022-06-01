@@ -9,7 +9,7 @@ import {SchemeService} from '../../shared/services/scheme.service';
 import {TreeviewNode} from 'tree-view';
 
 @Component({
-  selector: 'emes-schemes',
+  selector: 'flcos-schemes',
   templateUrl: './schemes.component.html',
   styleUrls: ['./schemes.component.scss']
 })

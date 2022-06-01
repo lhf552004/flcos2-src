@@ -6,6 +6,8 @@ import { DynamicFormService } from 'dist/dynamic-form';
 import { DataTableColumnDefinition } from 'dist/data-table';
 import {LinesService} from '../shared/lines.service';
 import {ProductsService} from '../../shared/services/products.service';
+import {takeUntil} from 'rxjs/operators';
+import {RecipeViewerComponent} from '../../shared/recipe-viewer/recipe-viewer.component';
 
 @Component({
   selector: 'flcos-recipes',
@@ -38,17 +40,7 @@ export class RecipesComponent extends BaseObjectsComponent<Recipe> {
         visible: true,
         searchable: false,
         filterMode: 'none',
-        click: this.view.bind(this)
-      },
-      {
-        id: '5',
-        name: 'viewChildren',
-        label: 'Ingredients',
-        type: 'icon',
-        visible: true,
-        searchable: false,
-        filterMode: 'none',
-        click: this.view.bind(this)
+        click: this.viewRecipe.bind(this)
       },
       {
         id: '6',
@@ -123,5 +115,19 @@ export class RecipesComponent extends BaseObjectsComponent<Recipe> {
     newObject.template = true;
     newObject.line = {id: newObject.line.id, name: newObject.line.name};
     super.doCreate(newObject);
+  }
+
+  viewRecipe(recipe: Recipe) {
+    this.genericBaseService.get(recipe.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+      const config = {
+        recipe: x,
+        right: [],
+        onSubmit: () => {
+        },
+        onDismiss: (e: string) => {
+        }
+      };
+      this.dynamicFormService.popModal(RecipeViewerComponent, config);
+    });
   }
 }

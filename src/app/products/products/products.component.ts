@@ -6,7 +6,7 @@ import {ProductService} from '../shared/product.service';
 import { DataTableColumnDefinition } from 'data-table';
 
 @Component({
-  selector: 'emes-products',
+  selector: 'flcos-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })

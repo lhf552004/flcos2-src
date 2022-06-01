@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Line } from '../shared/models/line.model';
 
 @Component({
-  selector: 'emes-lines',
+  selector: 'flcos-lines',
   templateUrl: './lines.component.html',
   styleUrls: ['./lines.component.scss']
 })
@@ -17,7 +17,7 @@ export class LinesComponent implements OnInit, OnDestroy {
   // The list of lines
   lines: Line[];
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   // Holds filter text

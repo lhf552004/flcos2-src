@@ -7,7 +7,13 @@ import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} f
   styleUrls: ['./items-selector.component.scss']
 })
 export class ItemsSelectorComponent implements OnInit, OnChanges {
-  @Input() config: { items: any[], columnDefinitions: DataTableColumnDefinition[], right: any, name: string };
+  @Input() config: {
+    items: any[],
+    columnDefinitions: DataTableColumnDefinition[],
+    left: DataTableToolbarControl[],
+    right: DataTableToolbarControl[],
+    name: string
+  };
 
   @Output()
   submitted: EventEmitter<any> = new EventEmitter<any>();
@@ -47,7 +53,7 @@ export class ItemsSelectorComponent implements OnInit, OnChanges {
       columnDefinitions: this.config.columnDefinitions,
       data: this.items,
       toolBar: {
-        left: [{name: 'Select', type: 'button', callback: this.selectItems.bind(this)} as DataTableToolbarControl],
+        left: this.config.left,
         right: this.config.right
       },
       groupBy: []

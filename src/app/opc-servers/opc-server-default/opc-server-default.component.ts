@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 
 @Component({
-  selector: 'emes-opc-server-default',
+  selector: 'flcos-opc-server-default',
   templateUrl: './opc-server-default.component.html',
   styleUrls: ['./opc-server-default.component.scss']
 })

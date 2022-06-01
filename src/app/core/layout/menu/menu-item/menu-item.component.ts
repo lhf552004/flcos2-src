@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MenuItem} from '../menu-item';
 
 @Component({
-  selector: 'emes-menu-item',
+  selector: 'flcos-menu-item',
   templateUrl: './menu-item.component.html',
   styleUrls: ['./menu-item.component.scss']
 })

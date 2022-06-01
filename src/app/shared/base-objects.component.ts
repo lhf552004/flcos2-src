@@ -12,7 +12,7 @@ export abstract class BaseObjectsComponent<T extends Base> implements OnInit, On
   settings: DataTableSettings;
   isAdmin = true;
   genericBaseService: GenericBaseService<T>;
-  private dynamicFormService: DynamicFormService;
+  protected dynamicFormService: DynamicFormService;
   columnDefinitions: DataTableColumnDefinition[];
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();

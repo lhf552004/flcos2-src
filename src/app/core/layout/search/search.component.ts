@@ -5,7 +5,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { SearchResult } from './search-result.model';
 
 @Component({
-  selector: 'emes-search',
+  selector: 'flcos-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   // The list of results
   results: SearchResult[];
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   private unsubscribe: Subject<void> = new Subject();
 
   constructor(private searchService: SearchService) { }

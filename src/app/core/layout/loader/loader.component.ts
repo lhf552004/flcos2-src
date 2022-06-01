@@ -4,12 +4,12 @@ import { Subject, Observable, timer } from 'rxjs';
 import { takeUntil, filter, map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'emes-loader',
+  selector: 'flcos-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent implements OnInit {
-  // Indicates whether navigation is on-going 
+  // Indicates whether navigation is on-going
   loading$: Observable<boolean>;
 
   // The progress status for the progress bar

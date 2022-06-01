@@ -31,10 +31,10 @@
   </button>
   <ng-container *ngFor="let child of children; let i = index">
     <button mat-menu-item style="padding: 0">
-      <emes-menu-item
+      <flcos-menu-item
         [item]="child"
         *ngIf="isExpandable(child); else menuItem"
-      ></emes-menu-item>
+      ></flcos-menu-item>
     </button>
     <ng-template #menuItem>
       <button *ngIf="!child.external" mat-button class="nav-link" [routerLink]="child.url">

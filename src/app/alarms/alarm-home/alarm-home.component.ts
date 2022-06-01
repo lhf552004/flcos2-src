@@ -4,7 +4,7 @@ import {faTasks} from '@fortawesome/free-solid-svg-icons';
 import { TreeviewNode } from 'tree-view';
 
 @Component({
-  selector: 'emes-alarm-home',
+  selector: 'flcos-alarm-home',
   templateUrl: './alarm-home.component.html',
   styleUrls: ['./alarm-home.component.scss']
 })

@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {OrderAttribute} from '../shared/models/order-attribute.model';
 
 @Component({
-  selector: 'emes-order-viewer',
+  selector: 'flcos-order-viewer',
   templateUrl: './order-viewer.component.html',
   styleUrls: ['./order-viewer.component.scss']
 })

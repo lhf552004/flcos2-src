@@ -8,7 +8,7 @@ import {NotificatorService} from '../../core/notificator/notificator.service';
 import {Notification} from '../../core/notificator/notification.model';
 
 @Component({
-  selector: 'emes-diagnostic',
+  selector: 'flcos-diagnostic',
   templateUrl: './diagnostic.component.html',
   styleUrls: ['./diagnostic.component.scss']
 })

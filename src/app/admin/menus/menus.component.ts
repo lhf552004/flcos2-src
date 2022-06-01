@@ -12,7 +12,7 @@ import {NewMenuItem} from '../../core/layout/menu/new-menu-item';
 import {MenuChildrenViewerComponent} from '../menu-children-viewer/menu-children-viewer.component';
 
 @Component({
-  selector: 'emes-menus',
+  selector: 'flcos-menus',
   templateUrl: './menus.component.html',
   styleUrls: ['./menus.component.scss']
 })

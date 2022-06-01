@@ -12,6 +12,6 @@ export class ReceiptsService extends GenericBaseService<Receipt> {
 
   constructor(http: HttpClient) {
     super(http,
-      environment.baseUrl + 'api/v1/receipts');
+       'api/v1/receipts');
   }
 }

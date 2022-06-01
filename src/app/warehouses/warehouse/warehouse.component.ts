@@ -7,14 +7,14 @@ import { LogisticUnit } from '../shared/models/logistic-unit.model';
 import { Warehouse } from '../shared/models/warehouse.model';
 
 @Component({
-  selector: 'emes-warehouse',
+  selector: 'flcos-warehouse',
   templateUrl: './warehouse.component.html',
   styleUrls: ['./warehouse.component.scss']
 })
 export class WarehouseComponent implements OnInit {
   // Icon
   faEllipsisV: IconDefinition = faEllipsisV;
-  
+
   // Current warehouse
   warehouse: Warehouse;
   // Logistic units in the warehouse
@@ -25,7 +25,7 @@ export class WarehouseComponent implements OnInit {
   // Indicator whether it is a owner
   isOwner: boolean = true;
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private route: ActivatedRoute) { }
@@ -44,7 +44,7 @@ export class WarehouseComponent implements OnInit {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  
+
   save(close: boolean) {
 
   }

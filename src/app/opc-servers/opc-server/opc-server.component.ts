@@ -11,7 +11,7 @@ import {NotificatorService} from '../../core/notificator/notificator.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: 'emes-opc-server',
+  selector: 'flcos-opc-server',
   templateUrl: './opc-server.component.html',
   styleUrls: ['./opc-server.component.scss']
 })

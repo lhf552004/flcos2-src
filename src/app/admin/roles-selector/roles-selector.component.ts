@@ -4,7 +4,7 @@ import {DataTableSettings, DataTableColumnDefinition, DataTableToolbarControl} f
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'emes-roles-selector',
+  selector: 'flcos-roles-selector',
   templateUrl: './roles-selector.component.html',
   styleUrls: ['./roles-selector.component.scss']
 })

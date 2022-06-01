@@ -7,7 +7,7 @@ import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 import { Bin } from '../shared/models/bin.model';
 
 @Component({
-  selector: 'emes-bins',
+  selector: 'flcos-bins',
   templateUrl: './bins.component.html',
   styleUrls: ['./bins.component.scss']
 })

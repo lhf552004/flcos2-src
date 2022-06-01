@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {DataTableColumnDefinition} from 'data-table';
 
-import {CustomValidators, DynamicFormService} from 'dynamic-form';
+import {DynamicFormService} from 'dynamic-form';
 import {BaseObjectsComponent} from '../../shared/base-objects.component';
 import {Job} from '../../shared/models/job.model';
 import {FieldConfig} from 'dynamic-form/lib/models/field-config.interface';
@@ -10,6 +10,8 @@ import {RecipeService} from '../shared/recipe.service';
 import {Recipe} from '../../shared/models/recipe.model';
 import {LineService} from '../shared/line.service';
 import {ProductsService} from '../../shared/services/products.service';
+import {takeUntil} from 'rxjs/operators';
+import {RecipeViewerComponent} from '../../shared/recipe-viewer/recipe-viewer.component';
 
 @Component({
   selector: 'flcos-jobs',
@@ -37,7 +39,6 @@ export class JobsComponent extends BaseObjectsComponent<Job> {
       {id: '1', name: 'id', label: 'Id', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {id: '2', name: 'name', label: 'Name', type: 'text', visible: true, searchable: false, filterMode: 'text'},
       {id: '3', name: 'status', label: 'Status', type: 'text', visible: true, searchable: false, filterMode: 'text'},
-      {id: '4', name: 'isProduction', label: 'Is Production', type: 'text', visible: true, searchable: false, filterMode: 'none'},
       {
         id: '5',
         name: 'view',
@@ -46,7 +47,7 @@ export class JobsComponent extends BaseObjectsComponent<Job> {
         visible: true,
         searchable: false,
         filterMode: 'none',
-        click: this.view.bind(this)
+        click: this.viewJob.bind(this)
       },
       {
         id: '6',
@@ -100,7 +101,28 @@ export class JobsComponent extends BaseObjectsComponent<Job> {
 
   doCreate(newObject: Job): void {
     newObject.line = this.lineService.line$.getValue();
-    newObject.recipe = {... newObject.recipe, id: null, template: false};
+    newObject.recipe = {...newObject.recipe, id: null, template: false};
     super.doCreate(newObject);
   }
+
+  viewJob(job: Job) {
+    this.genericBaseService.get(job.id).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+      const config = {
+        recipe: x.recipe,
+        right: [],
+        onSubmit: () => {
+        },
+        onDismiss: (e: string) => {
+        }
+      };
+
+      this.dynamicFormService.popModal(RecipeViewerComponent, config);
+    });
+
+  }
+
+  removeIngredient(ingredients: any[]) {
+
+  }
+
 }

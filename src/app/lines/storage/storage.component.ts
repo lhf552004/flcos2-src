@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
 @Component({
-  selector: 'emes-storage',
+  selector: 'flcos-storage',
   templateUrl: './storage.component.html',
   styleUrls: ['./storage.component.scss']
 })

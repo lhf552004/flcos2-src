@@ -10,7 +10,7 @@ import {NotificatorService} from '../../core/notificator/notificator.service';
 import {Notification} from '../../core/notificator/notification.model';
 
 @Component({
-  selector: 'emes-profile',
+  selector: 'flcos-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })

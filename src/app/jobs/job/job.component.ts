@@ -10,7 +10,7 @@ import {NotificatorService} from '../../core/notificator/notificator.service';
 import {Notification} from '../../core/notificator/notification.model';
 
 @Component({
-  selector: 'emes-job',
+  selector: 'flcos-job',
   templateUrl: './job.component.html',
   styleUrls: ['./job.component.scss']
 })

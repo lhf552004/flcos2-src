@@ -9,7 +9,7 @@ import {TreeviewNode} from 'tree-view';
 import {OPCNodeList} from '../../shared/models/opc-node-list.model';
 
 @Component({
-  selector: 'emes-diagnostics',
+  selector: 'flcos-diagnostics',
   templateUrl: './diagnostics.component.html',
   styleUrls: ['./diagnostics.component.scss']
 })

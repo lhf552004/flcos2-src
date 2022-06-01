@@ -6,7 +6,7 @@ import {Order} from '../shared/models/order.model';
 import {IconDefinition, faEllipsisV} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'emes-order',
+  selector: 'flcos-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })

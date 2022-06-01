@@ -9,7 +9,7 @@ import { TreeviewNode } from 'tree-view';
 
 
 @Component({
-  selector: 'emes-warehouses',
+  selector: 'flcos-warehouses',
   templateUrl: './warehouses.component.html',
   styleUrls: ['./warehouses.component.scss']
 })

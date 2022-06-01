@@ -16,7 +16,7 @@ import {TreeviewOptions, TreeViewComponent, TreeviewNode} from 'tree-view';
 import {MenuItem} from './model/menu-item.model';
 
 @Component({
-  selector: 'emes-side-bar',
+  selector: 'flcos-side-bar',
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.scss']
 })

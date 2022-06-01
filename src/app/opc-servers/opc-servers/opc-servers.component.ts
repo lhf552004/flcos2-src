@@ -15,7 +15,7 @@ import {OPCServer} from '../shared/models/opc-server.model';
 import { TreeviewNode } from 'tree-view';
 
 @Component({
-  selector: 'emes-opc-servers',
+  selector: 'flcos-opc-servers',
   templateUrl: './opc-servers.component.html',
   styleUrls: ['./opc-servers.component.scss']
 })

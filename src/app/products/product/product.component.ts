@@ -6,7 +6,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Product} from '../shared/models/product.model';
 
 @Component({
-  selector: 'emes-product',
+  selector: 'flcos-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })

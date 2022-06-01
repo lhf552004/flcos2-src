@@ -7,7 +7,7 @@ import {Line} from '../shared/models/line.model';
 import {Section} from '../shared/models/section.model';
 
 @Component({
-  selector: 'emes-line-details',
+  selector: 'flcos-line-details',
   templateUrl: './line-details.component.html',
   styleUrls: ['./line-details.component.scss']
 })

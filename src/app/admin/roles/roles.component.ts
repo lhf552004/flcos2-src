@@ -9,7 +9,7 @@ import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
 import {MenuItem} from '../../core/layout/menu/menu-item';
 
 @Component({
-  selector: 'emes-roles',
+  selector: 'flcos-roles',
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss']
 })

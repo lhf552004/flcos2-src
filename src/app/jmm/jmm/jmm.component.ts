@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-jmm',
+  selector: 'flcos-jmm',
   templateUrl: './jmm.component.html',
   styleUrls: ['./jmm.component.scss']
 })
