@@ -25,12 +25,15 @@ public class RecipeEntity extends EntityBase {
     @JoinColumn(name = "recipe_id")
     private List<IngredientEntity> ingredients;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private LineEntity line;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private JobEntity job;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private ProductEntity product;
 }

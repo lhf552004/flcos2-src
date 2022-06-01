@@ -15,7 +15,8 @@ import java.util.List;
 @Entity(name = "ingredient")
 public class IngredientEntity extends EntityBase {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private ProductEntity product;
 
     @Column(name = "percentage")
@@ -27,10 +28,12 @@ public class IngredientEntity extends EntityBase {
     @Column(name = "actual_weight")
     private double actualWeight;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private BinEntity sender;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private BinEntity receiver;
 
 }

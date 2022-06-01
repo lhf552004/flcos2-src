@@ -14,16 +14,19 @@ public class BinEntity extends EquipmentEntity {
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private ProductEntity product;
 
     @Column(name = "is_using")
     private boolean isUsing;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private DischargerEntity discharger;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private FillerEntity filler;
 
     @Enumerated(EnumType.STRING)

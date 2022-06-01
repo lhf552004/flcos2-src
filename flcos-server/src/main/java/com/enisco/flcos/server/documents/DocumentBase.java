@@ -20,6 +20,9 @@ public class DocumentBase {
     @Field(name = "created_by")
     private String createdBy;
 
+    @Field(name = "created_date")
+    private Date createdDate;
+
     @Field(name = "last_modified_date")
     private Date lastModifiedDate;
 }

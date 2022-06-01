@@ -26,9 +26,9 @@ public class LogisticUnitsController extends ControllerBase {
         this.warehouseRepository = warehouseRepository;
     }
 
-    @GetMapping("path = /wh/{name}")
-    public ResponseEntity<List<LogisticUnitDto>> getAll(@PathVariable String name, @RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
-        var warehouseOptional = warehouseRepository.findByName(name);
+    @GetMapping(path = "wh/{whId}")
+    public ResponseEntity<List<LogisticUnitDto>> getAll(@PathVariable Long whId, @RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "30") int size, @RequestParam(required = false, defaultValue = "") String direct, @RequestParam(required = false, defaultValue = "id") String sortProperty) {
+        var warehouseOptional = warehouseRepository.findById(whId);
         return warehouseOptional.map(warehouseEntity -> ResponseEntity.ok(logisticUnitRepository.findByWarehouse(warehouseEntity, getPageable(page, size, direct, sortProperty))
                 .stream()
                 .map(entity -> modelMapper.map(entity, LogisticUnitDto.class))

@@ -17,7 +17,7 @@ public class JobEntity extends EntityBase {
     @Column
     private String name;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+    @OneToOne(cascade = {
             CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "line_id")
     private LineEntity line;

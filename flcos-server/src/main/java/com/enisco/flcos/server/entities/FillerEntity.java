@@ -18,7 +18,8 @@ public class FillerEntity extends EquipmentEntity {
     @Column
     private String category;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "BIN_ID")
     private BinEntity bin;
 
