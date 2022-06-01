@@ -5,6 +5,9 @@ import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Job} from '../../shared/models/job.model';
 import {JobService} from '../shared/job.service';
+import {DynamicFormService} from 'dynamic-form';
+import {NotificatorService} from '../../core/notificator/notificator.service';
+import {Notification} from '../../core/notificator/notification.model';
 
 @Component({
   selector: 'emes-job',
@@ -18,6 +21,8 @@ export class JobComponent implements OnInit, OnDestroy {
 
   // Current job
   job: Job;
+
+  batchNumber: string;
 
   // Product type
   types: any[] = ['Raw', 'Finished Product', 'Semi-Product'];
@@ -33,7 +38,7 @@ export class JobComponent implements OnInit, OnDestroy {
   // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
-  constructor(private jobService: JobService) {
+  constructor(private jobService: JobService, private dynamicFormService: DynamicFormService, private notificatorService: NotificatorService) {
   }
 
   ngOnInit(): void {
@@ -81,14 +86,43 @@ export class JobComponent implements OnInit, OnDestroy {
   }
 
   start() {
-
+    this.jobService.start(this.job.id).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
   pause() {
-
+    this.jobService.pause(this.job.id).pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
   stop() {
+    this.jobService.stop(this.job.id).pipe(takeUntil(this.unsubscribe)).subscribe();
+  }
 
+  scanNumber() {
+    if (this.batchNumber) {
+      this.jobService.scanBatchNumber(this.job.id, this.batchNumber).pipe(takeUntil(this.unsubscribe)).subscribe(x => {
+        if (x.errors && x.errors.length > 0) {
+          x.errors.forEach(error => {
+            this.notificatorService.sendNotification(new Notification(error, 'danger'));
+          });
+        }
+        if (x.infos && x.infos.length > 0) {
+          x.infos.forEach(info => {
+            this.notificatorService.sendNotification(new Notification(info, 'info'));
+          });
+        }
+      });
+    } else {
+      const config = {
+        headerText: 'Batch Number is Empty',
+        submitText: 'Ok',
+        closeText: 'Cancel',
+        onSubmit: () => {
+        },
+        onDismiss: () => {
+        },
+        notifications: [`Please scan batch number in the input first.`]
+      };
+      this.dynamicFormService.popNotification(config);
+    }
   }
 }

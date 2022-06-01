@@ -7,35 +7,35 @@
     </div>
 
     <div class="col-auto">
-      <div class="btn-toolbar mb-2 mb-md-0">
+<!--      <div class="btn-toolbar mb-2 mb-md-0">-->
         <button *ngIf="job.status !== 'started'" type="button" class="btn btn-sm btn-danger mr-2" (click)="start()">Start</button>
         <button *ngIf="job.status === 'started'" type="button" class="btn btn-sm btn-danger mr-2" (click)="pause()">Pause</button>
         <button *ngIf="job.status === 'started'" type="button" class="btn btn-sm btn-danger mr-2" (click)="stop()">Stop</button>
-        <div *ngIf="isAuthor" class="btn-group mr-2">
-          <button type="button" class="btn btn-sm btn-primary" (click)="save(false)">Save</button>
-          <div class="btn-group" ngbDropdown placement="bottom-right">
-            <button class="btn btn-sm btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <button ngbDropdownItem (click)="save(false)">Save</button>
-              <button ngbDropdownItem (click)="save(true)">Save & Close</button>
-            </div>
-          </div>
-        </div>
+<!--        <div *ngIf="isAuthor" class="btn-group mr-2">-->
+<!--          <button type="button" class="btn btn-sm btn-primary" (click)="save(false)">Save</button>-->
+<!--          <div class="btn-group" ngbDropdown placement="bottom-right">-->
+<!--            <button class="btn btn-sm btn-primary dropdown-toggle-split" ngbDropdownToggle></button>-->
+<!--            <div class="dropdown-menu" ngbDropdownMenu>-->
+<!--              <button ngbDropdownItem (click)="save(false)">Save</button>-->
+<!--              <button ngbDropdownItem (click)="save(true)">Save & Close</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="close()">Close</button>
+<!--        <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="close()">Close</button>-->
 
-        <div class="btn-group mr-2" ngbDropdown placement="bottom-right">
-          <button type="button" class="btn btn-sm btn-link dropdown-icon" ngbDropdownToggle>
-            <fa-icon class="text-primary pointer" [icon]="faEllipsisV" [fixedWidth]="true"></fa-icon>
-          </button>
-          <div class="dropdown-menu" ngbDropdownMenu>
-            <button *ngIf="isAuthor" ngbDropdownItem (click)="save(true)">Save</button>
-            <button *ngIf="isAuthor" ngbDropdownItem (click)="close()">Save & Close</button>
-            <button *ngIf="isOwner" ngbDropdownItem (click)="copy()">Copy</button>
-            <button *ngIf="isOwner" ngbDropdownItem (click)="delete()">Delete</button>
-          </div>
-        </div>
-      </div>
+<!--        <div class="btn-group mr-2" ngbDropdown placement="bottom-right">-->
+<!--          <button type="button" class="btn btn-sm btn-link dropdown-icon" ngbDropdownToggle>-->
+<!--            <fa-icon class="text-primary pointer" [icon]="faEllipsisV" [fixedWidth]="true"></fa-icon>-->
+<!--          </button>-->
+<!--          <div class="dropdown-menu" ngbDropdownMenu>-->
+<!--            <button *ngIf="isAuthor" ngbDropdownItem (click)="save(true)">Save</button>-->
+<!--            <button *ngIf="isAuthor" ngbDropdownItem (click)="close()">Save & Close</button>-->
+<!--            <button *ngIf="isOwner" ngbDropdownItem (click)="copy()">Copy</button>-->
+<!--            <button *ngIf="isOwner" ngbDropdownItem (click)="delete()">Delete</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </div>
@@ -59,6 +59,13 @@
     <div class="form-group col-md-6">
       <label for="inputTargetWeight">Target Weight</label>
       <input type="text" class="form-control" id="inputTargetWeight" name="inputTargetWeight" [(ngModel)]="job.targetWeight">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12 ">
+      <label for="inputLine">Scan Batch Number</label>
+      <input type="text" class="form-control" id="inputBatchNumber" name="inputBatchNumber" [(ngModel)]="batchNumber">
+      <button *ngIf="job.status !== 'started'" type="button" class="mt-2 btn btn-sm btn-danger mr-2" (click)="scanNumber()">Confirm</button>
     </div>
   </div>
 </form>
