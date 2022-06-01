@@ -176,21 +176,28 @@ public abstract class AbstractJobManagement implements IJobManagement {
     public MessageDto finishJob(JobEntity job) {
         var messageDto = getNewMessage();
         var line = job.getLine();
+        var sectionResult = line.getSections().stream().filter(s -> s.getJob() != null && s.getJob().getId().equals(job.getId())).findFirst();
         if (onlineMode) {
-            var variableNames = new ArrayList<String>();
-            var variableValues = new ArrayList<>();
-            var sectionCommand = line.getOpcVariableIdent() + "write/cmd";
-            variableNames.add(sectionCommand);
-            variableValues.add(CommandType.Finish);
-            var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
-            try {
-                opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
-            } catch (ExecutionException | InterruptedException e) {
-                changeJobStatus(job, JobStatus.Error);
-                line.setStatus(LineStatus.Error);
-                RepositoryUtil.update(lineRepository, line);
-                messageDto.getErrors().add(e.getMessage());
+            if (sectionResult.isPresent()) {
+                var section = sectionResult.get();
+                var variableNames = new ArrayList<String>();
+                var variableValues = new ArrayList<>();
+                var sectionCommand = section.getOpcVariableIdent() + "write/cmd";
+                variableNames.add(sectionCommand);
+                variableValues.add(CommandType.Finish);
+                var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
+                try {
+                    opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
+                } catch (ExecutionException | InterruptedException e) {
+                    changeJobStatus(job, JobStatus.Error);
+                    line.setStatus(LineStatus.Error);
+                    RepositoryUtil.update(lineRepository, line);
+                    messageDto.getErrors().add(e.getMessage());
+                }
+            }else {
+                messageDto.getErrors().add("Section not found with job");
             }
+
         } else {
             setJobFinished(job);
         }

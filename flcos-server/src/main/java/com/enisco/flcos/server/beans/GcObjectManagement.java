@@ -90,14 +90,6 @@ public class GcObjectManagement {
                 if (str.length > 0) {
                     var newStatus = LineStatus.values()[Integer.parseInt(str[0])];
                     if (!line.getStatus().equals(newStatus)) {
-                        if (newStatus.equals(LineStatus.Passive)) {
-                            var jobManagement = line.isProduction() ? produceJobManagementBean : intakeJobManagementBean;
-                            if (str.length == 2) {
-                                var jobId = Long.parseLong(str[1]);
-                                var jobOptional = jobRepository.findById(jobId);
-                                jobOptional.ifPresent(jobManagement::setJobFinished);
-                            }
-                        }
                         line.setStatus(newStatus);
                         RepositoryUtil.update(lineRepository, line);
                     }
@@ -124,10 +116,19 @@ public class GcObjectManagement {
                     section.setStatus(newStatus);
                     RepositoryUtil.update(sectionRepository, section);
                     if (job != null) {
-                        if (newStatus.equals(LineStatus.Error)) {
-                            jobManagement.changeJobStatus(job, JobStatus.Error);
-                        } else if (newStatus.equals(LineStatus.Suspended)) {
-                            jobManagement.changeJobStatus(job, JobStatus.Suspended);
+                        switch (newStatus) {
+                            case Error:
+                                jobManagement.changeJobStatus(job, JobStatus.Error);
+                                break;
+                            case Passive:
+                                var sections = section.getLine().getSections();
+                                var isLast = sections.stream().noneMatch(s -> s.getIndex() > section.getIndex());
+                                if(isLast)
+                                    jobManagement.changeJobStatus(job, JobStatus.Done);
+                                break;
+                            case Suspended:
+                                jobManagement.changeJobStatus(job, JobStatus.Suspended);
+                                break;
                         }
                     }
                 }
@@ -135,6 +136,7 @@ public class GcObjectManagement {
                 if (value == null) {
                     section.setJob(null);
                     RepositoryUtil.update(sectionRepository, section);
+                    return;
                 }
                 var jobId = (Long) value;
                 var jobOptional = jobRepository.findById(jobId);
