@@ -1,6 +1,6 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.beans.OrderManagementBean;
+import com.enisco.flcos.server.beans.order.OrderManagementBean;
 import com.enisco.flcos.server.dto.orders.NewOrderDto;
 import com.enisco.flcos.server.dto.orders.OrderDto;
 import com.enisco.flcos.server.entities.order.OrderEntity;

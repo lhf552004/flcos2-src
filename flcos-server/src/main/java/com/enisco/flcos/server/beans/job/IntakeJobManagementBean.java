@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.beans;
+package com.enisco.flcos.server.beans.job;
 
 import com.enisco.flcos.server.documents.LogisticUnitLogDocument;
 import com.enisco.flcos.server.dto.job.MessageDto;

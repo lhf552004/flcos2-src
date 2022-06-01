@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.beans;
+package com.enisco.flcos.server.beans.job;
 
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.dto.job.NewJobDto;
@@ -14,9 +14,11 @@ public interface IJobManagement {
 
     MessageDto startJob(JobEntity job, Object... parameters);
 
+    MessageDto pauseJob(JobEntity job);
+
     void changeJobStatus(JobEntity job, JobStatus newStatus);
 
-    void finishJob(JobEntity job);
+    MessageDto finishJob(JobEntity job);
 
     void moveToNextSection(LineEntity lineEntity);
 

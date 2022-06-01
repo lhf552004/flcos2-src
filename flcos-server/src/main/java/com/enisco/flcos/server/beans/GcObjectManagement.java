@@ -1,5 +1,8 @@
 package com.enisco.flcos.server.beans;
 
+import com.enisco.flcos.server.beans.job.IJobManagement;
+import com.enisco.flcos.server.beans.job.IntakeJobManagementBean;
+import com.enisco.flcos.server.beans.job.ProduceJobManagementBean;
 import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.entities.alarm.AlarmEntity;
@@ -83,11 +86,23 @@ public class GcObjectManagement {
         if (result.isPresent()) {
             var line = result.get();
             if (gcObjectId.endsWith("status")) {
-                var newStatus = LineStatus.values()[(int) value];
-                if (!line.getStatus().equals(newStatus)) {
-                    line.setStatus(newStatus);
-                    RepositoryUtil.update(lineRepository, line);
+                var str = value.toString().split(",");
+                if (str.length > 0) {
+                    var newStatus = LineStatus.values()[Integer.parseInt(str[0])];
+                    if (!line.getStatus().equals(newStatus)) {
+                        if (newStatus.equals(LineStatus.Passive)) {
+                            var jobManagement = line.isProduction() ? produceJobManagementBean : intakeJobManagementBean;
+                            if (str.length == 2) {
+                                var jobId = Long.parseLong(str[1]);
+                                var jobOptional = jobRepository.findById(jobId);
+                                jobOptional.ifPresent(jobManagement::setJobFinished);
+                            }
+                        }
+                        line.setStatus(newStatus);
+                        RepositoryUtil.update(lineRepository, line);
+                    }
                 }
+
             }
         }
     }
@@ -117,6 +132,10 @@ public class GcObjectManagement {
                     }
                 }
             } else if (gcObjectId.endsWith("jobId")) {
+                if (value == null) {
+                    section.setJob(null);
+                    RepositoryUtil.update(sectionRepository, section);
+                }
                 var jobId = (Long) value;
                 var jobOptional = jobRepository.findById(jobId);
                 if (jobOptional.isPresent()) {

@@ -6,6 +6,7 @@ public enum JobStatus {
     Starting,
     Running,
     Error,
+    Suspending,
     Suspended,
     Finishing,
     Done

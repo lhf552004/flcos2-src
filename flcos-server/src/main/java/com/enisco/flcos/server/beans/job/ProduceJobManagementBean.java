@@ -1,8 +1,7 @@
-package com.enisco.flcos.server.beans;
+package com.enisco.flcos.server.beans.job;
 
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.dto.job.NewJobDto;
-import com.enisco.flcos.server.entities.MixerEntity;
 import com.enisco.flcos.server.entities.ProductEntity;
 import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.entities.enums.JobStatus;

@@ -2,6 +2,7 @@ package com.enisco.flcos.server.api;
 
 
 import com.enisco.flcos.server.beans.GcObjectManagement;
+import com.enisco.flcos.server.beans.LineManagement;
 import com.enisco.flcos.server.dto.line.LineDto;
 import com.enisco.flcos.server.dto.line.LineListDto;
 import com.enisco.flcos.server.dto.line.NewLineDto;
@@ -27,6 +28,7 @@ import java.nio.file.Paths;
 public class LinesController extends GenericControllerBase<LineEntity, LineDto, LineListDto, NewLineDto> {
 
     private final LineRepository lineRepository;
+    private final LineManagement lineManagement;
 
     private final ModelMapper modelMapper;
 
@@ -37,10 +39,12 @@ public class LinesController extends GenericControllerBase<LineEntity, LineDto, 
 
     @Autowired
     public LinesController(LineRepository lineRepository,
+                           LineManagement lineManagement,
                            ModelMapper modelMapper,
                            GcObjectManagement gcObjectManagement
     ) {
         this.lineRepository = lineRepository;
+        this.lineManagement = lineManagement;
         this.modelMapper = modelMapper;
         this.gcObjectManagement = gcObjectManagement;
     }
@@ -94,6 +98,15 @@ public class LinesController extends GenericControllerBase<LineEntity, LineDto, 
     public ResponseEntity delete(@PathVariable Long id) {
         lineRepository.deleteById(id);
         gcObjectManagement.deleteLine(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity reset(@PathVariable Long id) {
+        var result = lineRepository.findById(id);
+        if(result.isPresent()) {
+
+        }
         return ResponseEntity.ok().build();
     }
 }

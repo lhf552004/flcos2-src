@@ -1,5 +1,6 @@
-package com.enisco.flcos.server.beans;
+package com.enisco.flcos.server.beans.job;
 
+import com.enisco.flcos.server.beans.CommandType;
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.entities.recipe.IngredientEntity;
 import com.enisco.flcos.server.entities.LineEntity;
@@ -87,8 +88,6 @@ public abstract class AbstractJobManagement implements IJobManagement {
         }
         try {
             changeJobStatus(job, JobStatus.Starting);
-
-
             var sectionResult = job.getLine().getSections().stream().filter(s -> s.getIndex() == 0).findFirst();
             var recipe = job.getRecipe();
             var ingredients = recipe.getIngredients();
@@ -104,15 +103,15 @@ public abstract class AbstractJobManagement implements IJobManagement {
                 if (onlineMode) {
                     var variableNames = new ArrayList<String>();
                     var variableValues = new ArrayList<>();
-                    var jobIdVariable = section.getOpcVariableIdent() + "/jobId";
+                    var jobIdVariable = section.getOpcVariableIdent() + "write/jobId";
                     variableNames.add(jobIdVariable);
                     variableValues.add(job.getId().toString());
-                    var jobTargetWeightVariable = section.getOpcVariableIdent() + "/";
+                    var jobTargetWeightVariable = section.getMixers().get(0).getOpcVariableIdent() + "write/target";
                     variableNames.add(jobTargetWeightVariable);
                     variableValues.add(job.getTargetWeight());
                     ingredients.forEach(ingredient -> {
                         var bin = ingredient.getReceiver();
-                        variableNames.add(bin.getOpcVariableIdent() + "/target");
+                        variableNames.add(bin.getOpcVariableIdent() + "write/target");
                         variableValues.add(ingredient.getTargetWeight());
                     });
                     var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
@@ -148,7 +147,57 @@ public abstract class AbstractJobManagement implements IJobManagement {
     }
 
     @Override
-    public void finishJob(JobEntity job) {
+    public MessageDto pauseJob(JobEntity job) {
+        var messageDto = getNewMessage();
+        changeJobStatus(job, JobStatus.Suspending);
+        if (onlineMode) {
+            var sections = job.getLine().getSections().stream().filter(s -> s.getJob() != null && s.getJob().getId().equals(job.getId())).collect(Collectors.toList());
+            if (!sections.isEmpty()) {
+                var section = sections.get(0);
+                var variableNames = new ArrayList<String>();
+                var variableValues = new ArrayList<>();
+                var sectionCommand = section.getOpcVariableIdent() + "write/cmd";
+                variableNames.add(sectionCommand);
+                variableValues.add(CommandType.Pause);
+                var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
+                try {
+                    opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
+                } catch (ExecutionException | InterruptedException e) {
+                    messageDto.getErrors().add(e.getMessage());
+                    changeJobStatus(job, JobStatus.Error);
+                }
+            }
+        }
+        changeJobStatus(job, JobStatus.Suspended);
+        return messageDto;
+    }
+
+    @Override
+    public MessageDto finishJob(JobEntity job) {
+        var messageDto = getNewMessage();
+        var line = job.getLine();
+        if (onlineMode) {
+            var variableNames = new ArrayList<String>();
+            var variableValues = new ArrayList<>();
+            var sectionCommand = line.getOpcVariableIdent() + "write/cmd";
+            variableNames.add(sectionCommand);
+            variableValues.add(CommandType.Finish);
+            var opcClient = opcClientFactory.getEndpointUrls().toArray()[0].toString();
+            try {
+                opcClientFactory.WriteVariable(opcClient, variableNames, variableValues);
+            } catch (ExecutionException | InterruptedException e) {
+                changeJobStatus(job, JobStatus.Error);
+                line.setStatus(LineStatus.Error);
+                RepositoryUtil.update(lineRepository, line);
+                messageDto.getErrors().add(e.getMessage());
+            }
+        } else {
+            setJobFinished(job);
+        }
+        return messageDto;
+    }
+
+    public void setJobFinished(JobEntity job) {
         job.getRecipe().getIngredients().forEach(ingredient -> {
             ingredient.getSender().setUsing(false);
             ingredient.getReceiver().setUsing(false);
@@ -212,7 +261,7 @@ public abstract class AbstractJobManagement implements IJobManagement {
                         .collect(Collectors.toList());
                 if (!nextSections.isEmpty()) {
                     var nextSection = nextSections.get(0);
-                    if(!nextSection.getStatus().equals(LineStatus.Passive)) {
+                    if (!nextSection.getStatus().equals(LineStatus.Passive)) {
                         return;
                     }
                     nextSection.setStatus(LineStatus.Running);
@@ -229,7 +278,7 @@ public abstract class AbstractJobManagement implements IJobManagement {
                             nextSection.setStatus(LineStatus.Error);
                             getLogger().error(ex.getMessage());
                         }
-                    }else {
+                    } else {
                         activeSection.setStatus(LineStatus.Passive);
                         RepositoryUtil.update(sectionRepository, activeSection);
                     }
