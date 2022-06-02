@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-page404',
+  selector: 'flcos-page404',
   templateUrl: './page404.component.html',
   styleUrls: ['./page404.component.css']
 })

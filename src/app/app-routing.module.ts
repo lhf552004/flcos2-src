@@ -33,6 +33,7 @@ const routes: Routes = [
   {path: 'opc-servers', loadChildren: () => import('./opc-servers/opc-servers.module').then(m => m.OpcServersModule)},
   {path: 'diagnostics', loadChildren: () => import('./diagnostics/diagnostics.module').then(m => m.DiagnosticsModule)},
   {path: 'receipts', loadChildren: () => import('./receipts/receipts.module').then(m => m.ReceiptsModule)},
+  {path: 'recipes', loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule)},
   {path: 'external', loadChildren: () => import('./external/external.module').then(m => m.ExternalModule)},
   {path: '**', redirectTo: 'home'}
 ];

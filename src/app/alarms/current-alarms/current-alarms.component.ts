@@ -6,7 +6,7 @@ import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-ic
 import {AlarmService} from '../shared/alarm.service';
 
 @Component({
-  selector: 'emes-current-alarms',
+  selector: 'flcos-current-alarms',
   templateUrl: './current-alarms.component.html',
   styleUrls: ['./current-alarms.component.scss']
 })

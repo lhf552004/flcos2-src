@@ -21,7 +21,7 @@ declare var mxHierarchicalLayout: any;
 // declare var mxPoint: any;
 
 @Component({
-  selector: 'emes-work-flow-designer',
+  selector: 'flcos-work-flow-designer',
   templateUrl: './work-flow-designer.component.html',
   styleUrls: ['./work-flow-designer.component.scss']
 })

@@ -14,6 +14,6 @@ export class ProductResolverService {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product> {
     const id = route.paramMap.get('prodId');
-    return this.productService.getProduct(id as string);
+    return this.productService.get(id as string);
   }
 }

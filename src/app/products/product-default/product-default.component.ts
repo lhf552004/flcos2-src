@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-product-default',
+  selector: 'flcos-product-default',
   templateUrl: './product-default.component.html',
   styleUrls: ['./product-default.component.scss']
 })

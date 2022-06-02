@@ -5,7 +5,7 @@ import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../core/user/authentication.service';
 
 @Component({
-  selector: 'emes-login',
+  selector: 'flcos-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

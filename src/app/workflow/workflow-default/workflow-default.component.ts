@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-workflow-default',
+  selector: 'flcos-workflow-default',
   templateUrl: './workflow-default.component.html',
   styleUrls: ['./workflow-default.component.scss']
 })

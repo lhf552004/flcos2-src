@@ -8,7 +8,7 @@ import {MenuItem} from '../../shared/side-bar/model/menu-item.model';
 import {faProductHunt} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
-  selector: 'emes-workflows',
+  selector: 'flcos-workflows',
   templateUrl: './workflows.component.html',
   styleUrls: ['./workflows.component.scss']
 })

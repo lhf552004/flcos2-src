@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-alarms-configuration',
+  selector: 'flcos-alarms-configuration',
   templateUrl: './alarms-configuration.component.html',
   styleUrls: ['./alarms-configuration.component.scss']
 })

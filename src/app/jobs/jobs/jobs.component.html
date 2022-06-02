@@ -1,4 +1,11 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h2>{{'JOB.JOBS' | translate}}</h2>
+<div class="container-fluid h-100 px-0">
+  <div class="row h-100 no-gutters">
+    <flcos-side-bar class="col-md-3 col-lg-2 d-none d-md-block bg-light" [header]="'Intake Jobs'" [menuItems]="menuItems" [treeViewNodes]="treeViewNodes"></flcos-side-bar>
+
+    <main class="pl-2 pr-2 col-md-9 col-lg-10 d-flex flex-column w-100">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
 </div>
-<csps-data-table [settings]="settings" class="d-flex flex-fill"></csps-data-table>
+

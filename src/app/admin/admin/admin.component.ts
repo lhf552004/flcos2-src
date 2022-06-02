@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IconDefinition, faUsers, faList, faLock, faSitemap, faUserTag, faBars} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'emes-admin',
+  selector: 'flcos-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })

@@ -12,7 +12,7 @@ import {Section} from '../shared/models/section.model';
 import {SectionService} from '../shared/section.service';
 
 @Component({
-  selector: 'emes-sections',
+  selector: 'flcos-sections',
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss']
 })

@@ -13,7 +13,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {DynamicFormService, ModalConfig, CustomValidators} from 'dynamic-form';
 
 @Component({
-  selector: 'emes-orders',
+  selector: 'flcos-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })

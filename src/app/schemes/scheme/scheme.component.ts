@@ -6,7 +6,7 @@ import {faExternalLinkAlt, faPlus, faTrash} from '@fortawesome/free-solid-svg-ic
 import {SchemeService} from '../../shared/services/scheme.service';
 
 @Component({
-  selector: 'emes-scheme',
+  selector: 'flcos-scheme',
   templateUrl: './scheme.component.html',
   styleUrls: ['./scheme.component.scss']
 })

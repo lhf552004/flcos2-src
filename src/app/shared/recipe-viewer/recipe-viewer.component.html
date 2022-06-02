@@ -1,0 +1,53 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Recipe Viewer</h5>
+    <button type="button" class="close" aria-label="Close" (click)="dismissForm('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body d-flex flex-column" style="height:60vh;">
+    <csps-data-table [settings]="settings" class="d-flex flex-fill"></csps-data-table>
+  </div>
+  <div class="modal-footer">
+    <div class="row justify-content-between align-items-center">
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <label class="mr-2">Name</label>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="name" [disabled]="!canModified"/>
+        </div>
+      </div>
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <label class="mr-2 align-middle">Product</label>
+          </div>
+          <select name="productSelect" class="form-control" [(ngModel)]="selectedProduct" [disabled]="!canModified" [compareWith]="compareFn">
+            <option [ngValue]="undefined">Please select a product</option>
+            <option [ngValue]="option" *ngFor="let option of products">
+              {{ option.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <label class="mr-2 align-middle">Line</label>
+          </div>
+          <select name="lineSelect" class="form-control" [(ngModel)]="selectedLine" [disabled]="!canModified" [compareWith]="compareFn">
+            <option [ngValue]="undefined">Please select a line</option>
+            <option [ngValue]="option" *ngFor="let option of lines">
+              {{ option.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-auto">
+        <button type="button" (click)="dismissForm('Close button')" class="btn btn-secondary">Cancel</button>
+        <button type="button" [disabled]="!itemsSelected" (click)="submitForm('OK')" class="btn btn-primary">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@ import {RoleService} from '../../core/user/role.service';
 import {DynamicFormService} from 'dynamic-form';
 
 @Component({
-  selector: 'emes-user-viewer',
+  selector: 'flcos-user-viewer',
   templateUrl: './user-viewer.component.html',
   styleUrls: ['./user-viewer.component.scss']
 })

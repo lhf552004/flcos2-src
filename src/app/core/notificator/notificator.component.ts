@@ -4,7 +4,7 @@ import {NotificatorService} from './notificator.service';
 import {Notification} from './notification.model';
 
 @Component({
-  selector: 'emes-notificator',
+  selector: 'flcos-notificator',
   templateUrl: './notificator.component.html',
   styleUrls: ['./notificator.component.css'],
   host: {

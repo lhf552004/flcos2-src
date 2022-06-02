@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import { Line } from './models/line.model';
+import {Line} from './models/line.model';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
@@ -12,6 +12,7 @@ export class LineService {
 
   private lineUrl = environment.baseUrl + 'api/v1/lines';  // URL to web api
   allLines$: BehaviorSubject<Line[]> = new BehaviorSubject<Line[]>([]);
+  line$: BehaviorSubject<Line | null> = new BehaviorSubject<Line | null>(null);
 
   constructor(private http: HttpClient) {
   }
@@ -26,6 +27,8 @@ export class LineService {
 
   get(id: string): Observable<Line> {
     const url = `${this.lineUrl}/${id}`;
-    return this.http.get<Line>(url);
+    return this.http.get<Line>(url).pipe(tap(l => {
+      this.line$.next(l);
+    }));
   }
 }

@@ -11,10 +11,9 @@ import { WarehouseService } from '../shared/warehouse.service';
 export class WarehouseResolverService {
 
   constructor(private warehouseService: WarehouseService, private router: Router) { }
-  
+
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Warehouse> {
     const id = route.paramMap.get('warehouseId');
-    console.log(id)
-    return this.warehouseService.getWarehouse(id);
+    return this.warehouseService.get(id);
   }
 }

@@ -7,7 +7,7 @@ import { Bin } from '../shared/models/bin.model';
 import { Product } from '../shared/models/product.model';
 
 @Component({
-  selector: 'emes-bin',
+  selector: 'flcos-bin',
   templateUrl: './bin.component.html',
   styleUrls: ['./bin.component.scss']
 })
@@ -34,7 +34,7 @@ export class BinComponent implements OnInit, OnDestroy {
   // Indicator whether it is a owner
   isOwner: boolean = true;
 
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private route: ActivatedRoute) { }

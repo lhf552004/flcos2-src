@@ -63,6 +63,10 @@
     "SCALE": "标准秤",
     "REGISTRATION-SCALE": "流量秤",
     "PROCESS-STATION": "工艺站",
-    "CONVEYING-STATION": "输送站"
+    "CONVEYING-STATION": "输送站",
+    "RECIPE": "配方"
+  },
+  "JOB" : {
+    "JOBS": "任务"
   }
 }

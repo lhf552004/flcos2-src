@@ -22,7 +22,7 @@ import {environment} from '../../../environments/environment';
 import {IconDefinition, faPlug, faHandshakeSlash} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'emes-line-default',
+  selector: 'flcos-line-default',
   templateUrl: './line-default.component.html',
   styleUrls: ['./line-default.component.scss']
 })

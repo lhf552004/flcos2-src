@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-create-order',
+  selector: 'flcos-create-order',
   templateUrl: './create-order.component.html',
   styleUrls: ['./create-order.component.scss']
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-job-logs',
+  selector: 'flcos-job-logs',
   templateUrl: './job-logs.component.html',
   styleUrls: ['./job-logs.component.scss']
 })

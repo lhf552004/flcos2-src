@@ -7,7 +7,7 @@ import { LogisticUnit } from '../shared/models/logistic-unit.model';
 import { Warehouse } from '../shared/models/warehouse.model';
 
 @Component({
-  selector: 'emes-logistic-unit',
+  selector: 'flcos-logistic-unit',
   templateUrl: './logistic-unit.component.html',
   styleUrls: ['./logistic-unit.component.scss']
 })
@@ -26,7 +26,7 @@ export class LogisticUnitComponent implements OnInit {
   isAuthor: boolean = true;
   // Indicator whether it is a owner
   isOwner: boolean = true;
-  // Used for cleaning subscription 
+  // Used for cleaning subscription
   unsubscribe: Subject<void> = new Subject();
 
   constructor(private route: ActivatedRoute) { }
@@ -42,7 +42,7 @@ export class LogisticUnitComponent implements OnInit {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  
+
   save(close: boolean) {
 
   }

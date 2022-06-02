@@ -12,9 +12,10 @@ import { TreeViewModule } from 'tree-view';
 import { ItemsSelectorComponent } from './items-selector/items-selector.component';
 import {TranslateModule} from '@ngx-translate/core';
 import { StickyPopoverDirective } from './side-bar/sticky-popover.directive';
+import { RecipeViewerComponent } from './recipe-viewer/recipe-viewer.component';
 
 @NgModule({
-  declarations: [SideBarComponent, WorkFlowComponent, ItemsSelectorComponent, StickyPopoverDirective],
+  declarations: [SideBarComponent, WorkFlowComponent, ItemsSelectorComponent, StickyPopoverDirective, RecipeViewerComponent],
   imports: [
     CommonModule,
     FormsModule,

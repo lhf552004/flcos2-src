@@ -7,7 +7,7 @@ import { MenuItem } from 'src/app/shared/side-bar/model/menu-item.model';
 import { TreeviewNode } from 'tree-view';
 
 @Component({
-  selector: 'emes-line',
+  selector: 'flcos-line',
   templateUrl: './line.component.html',
   styleUrls: ['./line.component.scss']
 })

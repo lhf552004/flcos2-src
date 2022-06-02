@@ -55,6 +55,10 @@
     "SCALE": "Scale",
     "REGISTRATION-SCALE": "Registration Scale",
     "PROCESS-STATION": "Process Station",
-    "CONVEYING-STATION": "Conveying Station"
+    "CONVEYING-STATION": "Conveying Station",
+    "RECIPE": "Recipe"
+  },
+  "JOB" : {
+    "JOBS": "Jobs"
   }
 }

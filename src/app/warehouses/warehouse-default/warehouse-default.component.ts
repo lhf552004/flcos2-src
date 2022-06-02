@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-warehouse-default',
+  selector: 'flcos-warehouse-default',
   templateUrl: './warehouse-default.component.html',
   styleUrls: ['./warehouse-default.component.scss']
 })

@@ -15,7 +15,7 @@ import {environment} from '../../../../environments/environment';
 import {OpcServerService} from '../../../shared/services/opc-server.service';
 
 @Component({
-  selector: 'emes-menu',
+  selector: 'flcos-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })

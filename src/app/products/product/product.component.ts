@@ -3,9 +3,10 @@ import {ActivatedRoute} from '@angular/router';
 import {faEllipsisV, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {Product} from '../shared/models/product.model';
 
 @Component({
-  selector: 'emes-product',
+  selector: 'flcos-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
@@ -14,7 +15,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   faEllipsisV: IconDefinition = faEllipsisV;
 
   // Current product
-  product: any = {};
+  product: Product;
 
   // Product type
   types: any[] = ['Raw', 'Finished Product', 'Semi-Product'];

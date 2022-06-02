@@ -10,7 +10,7 @@ import {UserViewerComponent} from '../user-viewer/user-viewer.component';
 import {Role} from '../../core/user/models/role.model';
 
 @Component({
-  selector: 'emes-users',
+  selector: 'flcos-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })

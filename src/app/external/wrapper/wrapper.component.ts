@@ -4,7 +4,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 
 @Component({
-  selector: 'emes-wrapper',
+  selector: 'flcos-wrapper',
   templateUrl: './wrapper.component.html',
   styleUrls: ['./wrapper.component.scss']
 })

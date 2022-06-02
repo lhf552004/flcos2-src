@@ -8,7 +8,7 @@ declare var mxGraphModel: any;
 declare var mxHierarchicalLayout: any;
 
 @Component({
-  selector: 'emes-work-flow',
+  selector: 'flcos-work-flow',
   templateUrl: './work-flow.component.html',
   styleUrls: ['./work-flow.component.scss']
 })

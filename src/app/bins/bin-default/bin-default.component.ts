@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'emes-bin-default',
+  selector: 'flcos-bin-default',
   templateUrl: './bin-default.component.html',
   styleUrls: ['./bin-default.component.scss']
 })

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {BaseObjectsComponent} from '../../shared/base-objects.component';
-import {Job} from '../../jobs/shared/models/job.model';
+import {Job} from '../../shared/models/job.model';
 import {Receipt} from '../shared/models/receipt.model';
 import {FieldConfig} from 'dynamic-form/lib/models/field-config.interface';
 import {DataTableColumnDefinition} from 'data-table';
 import {CustomValidators, DynamicFormService} from 'dynamic-form';
 import {ReceiptsService} from '../shared/receipts.service';
-import {ProductsService} from '../shared/products.service';
+import {ProductsService} from '../../shared/services/products.service';
 import {SuppliersService} from '../shared/suppliers.service';
 
 @Component({
@@ -84,6 +84,7 @@ export class ReceiptsComponent extends BaseObjectsComponent<Receipt> {
         label: 'Unit',
         name: 'unit',
         value: object !== null ? object.unit : null,
+        append: object !== null ? object.unit : null,
         placeholder: 'Set the unit',
         validation: [
           CustomValidators.required('Unit type required'),
@@ -120,7 +121,7 @@ export class ReceiptsComponent extends BaseObjectsComponent<Receipt> {
         label: 'Supplier',
         name: 'supplier',
         placeholder: 'Select the supplier',
-        options: this.suppliersService.simpleSuppliers$.getValue().map(c => ({
+        options: this.suppliersService.simpleObjects$.getValue().map(c => ({
           key: c,
           value: c.name
         })),
@@ -133,7 +134,7 @@ export class ReceiptsComponent extends BaseObjectsComponent<Receipt> {
         label: 'Product',
         name: 'product',
         placeholder: 'Select the product',
-        options: this.productsService.simpleProducts$.getValue().map(c => ({
+        options: this.productsService.simpleObjects$.getValue().map(c => ({
           key: c,
           value: c.name
         })),
