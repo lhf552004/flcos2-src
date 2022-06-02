@@ -14,6 +14,7 @@ import com.enisco.flcos.server.exceptions.FLCosException;
 import com.enisco.flcos.server.repository.mongodb.LogisticUnitLogRepository;
 import com.enisco.flcos.server.repository.relational.LayerRepository;
 import com.enisco.flcos.server.repository.relational.LogisticUnitRepository;
+import com.enisco.flcos.server.util.MessageUtil;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,7 +130,7 @@ public class IntakeJobManagementBean extends AbstractJobManagement {
      */
     public MessageDto intake(JobEntity job, String batchNumber) {
         var logisticUnits = logisticUnitRepository.findByBatchNumber(batchNumber);
-        var messageDto = getNewMessage();
+        var messageDto = MessageUtil.getNewMessage();
         // Find existed logistic units
         if (!logisticUnits.isEmpty()) {
             var logisticUnit = logisticUnits.get(0);

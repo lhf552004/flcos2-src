@@ -46,7 +46,7 @@ public class InitializeDataRunner implements CommandLineRunner {
         logger.info("Start to run initialize data runner...");
         createOrderScheme();
         createWarehouse();
-        logger.info("Initialized data is loaded.");
+        logger.info("Initializing data is done.");
     }
 
     private void createOrderScheme() {

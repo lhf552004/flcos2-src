@@ -1,17 +1,19 @@
 package com.enisco.flcos.server.beans.job;
 
 import com.enisco.flcos.server.beans.CommandType;
+import com.enisco.flcos.server.documents.JobChangeLogDocument;
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.entities.recipe.IngredientEntity;
 import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.recipe.RecipeEntity;
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.enums.LineStatus;
-import com.enisco.flcos.server.entities.job.JobChangeLogEntity;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import com.enisco.flcos.server.exceptions.FLCosException;
 import com.enisco.flcos.server.opc.client.OPCClientFactory;
 import com.enisco.flcos.server.repository.relational.*;
+import com.enisco.flcos.server.repository.mongodb.JobChangeLogRepository;
+import com.enisco.flcos.server.util.MessageUtil;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,18 +50,10 @@ public abstract class AbstractJobManagement implements IJobManagement {
 
     protected ModelMapper modelMapper = new ModelMapper();
 
-    protected MessageDto getNewMessage() {
-        var message = new MessageDto();
-        var errors = new ArrayList<String>();
-        var infos = new ArrayList<String>();
-        message.setErrors(errors);
-        message.setInfos(infos);
-        return message;
-    }
-
     @Override
     public MessageDto checkJob(JobEntity job) {
-        var message = getNewMessage();
+        var message = MessageUtil.getNewMessage();
+        ;
         if (job != null) {
             if (job.getTargetWeight() <= 0) {
                 message.getErrors().add("Job target weight should be positive.");
@@ -134,21 +128,16 @@ public abstract class AbstractJobManagement implements IJobManagement {
     @Override
     public void changeJobStatus(JobEntity job, JobStatus newStatus) {
         if (job.getStatus() != newStatus) {
+            var oldStatus = job.getStatus();
             job.setStatus(newStatus);
-            var newChangeLog = new JobChangeLogEntity();
-            newChangeLog.setName("Status");
-            newChangeLog.setOldValue(job.getStatus().name());
-            newChangeLog.setNewValue(newStatus.name());
-            newChangeLog.setJob(job);
-            RepositoryUtil.assignCreator(newChangeLog);
-//            job.getChangeLogs().add(newChangeLog);
             RepositoryUtil.update(jobRepository, job);
+            createLogForStatusChanged(job, oldStatus);
         }
     }
 
     @Override
     public MessageDto pauseJob(JobEntity job) {
-        var messageDto = getNewMessage();
+        var messageDto = MessageUtil.getNewMessage();
         changeJobStatus(job, JobStatus.Suspending);
         if (onlineMode) {
             var sections = job.getLine().getSections().stream().filter(s -> s.getJob() != null && s.getJob().getId().equals(job.getId())).collect(Collectors.toList());
@@ -174,7 +163,7 @@ public abstract class AbstractJobManagement implements IJobManagement {
 
     @Override
     public MessageDto finishJob(JobEntity job) {
-        var messageDto = getNewMessage();
+        var messageDto = MessageUtil.getNewMessage();
         var line = job.getLine();
         var sectionResult = line.getSections().stream().filter(s -> s.getJob() != null && s.getJob().getId().equals(job.getId())).findFirst();
         if (onlineMode) {
@@ -194,7 +183,7 @@ public abstract class AbstractJobManagement implements IJobManagement {
                     RepositoryUtil.update(lineRepository, line);
                     messageDto.getErrors().add(e.getMessage());
                 }
-            }else {
+            } else {
                 messageDto.getErrors().add("Section not found with job");
             }
 
@@ -211,15 +200,16 @@ public abstract class AbstractJobManagement implements IJobManagement {
             RepositoryUtil.update(binRepository, ingredient.getSender());
             RepositoryUtil.update(binRepository, ingredient.getReceiver());
         });
-        job.setStatus(JobStatus.Done);
-        var newChangeLog = new JobChangeLogEntity();
-        newChangeLog.setName("Status");
-        newChangeLog.setOldValue(job.getStatus().name());
-        newChangeLog.setNewValue(JobStatus.Done.name());
-        newChangeLog.setJob(job);
-        RepositoryUtil.assignCreator(newChangeLog);
-//        job.getChangeLogs().add(newChangeLog);
-        RepositoryUtil.update(jobRepository, job);
+        changeJobStatus(job, JobStatus.Done);
+    }
+
+    protected void createLogForStatusChanged(JobEntity jobEntity, JobStatus oldStatus) {
+        var jobChangeLogDocument = new JobChangeLogDocument();
+        jobChangeLogDocument.setJobId(jobEntity.getId());
+        jobChangeLogDocument.setName("Status");
+        jobChangeLogDocument.setOldValue(jobEntity.getStatus().name());
+        jobChangeLogDocument.setNewValue(oldStatus.name());
+        RepositoryUtil.create(jobChangeLogRepository, jobChangeLogDocument);
     }
 
     protected RecipeEntity cloneRecipe(RecipeEntity template, JobEntity jobEntity) {
@@ -240,7 +230,6 @@ public abstract class AbstractJobManagement implements IJobManagement {
         }).collect(Collectors.toList()));
         return newRecipe;
     }
-
 
     @Override
     public void moveToNextSection(LineEntity lineEntity) {

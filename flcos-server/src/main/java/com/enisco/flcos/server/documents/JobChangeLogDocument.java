@@ -1,19 +1,15 @@
 package com.enisco.flcos.server.documents;
 
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.Date;
-import java.util.UUID;
-
+@Getter
+@Setter
 @Document(collection = "Job_change_log" )
-public class JobChangeLogDocument {
-    @Id
-    private UUID id;
-    private String name;
-    private String jobId;
-    private String newValue;
-    protected String oldValue;
-    private Date ts;
-    private String modifiedBy;
+public class JobChangeLogDocument extends ChangeLogDocument {
+
+    @Field(name = "job_id")
+    private Long jobId;
 }

@@ -10,14 +10,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Setter
 @Getter
-@Entity(name = "order_order")
+@Entity
+@Table(name = "order_order", uniqueConstraints = @UniqueConstraint(name = "FLC_ORDER_NUMBER_UQ", columnNames = {"ORDER_NUMBER"}))
 public class OrderEntity extends EntityBase {
+
+    @Column(name = "ORDER_NUMBER")
+    private String orderNumber;
 
     @Column
     private OrderStatus status;
@@ -25,17 +28,13 @@ public class OrderEntity extends EntityBase {
     @Column(name = "is_internal")
     private Boolean isInternal;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private ProductEntity product;
 
     @Column
     private double targetWeight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEMPLATE_ID")
-    private TemplateEntity template;
-
-    // Fetch-Type EAGER ansonsten schlagen die tests fehl
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "order")
     @MapKey(name = "name")
     private Map<String, OrderAttributeEntity> attributes = new HashMap<>();

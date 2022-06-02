@@ -1,5 +1,6 @@
 package com.enisco.flcos.server.beans.order;
 
+import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.entities.order.OrderEntity;
 
 import java.io.Serializable;
@@ -10,5 +11,5 @@ public interface IOrderManagement {
     OrderEntity createInternal(Map<String, Serializable> attributes);
     void createJob(OrderEntity orderEntity);
 
-    void releaseJob(OrderEntity orderEntity);
+    MessageDto releaseJob(OrderEntity orderEntity);
 }

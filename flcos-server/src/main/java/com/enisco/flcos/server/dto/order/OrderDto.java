@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.dto.orders;
+package com.enisco.flcos.server.dto.order;
 
 import com.enisco.flcos.server.dto.DTOBase;
 import com.enisco.flcos.server.dto.templates.TemplateDto;

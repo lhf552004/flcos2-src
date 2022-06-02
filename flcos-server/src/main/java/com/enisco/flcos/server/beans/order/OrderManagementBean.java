@@ -1,16 +1,20 @@
 package com.enisco.flcos.server.beans.order;
 
-import com.enisco.flcos.server.beans.job.JobException;
+import com.enisco.flcos.server.documents.JobChangeLogDocument;
+import com.enisco.flcos.server.dto.job.MessageDto;
+import com.enisco.flcos.server.dto.order.NewOrderDto;
+import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.enums.OrderStatus;
 import com.enisco.flcos.server.entities.enums.SchemeType;
-import com.enisco.flcos.server.entities.job.JobChangeLogEntity;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import com.enisco.flcos.server.entities.order.OrderAttributeEntity;
 import com.enisco.flcos.server.entities.order.OrderEntity;
 import com.enisco.flcos.server.repository.relational.*;
+import com.enisco.flcos.server.repository.mongodb.JobChangeLogRepository;
 import com.enisco.flcos.server.scheme.Scheme;
 import com.enisco.flcos.server.scheme.SchemeManager;
+import com.enisco.flcos.server.util.MessageUtil;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import com.enisco.flcos.server.util.SchemeUtil;
 import org.slf4j.Logger;
@@ -20,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,64 +38,95 @@ public class OrderManagementBean implements IOrderManagement {
     @Value("${order.attribute.targetWeight: targetWeight}")
     private String ATTRIBUTE_TARGET_WEIGHT;
 
-    @Value("${order.attribute.line: line}")
+    @Value("${order.attribute.line: MIX1}")
     private String ATTRIBUTE_LINE;
-
-    @Autowired
-    OrderRepository orderRepository;
-
-    @Autowired
-    JobRepository jobRepository;
-
-    @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
-    OrderAttributeRepository orderAttributeRepository;
-
-    @Autowired
-    RecipeRepository recipeRepository;
-
-    @Autowired
-    LineRepository lineRepository;
 
     @Value("${order.scheme: Order_Scheme}")
     String schemeName;
 
-    @Autowired
-    SchemeManager schemeManager;
+    private final OrderRepository orderRepository;
+
+    private final JobRepository jobRepository;
+
+    private final ProductRepository productRepository;
+
+    private final OrderAttributeRepository orderAttributeRepository;
+
+    private final RecipeRepository recipeRepository;
+
+    private final LineRepository lineRepository;
+
+    private final SchemeManager schemeManager;
+
+    private final JobChangeLogRepository jobChangeLogRepository;
 
     Scheme orderScheme;
 
-    @Override
-    public OrderEntity createOrder(Map<String, Serializable> attributes) {
-        return create(false, attributes);
+    @Autowired
+    public OrderManagementBean(
+            OrderRepository orderRepository,
+            JobRepository jobRepository,
+            ProductRepository productRepository,
+            OrderAttributeRepository orderAttributeRepository,
+            RecipeRepository recipeRepository,
+            LineRepository lineRepository,
+            SchemeManager schemeManager,
+            JobChangeLogRepository jobChangeLogRepository
+    ) {
+        this.orderRepository = orderRepository;
+        this.jobRepository = jobRepository;
+        this.lineRepository = lineRepository;
+        this.productRepository = productRepository;
+        this.orderAttributeRepository = orderAttributeRepository;
+        this.recipeRepository = recipeRepository;
+        this.schemeManager = schemeManager;
+        this.jobChangeLogRepository = jobChangeLogRepository;
     }
 
-    private OrderEntity create(boolean isInternal, Map<String, Serializable> attributes) {
-        var orderEntity = new OrderEntity();
-        orderEntity.setStatus(OrderStatus.NEW);
-        orderEntity.setIsInternal(isInternal);
+    @Override
+    public OrderEntity createOrder(Map<String, Serializable> attributes) {
+        return null;
+    }
 
-        var productName = attributes.get(ATTRIBUTE_PRODUCT_NAME).toString();
-        if( productName.isEmpty()) {
-            throw new OrderException("Product name is empty or not found in attribute.");
+    public MessageDto check(NewOrderDto orderDto) {
+        var messageDto = MessageUtil.getNewMessage();
+        var orderNumber = orderDto.getOrderNumber();
+        var existed = orderRepository.existsByOrderNumber(orderNumber);
+        if (existed) {
+            messageDto.getErrors().add(String.format("Order number with %s is duplicated", orderNumber));
         }
-        var productResult = productRepository.findByName(productName);
-        if(productResult.isPresent()) {
-            orderEntity.setProduct(productResult.get());
-        }else {
-            throw new OrderException(String.format("Product is not found with name %s.", productName));
+        existed = productRepository.existsByName(orderDto.getProductName());
+        if (!existed) {
+            messageDto.getErrors().add("Product is not found");
         }
-        try
-        {
-            var targetWeight = Double.parseDouble(attributes.get(ATTRIBUTE_TARGET_WEIGHT).toString());
-            orderEntity.setTargetWeight(targetWeight);
-        }catch (Exception ex) {
-            logger.warn("There is exception when try to parse target weight: " + ex.getMessage());
-        }
+        var scheme = getOrderScheme();
+        orderDto.getAttributes().forEach((key, value) -> {
+            if (scheme.getField(key).isEmpty()) {
+                messageDto.getErrors().add(String.format("Field with %s is not defined in scheme", key));
+            }
+        });
+        return messageDto;
+    }
 
-        RepositoryUtil.create(orderRepository, orderEntity);
+    public OrderEntity create(OrderEntity orderEntity, Map<String, Serializable> attributes) {
+        var productIsFound = false;
+        var orderNumber = orderEntity.getOrderNumber();
+        orderEntity.setAttributes(new HashMap<>());
+        var existed = orderRepository.existsByOrderNumber(orderNumber);
+        if (existed) {
+            throw new OrderException(String.format("Order number with %s is duplicated", orderNumber));
+        }
+        if (orderEntity.getProduct() != null) {
+            var productOptional = productRepository.findByName(orderEntity.getProduct().getName());
+            if (productOptional.isPresent()) {
+                productIsFound = true;
+                orderEntity.setProduct(productOptional.get());
+                RepositoryUtil.create(orderRepository, orderEntity);
+            }
+        }
+        if (!productIsFound) {
+            throw new OrderException("Product is not found");
+        }
         var scheme = getOrderScheme();
         var fields = scheme.stream().collect(Collectors.toList());
         attributes.entrySet()
@@ -98,15 +134,11 @@ public class OrderManagementBean implements IOrderManagement {
                         .ifPresent(field -> {
                             createOrderAttribute(scheme, orderEntity, entry.getKey(), entry.getValue());
                         }));
-        if(!isInternal) {
-            // create job
-            createJob(orderEntity);
-        }
         return orderEntity;
     }
 
     private Scheme getOrderScheme() {
-        if(orderScheme == null) {
+        if (orderScheme == null) {
             orderScheme = SchemeUtil.assertSchemeExists(schemeManager, this.schemeName);
         }
         return orderScheme;
@@ -135,7 +167,7 @@ public class OrderManagementBean implements IOrderManagement {
         RepositoryUtil.create(orderAttributeRepository, orderAttribute);
         if (schemeType == SchemeType.STRUCT) {
             Map<String, Serializable> attributes = (Map<String, Serializable>) schemeType.convertTo(value);
-            ((Map<String, Serializable>)attributes.get("attributes")).entrySet()
+            ((Map<String, Serializable>) attributes.get("attributes")).entrySet()
                     .forEach(entry -> scheme.getField(key + "." + entry.getKey())
                             .ifPresent(field -> {
                                 createOrderAttribute(scheme, orderAttribute, order, key + "." + entry.getKey(), entry.getValue());
@@ -159,7 +191,7 @@ public class OrderManagementBean implements IOrderManagement {
 
         if (schemeType == SchemeType.STRUCT) {
             Map<String, Serializable> attributes = (Map<String, Serializable>) schemeType.convertTo(value);
-            ((Map<String, Serializable>)attributes.get("attributes")).entrySet()
+            ((Map<String, Serializable>) attributes.get("attributes")).entrySet()
                     .forEach(entry -> scheme.getField(key + "." + entry.getKey())
                             .ifPresent(field -> {
                                 createOrderAttribute(scheme, orderAttribute, order, key + "." + entry.getKey(), entry.getValue());
@@ -172,34 +204,60 @@ public class OrderManagementBean implements IOrderManagement {
 
     @Override
     public OrderEntity createInternal(Map<String, Serializable> attributes) {
-        return create(true, attributes);
+        return null;
     }
 
     @Override
     public void createJob(OrderEntity orderEntity) {
-        var job = new JobEntity();
-        job.setStatus(JobStatus.Created);
-        job.setTargetWeight(orderEntity.getTargetWeight());
-        var recipeResult = recipeRepository.findByProductAndIsTemplate(orderEntity.getProduct(), true);
-        if(recipeResult.isPresent()) {
-            job.setRecipe(recipeResult.get());
-        }else {
-            throw new JobException(String.format("Recipe Template is not found for product: %s", orderEntity.getProduct().getName()));
-        }
-        var lines =lineRepository.findByIsProduction(true);
-        job.setLine(lines.get(0));
-//        job.setChangeLogs(new ArrayList<>());
-        RepositoryUtil.create(jobRepository, job);
-        var changeLog = new JobChangeLogEntity();
-        changeLog.setJob(job);
-        changeLog.setName("Create Job");
-        changeLog.setNewValue(job.getId().toString());
-//        job.getChangeLogs().add(changeLog);
-        RepositoryUtil.update(jobRepository, job);
+
     }
 
     @Override
-    public void releaseJob(OrderEntity orderEntity) {
+    public MessageDto releaseJob(OrderEntity orderEntity) {
+        var messageDto = MessageUtil.getNewMessage();
+        var jobEntity = new JobEntity();
+        jobEntity.setStatus(JobStatus.Created);
+        jobEntity.setTargetWeight(orderEntity.getTargetWeight());
+        var recipeResult = recipeRepository.findByProductAndIsTemplate(orderEntity.getProduct(), true);
+        if (recipeResult.isPresent()) {
+            jobEntity.setRecipe(recipeResult.get());
+        } else {
+            messageDto.getErrors().add(String.format("Recipe Template is not found for product: %s", orderEntity.getProduct().getName()));
+            return messageDto;
+        }
 
+        LineEntity line = null;
+        var productionLineAttr = orderEntity.getAttributes().get(ATTRIBUTE_LINE);
+        if (productionLineAttr != null) {
+            var lineName = productionLineAttr.getValue().toString();
+            var lineOptional = lineRepository.findByName(lineName);
+            if (lineOptional.isPresent()) {
+                line = lineOptional.get();
+            }
+        } else {
+            var lines = lineRepository.findByIsProduction(true);
+            if (!lines.isEmpty()) {
+                line = lines.get(0);
+            } else {
+                messageDto.getErrors().add("Line is not found.");
+                return messageDto;
+            }
+        }
+
+        jobEntity.setLine(line);
+        RepositoryUtil.create(jobRepository, jobEntity);
+
+        if (jobEntity.getName() == null || jobEntity.getName().isEmpty()) {
+            jobEntity.setName(jobEntity.getLine().getName() + ":" + jobEntity.getId());
+        }
+        RepositoryUtil.update(jobRepository, jobEntity);
+
+        var jobChangeLogDocument = new JobChangeLogDocument();
+        jobChangeLogDocument.setJobId(jobEntity.getId());
+        jobChangeLogDocument.setName("Status");
+        jobChangeLogDocument.setOldValue("");
+        jobChangeLogDocument.setNewValue("Created");
+        RepositoryUtil.create(jobChangeLogRepository, jobChangeLogDocument);
+        return messageDto;
     }
 }

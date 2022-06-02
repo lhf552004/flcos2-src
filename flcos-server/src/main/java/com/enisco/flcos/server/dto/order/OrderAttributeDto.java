@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.dto.orders;
+package com.enisco.flcos.server.dto.order;
 
 import lombok.Getter;
 import lombok.Setter;

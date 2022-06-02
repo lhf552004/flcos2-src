@@ -1,14 +1,11 @@
 package com.enisco.flcos.server.beans;
 
-import com.enisco.flcos.server.beans.job.IntakeJobManagementBean;
 import com.enisco.flcos.server.dto.job.MessageDto;
 import com.enisco.flcos.server.entities.LineEntity;
-import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.enums.LineStatus;
-import com.enisco.flcos.server.entities.job.JobChangeLogEntity;
-import com.enisco.flcos.server.entities.job.JobEntity;
 import com.enisco.flcos.server.opc.client.OPCClientFactory;
 import com.enisco.flcos.server.repository.relational.LineRepository;
+import com.enisco.flcos.server.util.MessageUtil;
 import com.enisco.flcos.server.util.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +35,7 @@ public class LineManagement {
     }
 
     public MessageDto reset(LineEntity lineEntity) {
-        var messageDto = getNewMessage();
+        var messageDto = MessageUtil.getNewMessage();
         if (onlineMode) {
             var variableNames = new ArrayList<String>();
             var variableValues = new ArrayList<>();
@@ -64,12 +61,4 @@ public class LineManagement {
         }
     }
 
-    private MessageDto getNewMessage() {
-        var message = new MessageDto();
-        var errors = new ArrayList<String>();
-        var infos = new ArrayList<String>();
-        message.setErrors(errors);
-        message.setInfos(infos);
-        return message;
-    }
 }
