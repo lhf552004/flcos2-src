@@ -1,4 +1,4 @@
-package com.enisco.flcos.server.beans;
+package com.enisco.flcos.server.beans.order;
 
 import com.enisco.flcos.server.entities.order.OrderEntity;
 

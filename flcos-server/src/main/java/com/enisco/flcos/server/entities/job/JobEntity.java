@@ -2,13 +2,12 @@ package com.enisco.flcos.server.entities.job;
 
 import com.enisco.flcos.server.entities.EntityBase;
 import com.enisco.flcos.server.entities.LineEntity;
-import com.enisco.flcos.server.entities.RecipeEntity;
+import com.enisco.flcos.server.entities.recipe.RecipeEntity;
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Setter
 @Getter
@@ -18,7 +17,7 @@ public class JobEntity extends EntityBase {
     @Column
     private String name;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+    @OneToOne(cascade = {
             CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "line_id")
     private LineEntity line;

@@ -8,7 +8,8 @@ import java.util.List;
 
 @Setter
 @Getter
-@Entity(name="process_station")
+@Entity
+@Table(name="process_station")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ProcessStationEntity extends EquipmentEntity {
 

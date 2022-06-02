@@ -1,8 +1,8 @@
 package com.enisco.flcos.server.api;
 
-import com.enisco.flcos.server.beans.IJobManagement;
-import com.enisco.flcos.server.beans.IntakeJobManagementBean;
-import com.enisco.flcos.server.beans.ProduceJobManagementBean;
+import com.enisco.flcos.server.beans.job.IJobManagement;
+import com.enisco.flcos.server.beans.job.IntakeJobManagementBean;
+import com.enisco.flcos.server.beans.job.ProduceJobManagementBean;
 import com.enisco.flcos.server.dto.job.JobDto;
 import com.enisco.flcos.server.dto.job.JobListDto;
 import com.enisco.flcos.server.dto.job.MessageDto;
@@ -109,6 +109,36 @@ public class JobController extends GenericControllerBase<JobEntity, JobDto, JobL
                     ? produceJobManagementBean
                     : intakeJobManagementBean;
             var messageDto = jobManagement.startJob(job);
+            return ResponseEntity.ok(messageDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping(path = "/pause/{id}")
+    public ResponseEntity<MessageDto> pauseJob(@PathVariable Long id) {
+        var result = jobRepository.findById(id);
+        if (result.isPresent()) {
+            var job = result.get();
+            IJobManagement jobManagement = job.getLine().isProduction()
+                    ? produceJobManagementBean
+                    : intakeJobManagementBean;
+            var messageDto = jobManagement.pauseJob(job);
+            return ResponseEntity.ok(messageDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping(path = "/stop/{id}")
+    public ResponseEntity<MessageDto> stopJob(@PathVariable Long id) {
+        var result = jobRepository.findById(id);
+        if (result.isPresent()) {
+            var job = result.get();
+            IJobManagement jobManagement = job.getLine().isProduction()
+                    ? produceJobManagementBean
+                    : intakeJobManagementBean;
+            var messageDto = jobManagement.finishJob(job);
             return ResponseEntity.ok(messageDto);
         } else {
             return ResponseEntity.notFound().build();

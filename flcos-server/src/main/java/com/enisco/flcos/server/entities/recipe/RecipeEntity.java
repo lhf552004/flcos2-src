@@ -1,5 +1,8 @@
-package com.enisco.flcos.server.entities;
+package com.enisco.flcos.server.entities.recipe;
 
+import com.enisco.flcos.server.entities.EntityBase;
+import com.enisco.flcos.server.entities.LineEntity;
+import com.enisco.flcos.server.entities.ProductEntity;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,12 +25,15 @@ public class RecipeEntity extends EntityBase {
     @JoinColumn(name = "recipe_id")
     private List<IngredientEntity> ingredients;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private LineEntity line;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private JobEntity job;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private ProductEntity product;
 }

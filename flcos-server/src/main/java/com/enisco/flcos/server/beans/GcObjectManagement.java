@@ -1,5 +1,8 @@
 package com.enisco.flcos.server.beans;
 
+import com.enisco.flcos.server.beans.job.IJobManagement;
+import com.enisco.flcos.server.beans.job.IntakeJobManagementBean;
+import com.enisco.flcos.server.beans.job.ProduceJobManagementBean;
 import com.enisco.flcos.server.entities.LineEntity;
 import com.enisco.flcos.server.entities.SectionEntity;
 import com.enisco.flcos.server.entities.alarm.AlarmEntity;
@@ -83,11 +86,15 @@ public class GcObjectManagement {
         if (result.isPresent()) {
             var line = result.get();
             if (gcObjectId.endsWith("status")) {
-                var newStatus = LineStatus.values()[(int) value];
-                if (!line.getStatus().equals(newStatus)) {
-                    line.setStatus(newStatus);
-                    RepositoryUtil.update(lineRepository, line);
+                var str = value.toString().split(",");
+                if (str.length > 0) {
+                    var newStatus = LineStatus.values()[Integer.parseInt(str[0])];
+                    if (!line.getStatus().equals(newStatus)) {
+                        line.setStatus(newStatus);
+                        RepositoryUtil.update(lineRepository, line);
+                    }
                 }
+
             }
         }
     }
@@ -109,14 +116,28 @@ public class GcObjectManagement {
                     section.setStatus(newStatus);
                     RepositoryUtil.update(sectionRepository, section);
                     if (job != null) {
-                        if (newStatus.equals(LineStatus.Error)) {
-                            jobManagement.changeJobStatus(job, JobStatus.Error);
-                        } else if (newStatus.equals(LineStatus.Suspended)) {
-                            jobManagement.changeJobStatus(job, JobStatus.Suspended);
+                        switch (newStatus) {
+                            case Error:
+                                jobManagement.changeJobStatus(job, JobStatus.Error);
+                                break;
+                            case Passive:
+                                var sections = section.getLine().getSections();
+                                var isLast = sections.stream().noneMatch(s -> s.getIndex() > section.getIndex());
+                                if(isLast)
+                                    jobManagement.changeJobStatus(job, JobStatus.Done);
+                                break;
+                            case Suspended:
+                                jobManagement.changeJobStatus(job, JobStatus.Suspended);
+                                break;
                         }
                     }
                 }
             } else if (gcObjectId.endsWith("jobId")) {
+                if (value == null) {
+                    section.setJob(null);
+                    RepositoryUtil.update(sectionRepository, section);
+                    return;
+                }
                 var jobId = (Long) value;
                 var jobOptional = jobRepository.findById(jobId);
                 if (jobOptional.isPresent()) {

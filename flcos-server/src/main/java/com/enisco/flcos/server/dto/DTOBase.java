@@ -15,4 +15,6 @@ public class DTOBase {
     private String createdBy;
 
     private Date lastModifiedDate;
+
+    private Date createdDate;
 }

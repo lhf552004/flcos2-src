@@ -1,16 +1,13 @@
 package com.enisco.flcos.server;
 
-import com.enisco.flcos.server.dto.receipt.ReceiptDto;
 import com.enisco.flcos.server.dto.recipe.RecipeDto;
-import com.enisco.flcos.server.entities.RecipeEntity;
+import com.enisco.flcos.server.entities.recipe.RecipeEntity;
 import com.enisco.flcos.server.entities.job.JobEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
-
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

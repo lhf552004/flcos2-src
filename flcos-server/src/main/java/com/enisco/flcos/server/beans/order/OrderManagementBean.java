@@ -1,6 +1,6 @@
-package com.enisco.flcos.server.beans;
+package com.enisco.flcos.server.beans.order;
 
-import com.enisco.flcos.server.api.UsersController;
+import com.enisco.flcos.server.beans.job.JobException;
 import com.enisco.flcos.server.entities.enums.JobStatus;
 import com.enisco.flcos.server.entities.enums.OrderStatus;
 import com.enisco.flcos.server.entities.enums.SchemeType;
@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 

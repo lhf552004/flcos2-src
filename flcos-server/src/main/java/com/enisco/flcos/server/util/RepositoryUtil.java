@@ -43,7 +43,7 @@ public class RepositoryUtil {
 
     public static void assignCreator(@NotNull EntityBase entity) {
         entity.setCreatedBy(getCurrentUser());
-        entity.setLastModifiedDate(new Date());
+        entity.setCreatedDate(new Date());
     }
 
     public static void assignModifiedBy(@NotNull EntityBase entity) {
@@ -53,7 +53,7 @@ public class RepositoryUtil {
 
     public static void assignCreator(@NotNull DocumentBase document) {
         document.setCreatedBy(getCurrentUser());
-        document.setLastModifiedDate(new Date());
+        document.setCreatedDate(new Date());
     }
 
     public static void assignModifiedBy(@NotNull DocumentBase document) {
