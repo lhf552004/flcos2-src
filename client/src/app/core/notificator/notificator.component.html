@@ -1,0 +1,3 @@
+<ngb-alert *ngFor="let notif of notifications" [type]="notif.type" [dismissible]="true" (close)="closeNotification(notif.id)">
+  <strong>{{notif.callOut}}</strong> {{notif.message}}
+</ngb-alert>

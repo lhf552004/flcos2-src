@@ -1,0 +1,85 @@
+<div class="sidebar d-flex flex-column">
+  <ul class="nav flex-column">
+    <li class="nav-item d-flex justify-content-between" *ngIf="!isSearched">
+      <a class="nav-link">
+        <span class="text-capitalize font-weight-bold" *ngIf="!collapsed"> {{header | translate}}</span>
+      </a>
+      <div>
+        <a class="nav-link d-inline-block pointer pr-0" *ngIf="!collapsed">
+          <fa-icon [icon]="faSearch" [fixedWidth]="true" (click)="triggerSearch()"></fa-icon>
+        </a>
+        <a class="nav-link d-inline-block pointer" *ngIf="!collapsed">
+          <fa-icon [icon]="faIndent" [fixedWidth]="true" (click)="expandAllNodes()" *ngIf="!allExpanded"></fa-icon>
+          <fa-icon [icon]="faOutdent" [fixedWidth]="true" (click)="collapseAllNodes()" *ngIf="allExpanded"></fa-icon>
+        </a>
+      </div>
+    </li>
+
+    <li class="nav-item d-flex justify-content-between" *ngIf="isSearched && !collapsed">
+      <input type="search" #search class="form-control form-control-sm mt-1 ml-2" placeholder="Search..." [(ngModel)]="filterText" (input)="filterSubject$.next($event.target.value)">
+      <a class="nav-link pointer">
+        <fa-icon [icon]="faTimes" [fixedWidth]="true" (click)="resetSearch()"></fa-icon>
+      </a>
+    </li>
+    <li class="dropdown-divider"></li>
+  </ul>
+
+  <ul class="nav flex-column overflow-auto">
+    <ng-container *ngIf="collapsed">
+      <li class="nav-item" *ngFor="let menuItem of filteredMenuItems">
+        <ng-template #submenus>
+          <ul class="nav flex-column">
+            <li class="font-weight-bold">{{menuItem.label}}</li>
+            <li class="nav-item" *ngFor="let subMenu of menuItem.children">
+              <a class="nav-link" [ngClass]="{active: subMenu.active}" (click)="menuItemClicked(subMenu)">
+                <fa-icon [icon]="subMenu.icon" [fixedWidth]="true"></fa-icon>
+                {{subMenu.label}}
+              </a>
+            </li>
+          </ul>
+        </ng-template>
+        <a class="nav-link" *ngIf="collapsed" [stickyPopover]="submenus" [openDelay]="300" triggers="mouseenter:mouseleave" placement="right" container="body">
+          <fa-icon [icon]="menuItem.icon" [fixedWidth]="true"></fa-icon>
+          <span *ngIf="!collapsed"> {{menuItem.label}}</span>
+        </a>
+      </li>
+    </ng-container>
+
+    <li class="nav-item" *ngIf="!collapsed">
+      <csps-tree-view [tree]="treeViewNodes" [options]="options" (onNodeMoved)="change($event)" (onNodeSelected)="showItem($event)"></csps-tree-view>
+    </li>
+  </ul>
+
+  <ul class="nav flex-column mb-2 mt-auto" *ngIf="stickyMenuItems.length>0">
+    <li class="dropdown-divider"></li>
+    <li class="nav-item d-flex justify-content-between" *ngFor="let m of stickyMenuItems; last as isLast">
+      <a class="nav-link" [routerLink]="m.route" (click)="processClick(m)">
+        <fa-icon [icon]="m.icon" [fixedWidth]="true"></fa-icon>
+        <span *ngIf="!collapsed"> {{m.label}}</span>
+      </a>
+      <a class="nav-link pointer" (click)="toggleSideBar()" *ngIf="!collapsed && isLast">
+        <fa-icon [icon]="faChevronLeft" [fixedWidth]="true"></fa-icon>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="collapsed">
+      <a class="nav-link pointer" (click)="toggleSideBar()">
+        <fa-icon [icon]="faChevronRight" [fixedWidth]="true"></fa-icon>
+      </a>
+    </li>
+  </ul>
+  <ul class="nav flex-column mb-2 mt-auto" *ngIf="!stickyMenuItems.length">
+    <li class="dropdown-divider"></li>
+    <li class="nav-item d-flex justify-content-between">
+      <a class="nav-link"></a>
+      <a class="nav-link pointer" (click)="toggleSideBar()" *ngIf="!collapsed">
+        <fa-icon [icon]="faChevronLeft" [fixedWidth]="true"></fa-icon>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="collapsed">
+      <a class="nav-link pointer" (click)="toggleSideBar()">
+        <fa-icon [icon]="faChevronRight" [fixedWidth]="true"></fa-icon>
+      </a>
+    </li>
+  </ul>
+</div>
+

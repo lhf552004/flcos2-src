@@ -1,0 +1,67 @@
+<div class="container-fluid h-100 d-flex pr-0">
+  <div class="row flex-fill">
+    <div class="col-2 border-right gray-200-background pt-2">
+
+      <ul class="nav flex-column">
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link">
+            <span class="text-capitalize font-weight-bold">Settings</span>
+          </a>
+        </li>
+
+        <li class="dropdown-divider gray-500-border-top mx-n3"></li>
+
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'lines'" routerLinkActive="active">
+            <fa-icon [icon]="faUsers" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.LINE' | translate}}
+          </a>
+        </li>
+
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'sections'" routerLinkActive="active">
+            <fa-icon [icon]="faUserTag" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.SECTION' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'mixers'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.MIXER' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'fillers'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.FILLER' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'dischargers'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.DISCHARGER' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'scales'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.SCALE' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'registration-scales'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.REGISTRATION-SCALE' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'process-stations'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.PROCESS-STATION' | translate}}
+          </a>
+        </li>
+        <li class="nav-item d-flex justify-content-between">
+          <a class="nav-link pointer" [routerLink]="'conveying-stations'" routerLinkActive="active">
+            <fa-icon [icon]="faBars" [fixedWidth]="true"></fa-icon> {{'ENGINEERINGS.CONVEYING-STATION' | translate}}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col d-flex">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

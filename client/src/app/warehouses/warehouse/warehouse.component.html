@@ -1,0 +1,74 @@
+<div class="container-fluid d-flex flex-column">
+    <div class="row justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="col-auto">
+            <h2>
+                Warehouse Management
+            </h2>
+        </div>
+
+        <div class="col-auto">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                
+                <div *ngIf="isAuthor" class="btn-group mr-2">
+                    <button type="button" class="btn btn-sm btn-primary" (click)="save(false)">Save</button>
+                    <div class="btn-group" ngbDropdown placement="bottom-right">
+                        <button class="btn btn-sm btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button ngbDropdownItem (click)="save(false)">Save</button>
+                            <button ngbDropdownItem (click)="save(true)">Save & Close</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="close()">Close</button>
+
+                <div class="btn-group mr-2" ngbDropdown placement="bottom-right">
+                    <button type="button" class="btn btn-sm btn-link dropdown-icon" ngbDropdownToggle>
+                        <fa-icon class="text-primary pointer" [icon]="faEllipsisV" [fixedWidth]="true"></fa-icon>
+                    </button>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <button *ngIf="isAuthor" ngbDropdownItem (click)="save(true)">Save</button>
+                        <button *ngIf="isAuthor" ngbDropdownItem (click)="close()">Save & Close</button>
+                        <button *ngIf="isOwner" ngbDropdownItem (click)="copy()">Copy</button>   
+                        <button *ngIf="isOwner" ngbDropdownItem (click)="delete()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputId">Id</label>
+        <input type="text" class="form-control" id="inputId" name="inputId" [(ngModel)]="warehouse.id" disabled>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputName">Name</label>
+        <input type="text" class="form-control" id="inputName" name="inputName" [(ngModel)]="warehouse.name" (input)="nameChanged($event.target.value)" placeholder="Enter Name here">
+      </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Id</th>
+        <th scope="col">Batch Number</th>
+        <th scope="col">Type</th>
+        <th scope="col">Weight</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let logisticUnit of logisticUnits; let i = index">
+        <th scope="row">{{i}}</th>
+        <td><a [routerLink]="['../logistic-units', logisticUnit.id]">{{logisticUnit.id}}</a></td>
+        <td>{{logisticUnit.batchNumber}}</td>
+        <td>{{logisticUnit.type}}</td>
+        <td>{{logisticUnit.weight}}</td>
+      </tr>
+    </tbody>
+</table>
+

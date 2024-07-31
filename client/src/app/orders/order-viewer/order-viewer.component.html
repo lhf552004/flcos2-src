@@ -1,0 +1,31 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">{{'ORDER.CREATE ORDER' | translate}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="dismissForm('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body d-flex flex-column" style="height:60vh;">
+    <ng-container *ngTemplateOutlet="dynamicForm; context: config.attributes"></ng-container>
+    <ng-template #dynamicForm let-attributes>
+      <form *ngFor="let attribute of attributes | keyvalue">
+        <h3>Key{{attribute.key}}</h3>
+        <ng-container *ngIf="attribute.value.attributes && attribute.value.attributes.length > 0">
+          <ng-container *ngTemplateOutlet="dynamicForm; context: attribute.value.attributes"></ng-container>
+        </ng-container>
+        <ng-container *ngIf="!attribute.value.attributes || attribute.value.attributes.length === 0">
+          <div class="form-row">
+            <div class="form-group col-sm-12 col-md-12">
+              <label for="inputId">Id</label>
+              <input type="text" class="form-control" id="inputId" name="inputId" [(ngModel)]="attribute.value.value">
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="dismissForm('Close button')" class="btn btn-secondary">Cancel</button>
+    <button type="button" [disabled]="!itemsSelected" (click)="submitForm('OK')" class="btn btn-primary">Ok</button>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<!-- src/app/menu/menu.component.html -->
+<ng-container *ngIf="isRootNode">
+  <button class="nav-link" *ngIf="isExpandable(item); else linkItem " mat-button [matMenuTriggerFor]="menu">
+    {{'MENU.' + item.name | translate}}
+  </button>
+  <ng-template #linkItem>
+    <button *ngIf="!item.external" mat-button class="nav-link" [routerLink]="item.url">
+      {{'MENU.' + item.name | translate}}
+    </button>
+    <button *ngIf="item.external" mat-button class="nav-link" (click)="navigateToExternal(item)">
+      {{'MENU.' + item.name | translate}}
+    </button>
+  </ng-template>
+</ng-container>
+
+<button
+  *ngIf="!isRootNode"
+  mat-menu-item
+  [matMenuTriggerFor]="menu"
+  (menuOpened)="getData()"
+>
+  {{'MENU.' + item.name | translate}}
+</button>
+<mat-menu #menu="matMenu">
+  <button
+    mat-menu-item
+    *ngIf="isLoading"
+    style="display: flex; justify-content: center; align-items: center"
+  >
+    <mat-spinner mode="indeterminate" diameter="24"></mat-spinner>
+  </button>
+  <ng-container *ngFor="let child of children; let i = index">
+    <button mat-menu-item style="padding: 0">
+      <flcos-menu-item
+        [item]="child"
+        *ngIf="isExpandable(child); else menuItem"
+      ></flcos-menu-item>
+    </button>
+    <ng-template #menuItem>
+      <button *ngIf="!child.external" mat-button class="nav-link" [routerLink]="child.url">
+        {{'MENU.' + child.name | translate}}
+      </button>
+      <button *ngIf="child.external" mat-button class="nav-link" (click)="navigateToExternal(child)">
+        {{'MENU.' + child.name | translate}}
+      </button>
+    </ng-template>
+  </ng-container>
+</mat-menu>

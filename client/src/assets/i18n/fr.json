@@ -1,0 +1,64 @@
+{
+  "ALARM": {
+    "START": "Start",
+    "CURRENT ALARMS": "Alarmes actuelles"
+  },
+  "ADMIN": {
+    "USERS": "Benutzer",
+    "ROLES": "Rollen",
+    "MENUS": "Menüs"
+  },
+  "ORDER": {
+    "ORDERS": "Orders"
+  },
+  "GENERAL": {
+    "STATUS": "Status",
+    "NAME": "Name",
+    "SAVE": "Save",
+    "COPY": "Copy",
+    "CLOSE": "Close",
+    "DELETE": "Delete",
+    "INTERNAL": "Internal",
+    "FRESH": "Frais"
+  },
+  "OPC" : {
+    "ENDPOINT URL":  "Endpoint url",
+    "OPC SERVER": "OPC Server",
+    "OPC SERVERS": "OPC Servers",
+    "TCP PORT": "TCP Port",
+    "HTTPS PORT": "Https Port",
+    "ADDRESS": "Address"
+  },
+  "MENU": {
+    "Dashboard": "Tableau de bord",
+    "Warehouses": "Entrepôts",
+    "Products": "Produits",
+    "Lines": "Lignes",
+    "Alarms": "Alarms",
+    "Bins": "Bacs",
+    "Workflows": "Flux de travail",
+    "Process": "Traiter",
+    "OPC Servers": "OPC Servers",
+    "Admin": "Administrateur",
+    "Schemes": "Schemes",
+    "Diagnostics": "Diagnostics",
+    "Attributes and References": "Attributes and References",
+    "NODE CLASS": "Node Class",
+    "VARIABLE VALUE": "Value"
+  },
+  "ENGINEERINGS" : {
+    "LINE": "Line",
+    "SECTION": "Section",
+    "MIXER": "Mixer",
+    "FILLER": "Filler",
+    "DISCHARGER": "Discharger",
+    "SCALE": "Scale",
+    "REGISTRATION-SCALE": "Registration Scale",
+    "PROCESS-STATION": "Process Station",
+    "CONVEYING-STATION": "Conveying Station",
+    "RECIPE": "Recipe"
+  },
+  "JOB" : {
+    "JOBS": "Jobs"
+  }
+}

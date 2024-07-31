@@ -1,0 +1,39 @@
+<div class="container-fluid d-flex flex-column">
+  <div class="row justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="col-auto">
+      <h2>
+        {{'DIAG.Attributes and References' | translate}}
+      </h2>
+    </div>
+
+    <div class="col-auto">
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <button *ngIf="opcNode.nodeClass==='Variable'" [disabled]="!isChanged" type="button" class="btn btn-sm btn-danger mr-2" (click)="save()">{{'GENERAL.SAVE' | translate}}</button>
+        <button type="button" class="btn btn-sm btn-danger mr-2" (click)="fresh()">{{'GENERAL.FRESH' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputId">Id</label>
+      <input type="text" class="form-control" id="inputId" name="inputId" [(ngModel)]="opcNode.nodeId" disabled>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputName">Name</label>
+      <input type="text" class="form-control" id="inputName" name="inputName" [(ngModel)]="opcNode.browserName" disabled>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputNodeClass">{{'DIAG.NODE CLASS' | translate}}</label>
+      <input type="text" class="form-control" id="inputNodeClass" name="inputNodeClass" [(ngModel)]="opcNode.nodeClass" disabled>
+    </div>
+    <div *ngIf="opcNode.nodeClass=== 'Variable'" class="form-group col-md-6">
+      <label for="inputValue">{{'DIAG.VARIABLE VALUE' | translate}}</label>
+      <input type="text" class="form-control" id="inputValue" name="inputValue" [(ngModel)]="opcNode.value" (input)="valueChanged()">
+    </div>
+  </div>
+</form>

@@ -1,0 +1,69 @@
+<div class="container-fluid d-flex flex-column">
+  <div class="row justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="col-auto">
+      <h2>
+        {{'OPC.OPC SERVER' | translate}}
+      </h2>
+    </div>
+
+    <div class="col-auto">
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <button [disabled]="!isChanged" type="button" class="btn btn-sm btn-primary mr-2" (click)="save()">{{'GENERAL.SAVE' | translate}}</button>
+
+        <div class="btn-group mr-2" ngbDropdown placement="bottom-right">
+          <button type="button" class="btn btn-sm btn-link dropdown-icon" ngbDropdownToggle>
+            <fa-icon class="text-primary pointer" [icon]="faEllipsisV" [fixedWidth]="true"></fa-icon>
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button ngbDropdownItem (click)="copy()">{{'GENERAL.COPY' | translate}}</button>
+            <button ngbDropdownItem (click)="delete()">{{'GENERAL.DELETE' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form class="ml-2 mr-2">
+  <div class="form-row">
+    <div class="form-group col-md-6 col-sm-12">
+      <label for="inputId">Id</label>
+      <input type="text" class="form-control" id="inputId" name="inputId" [(ngModel)]="opcServer.id" disabled>
+    </div>
+    <div class="form-group col-md-6 col-sm-12">
+      <label for="inputTargetWeight">{{'GENERAL.STATUS' | translate}}</label>
+      <input type="text" class="form-control" id="inputTargetWeight" name="inputTargetWeight" [(ngModel)]="opcServer.status" disabled>
+    </div>
+
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6 col-sm-12">
+      <label for="inputName">{{'GENERAL.NAME' | translate}}</label>
+      <input type="text" class="form-control" id="inputName" name="inputName" [(ngModel)]="opcServer.name" (input)="opcServerChanged()" placeholder="Enter Name here">
+    </div>
+    <div class="form-group col-md-6 col-sm-12">
+      <label for="inputLine">{{'OPC.ADDRESS' | translate}}</label>
+      <input type="text" class="form-control" id="inputLine" name="inputLine" [(ngModel)]="opcServer.address" (input)="opcServerChanged()">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6 col-sm-12">
+      <label for="inputName">{{'OPC.TCP PORT' | translate}}</label>
+      <input type="text" class="form-control" id="inputTcpPort" name="inputTcpPort" [(ngModel)]="opcServer.tcpPort" (input)="opcServerChanged()" placeholder="Enter tcp port here">
+    </div>
+    <div class="form-group col-md-6 col-sm-12">
+      <label for="inputLine">{{'OPC.HTTPS PORT' | translate}}</label>
+      <input type="text" class="form-control" id="inputHttpsPort" name="inputHttpsPort" [(ngModel)]="opcServer.httpsPort" (input)="opcServerChanged()" placeholder="Enter https port here">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6 col-sm-12">
+      <div class="form-check col-md-6 col-sm-12">
+        <input type="checkbox" class="form-check-input" id="checkboxInternal" name="checkboxInternal" [(ngModel)]="opcServer.internal" (input)="opcServerChanged()" placeholder="Enter Name here">
+        <label class="form-check-label" for="inputName">{{'GENERAL.INTERNAL' | translate}}</label>
+      </div>
+    </div>
+  </div>
+</form>

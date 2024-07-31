@@ -1,0 +1,38 @@
+<div class="container">
+
+    <div class="row no-gutters justify-content-between border-bottom py-2 mb-3">
+      <div class="col-auto">
+        <span class="form-control-plaintext">
+          {{lines.length}} Lines
+        </span>
+      </div>
+      <div class="col-auto">
+        <div class="input-group input-group-sm">
+          <input type="search" placeholder="Filter..." class="form-control form-control-sm" (input)="filterSubject$.next($event.target.value)" />
+          <div class="input-group-append">
+            <span class="input-group-text"><fa-icon [icon]="faSearch"></fa-icon></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+
+      <div class="col-12 mb-3">
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let line of lines">
+            <div class="card h-100">
+              
+              <div class="card-body">
+                <div class="card-title d-flex justify-content-between">
+                  <h5 class="pointer" [routerLink]="[line.id]">{{line.name}}</h5>
+                </div>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

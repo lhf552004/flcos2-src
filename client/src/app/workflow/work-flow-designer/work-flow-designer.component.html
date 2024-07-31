@@ -1,0 +1,50 @@
+<div class="container-fluid d-flex flex-column flex-fill">
+  <div class="row justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="col">
+      <h2>YZ Mod. A</h2>
+    </div>
+    <div class="col-auto">
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+          <span data-feather="calendar"></span>
+          This week
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row flex-fill">
+    <div #sidebarGraphContainer class="col geSidebarContainer">
+      <div class="row border-bottom justify-content-between no-args no-gutters mt-3">
+        <div class="col-auto font-weight-bold">
+          Normal Process flow
+        </div>
+        <div class="col">
+          <fa-icon [icon]="faCaretDown" *ngIf="hideScopeOfWork" [fixedWidth]="true" class="gray-text pointer pr-0" (click)="hideScopeOfWork=!hideScopeOfWork"></fa-icon>
+          <fa-icon [icon]="faCaretUp" *ngIf="!hideScopeOfWork" [fixedWidth]="true" class="gray-text pointer pr-0" (click)="hideScopeOfWork=!hideScopeOfWork"></fa-icon>
+        </div>
+      </div>
+      <ng-container *ngIf="!hideScopeOfWork">
+        <div class="row mt-3">
+          <div class="col font-weight-bold">
+            <i (click)="addRectangle()">
+              <mat-icon class="pointer" style="font-size: 100px">crop_16_9</mat-icon>
+            </i>
+
+          </div>
+        </div>
+
+      </ng-container>
+    </div>
+    <div class="col geDiagramContainer geDiagramBackdrop">
+      <div #graphContainer id="graphContainer"></div>
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+</div>
+<!--<flcos-work-flow [workflowSettings]="workflowSettings"></flcos-work-flow>-->

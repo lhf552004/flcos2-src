@@ -1,0 +1,69 @@
+{
+  "ALARM": {
+    "START": "Start",
+    "CURRENT ALARMS": "Current Alarms"
+  },
+  "ADMIN": {
+    "USERS": "Users",
+    "ROLES": "Roles",
+    "MENUS": "Menus"
+  },
+  "ORDER": {
+    "ORDERS": "Orders"
+  },
+  "GENERAL": {
+    "STATUS": "Status",
+    "NAME": "Name",
+    "SAVE": "Save",
+    "COPY": "Copy",
+    "CLOSE": "Close",
+    "DELETE": "Delete",
+    "INTERNAL": "Internal",
+    "FRESH": "Fresh"
+  },
+  "OPC": {
+    "ENDPOINT URL": "Endpoint url",
+    "OPC SERVER": "OPC Server",
+    "OPC SERVERS": "OPC Servers",
+    "TCP PORT": "TCP Port",
+    "HTTPS PORT": "Https Port",
+    "ADDRESS": "Address"
+  },
+  "MENU": {
+    "Dashboard": "Dashboard",
+    "Warehouses": "Warehouses",
+    "Products": "Products",
+    "Alarms": "Alarms",
+    "Lines": "Lines",
+    "Bins": "Bins",
+    "Workflows": "Workflows",
+    "Process": "Process",
+    "OPC Servers": "OPC Servers",
+    "Admin": "Admin",
+    "Schemes": "Schemes",
+    "Diagnostics": "Diagnostics",
+    "Attributes and References": "Attributes and References",
+    "NODE CLASS": "Node Class",
+    "VARIABLE VALUE": "Value",
+    "Engineerings": "Engineerings",
+    "Trendings": "Trending"
+  },
+  "TRENDING": {
+    "PROCESS VARIABLES": "Process Variables"
+  },
+  "ENGINEERINGS" : {
+    "LINE": "Line",
+    "SECTION": "Section",
+    "MIXER": "Mixer",
+    "FILLER": "Filler",
+    "DISCHARGER": "Discharger",
+    "SCALE": "Scale",
+    "REGISTRATION-SCALE": "Registration Scale",
+    "PROCESS-STATION": "Process Station",
+    "CONVEYING-STATION": "Conveying Station",
+    "RECIPE": "Recipe"
+  },
+  "JOB" : {
+    "JOBS": "Jobs"
+  }
+}

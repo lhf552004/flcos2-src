@@ -1,0 +1,15 @@
+<!--<div class="container-fluid d-flex flex-column flex-fill min-height-0">-->
+<!--  <div class="row d-flex">-->
+<!--    <div class="col flex-shrink-1">-->
+<!--      <object [data] = "'assets/svgs/' + line.name + '.svg' | safe"></object>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--</div>-->
+<div class="connect">
+  <span *ngIf="sseConnected" class="badge badge-danger mr-2 p-2 white-text font-weight-light"><fa-icon [icon]="faPlug" [fixedWidth]="true"></fa-icon></span>
+  <span *ngIf="!sseConnected" class="badge badge-danger mr-2 p-2 white-text font-weight-light"><fa-icon [icon]="faHandshakeSlash" [fixedWidth]="true"></fa-icon></span>
+</div>
+
+<svg-icon #container [src]="'assets/svgs/'+ line.name + '.svg'" (click)="svgClicked($event)" [stretch]="true" [viewBox]="'auto'"></svg-icon>
+<!--<div class="my-icon w-100 h-100" aria-label="My icon" [inlineSVG]="svg"></div>-->

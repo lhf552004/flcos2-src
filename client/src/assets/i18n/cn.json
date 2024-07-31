@@ -1,0 +1,72 @@
+{
+  "ALARM": {
+    "START": "开始",
+    "CURRENT ALARMS": "当前消息"
+  },
+  "ADMIN": {
+    "USERS": "用户",
+    "ROLES": "角色",
+    "MENUS": "菜单"
+  },
+  "ORDER": {
+    "ORDERS": "订单"
+  },
+  "GENERAL": {
+    "STATUS": "状态",
+    "NAME": "名称",
+    "SAVE": "保存",
+    "COPY": "复制",
+    "CLOSE": "关闭",
+    "DELETE": "删除",
+    "INTERNAL": "内部",
+    "FRESH": "刷新"
+  },
+  "OPC" : {
+    "ENDPOINT URL":  "终端地址",
+    "OPC SERVER": "OPC 服务器",
+    "OPC SERVERS": "OPC 服务器",
+    "TCP PORT": "TCP端口",
+    "HTTPS PORT": "Https端口",
+    "ADDRESS": "地址"
+  },
+  "MENU": {
+    "Dashboard": "仪表盘",
+    "Warehouses": "仓库",
+    "Products": "产品",
+    "Lines": "生产线",
+    "Alarms": "消息",
+    "Bins": "仓管理",
+    "Workflows": "工作流程",
+    "Process": "工艺步骤",
+    "OPC Servers": "OPC服务器",
+    "Admin": "管理员",
+    "Schemes": "Schemes",
+    "Diagnostics": "诊断",
+    "Engineerings": "工程",
+    "Trendings": "趋势"
+  },
+  "DIAG" : {
+    "Diagnostics": "诊断",
+    "Attributes and References": "属性和引用",
+    "NODE CLASS": "节点类型",
+    "VARIABLE VALUE": "值"
+  },
+  "TRENDING": {
+    "PROCESS VARIABLES": "过程变量"
+  },
+  "ENGINEERINGS" : {
+    "LINE": "生产线",
+    "SECTION": "生产段",
+    "MIXER": "混合机",
+    "FILLER": "进料器",
+    "DISCHARGER": "卸料器",
+    "SCALE": "标准秤",
+    "REGISTRATION-SCALE": "流量秤",
+    "PROCESS-STATION": "工艺站",
+    "CONVEYING-STATION": "输送站",
+    "RECIPE": "配方"
+  },
+  "JOB" : {
+    "JOBS": "任务"
+  }
+}

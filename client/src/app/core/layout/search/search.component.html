@@ -1,0 +1,15 @@
+<div *ngIf="showPanel" class="search-container">
+
+  Search Panel (Layout is preliminary)
+
+  <button class="btn pointer" (click)="closeSearchPanel()" >Close</button>
+
+  <ul>
+    <li *ngFor="let result of results">
+      <a class="nav-link" [routerLink]="result.link">
+        {{result.text}}
+      </a>
+    </li>
+  </ul>
+
+</div>
