@@ -1,0 +1,42 @@
+{
+  "ALARM": {
+    "START": "开始",
+    "CURRENT ALARMS": "当前消息"
+  },
+  "ADMIN": {
+    "USERS": "用户",
+    "ROLES": "角色",
+    "MENUS": "菜单"
+  },
+  "ORDER": {
+    "ORDERS": "订单"
+  },
+  "GENERAL": {
+    "STATUS": "状态",
+    "NAME": "名称",
+    "SAVE": "保存",
+    "COPY": "复制",
+    "CLOSE": "关闭",
+    "DELETE": "删除",
+    "INTERNAL": "内部"
+  },
+  "OPC" : {
+    "ENDPOINT URL":  "终端地址",
+    "OPC SERVER": "OPC 服务器",
+    "OPC SERVERS": "OPC 服务器",
+    "TCP PORT": "TCP端口",
+    "HTTPS PORT": "Https端口",
+    "ADDRESS": "地址"
+  },
+  "MENU": {
+    "Dashboard": "仪表盘",
+    "Warehouses": "仓库",
+    "Products": "产品",
+    "Lines": "生产线",
+    "Bins": "仓管理",
+    "Workflows": "工作流程",
+    "Process": "工艺步骤",
+    "OPC Server": "OPC服务器",
+    "Admin": "管理员"
+  }
+}
