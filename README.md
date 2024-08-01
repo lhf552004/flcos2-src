@@ -1,4 +1,5 @@
-[![Build Status](https://github.com/lhf552004/flcos2-src/workflows/CI/badge.svg)](https://github.com/lhf552004/flcos2-src/actions)
+[![Spring Boot CI](https://github.com/lhf552004/flcos2-src/actions/workflows/spring-boot-ci.yml/badge.svg)](https://github.com/lhf552004/flcos2-src/actions/workflows/spring-boot-ci.yml)
+[![Angular CI](https://github.com/lhf552004/flcos2-src/actions/workflows/angular-ci.yml/badge.svg)](https://github.com/lhf552004/flcos2-src/actions/workflows/angular-ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub release](https://img.shields.io/github/release/lhf552004/flcos2-src.svg)](https://GitHub.com/lhf552004/flcos2-src/releases/)
 [![GitHub contributors](https://img.shields.io/github/contributors/lhf552004/flcos2-src.svg)](https://github.com/lhf552004/flcos2-src/graphs/contributors)
