@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - develop
+    paths:
+      - "api/**"
   pull_request:
     branches:
       - develop
+    paths:
+      - "api/**"
 
 jobs:
   build:
@@ -29,4 +33,4 @@ jobs:
       - name: Build and Test ${{ matrix.project }}
         working-directory: ./api/${{ matrix.project }}
         run: |
-          ./mvnw clean install
+          mvn clean install
